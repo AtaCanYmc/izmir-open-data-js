@@ -13,7 +13,8 @@ export interface HavaKalitesiOlcum {
 export function iklim(client: IzmirClient) {
     return {
         /**
-         * Belirtilen tarihe göre hava kalitesi ölçüm değerlerini içeren web servisi
+         * Belirtilen tarihe göre hava kalitesi ölçüm değerlerini içeren web servisi.
+         *
          * Kaynak: https://acikveri.bizizmir.com/dataset/hava-kalitesi-olcum-degerleri
          */
         getGunlukHavaKalitesiOlcumleri(tarih: Date) {

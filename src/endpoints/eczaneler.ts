@@ -15,6 +15,7 @@ export function eczaneler(client: IzmirClient) {
     return {
         /**
          * Nöbetçi eczanelerin bilgilerini içeren web servisi.
+         *
          * Kaynak: https://acikveri.bizizmir.com/dataset/nobetci-eczaneler-ve-eczane-listesi
          */
         getNobetciList() {
@@ -23,6 +24,7 @@ export function eczaneler(client: IzmirClient) {
 
         /**
          * Eczanelerin bilgilerini içeren web servisi.
+         *
          * Kaynak: https://acikveri.bizizmir.com/dataset/nobetci-eczaneler-ve-eczane-listesi
          */
         getList() {

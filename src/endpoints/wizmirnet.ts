@@ -7,6 +7,7 @@ export function wizmirnet(client: IzmirClient) {
     return {
         /**
          * Ücretsiz-kablosuz internet hizmet noktaları ve lokasyon bilgilerini içeren web servisi.
+         *
          * Kaynak: https://acikveri.bizizmir.com/dataset/kablosuz-internet-baglanti-noktalari
          */
         getList() {

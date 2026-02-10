@@ -8,6 +8,9 @@ import {pazarlar} from "./endpoints/pazarlar";
 import {taksi} from "./endpoints/taksi";
 import {etkinlikler} from "./endpoints/etkinlikler";
 import {iklim} from "./endpoints/iklim";
+import {eshot} from "./endpoints/eshot";
+import {bisim} from "./endpoints/bisim";
+import {tramvay} from "./endpoints/tramvay";
 
 export class IzmirAPI {
     private readonly client: IzmirClient;
@@ -21,6 +24,9 @@ export class IzmirAPI {
     taksi;
     etkinlikler;
     iklim;
+    eshot;
+    bisim;
+    tramvay;
 
     constructor(baseUrl?: string) {
         this.client = new IzmirClient(baseUrl);
@@ -33,5 +39,8 @@ export class IzmirAPI {
         this.taksi = taksi(this.client);
         this.etkinlikler = etkinlikler(this.client);
         this.iklim = iklim(this.client);
+        this.eshot = eshot(this.client);
+        this.bisim = bisim(this.client);
+        this.tramvay = tramvay(this.client);
     }
 }

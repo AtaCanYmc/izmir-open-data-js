@@ -7,6 +7,7 @@ export function taksi(client: IzmirClient) {
     return {
         /**
          * Taksi durak bilgilerini içeren web servisi.
+         *
          * Kaynak: https://acikveri.bizizmir.com/dataset/taksi-durak-bilgileri
          */
         getDurakList() {

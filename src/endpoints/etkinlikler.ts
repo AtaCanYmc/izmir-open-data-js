@@ -19,6 +19,7 @@ export function etkinlikler(client: IzmirClient) {
     return {
         /**
          * Güncel kültür sanat etkinlikler listesini içeren web servisi.
+         *
          * Kaynak: https://acikveri.bizizmir.com/dataset/kultur-sanat-etkinlikleri
          */
         getList() {
@@ -27,6 +28,7 @@ export function etkinlikler(client: IzmirClient) {
 
         /**
          * Belirli bir etkinliğin detay bilgilerini içeren web servisi.
+         *
          * Kaynak: https://acikveri.bizizmir.com/dataset/kultur-sanat-etkinlikleri
          */
         getEtkinlikById(etkinlikId: number) {

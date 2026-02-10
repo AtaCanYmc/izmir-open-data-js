@@ -7,6 +7,7 @@ export function muhtarliklar(client: IzmirClient) {
     return {
         /**
          * Muhtarlıklar hakkında bilgi ve coğrafi konumlarını içeren web servisi.
+         *
          * Kaynak: https://acikveri.bizizmir.com/dataset/muhtarliklar
          */
         getList() {

@@ -28,6 +28,7 @@ export function pazarlar(client: IzmirClient) {
     return {
         /**
          * Semt pazar yerlerinin listesi, günleri ve konum bilgileri içeren web servisi.
+         *
          * Kaynak: https://acikveri.bizizmir.com/dataset/semt-pazar-yerleri
          */
         getList() {
@@ -36,6 +37,7 @@ export function pazarlar(client: IzmirClient) {
 
         /**
          * Balık hal fiyatlarını içeren web servisi.
+         *
          * Kaynak: https://acikveri.bizizmir.com/dataset/balik-hal-fiyatlari
          */
         getBalikHalFiyatlari(tarih: Date) {
@@ -44,6 +46,7 @@ export function pazarlar(client: IzmirClient) {
 
         /**
          * Sebze ve meyve hal fiyatlarını içeren web servisi.
+         *
          * Kaynak: https://acikveri.bizizmir.com/dataset/sebze-ve-meyve-hal-fiyatlari
          */
         getSebzeMeyveHalFiyatlari(tarih: Date) {
