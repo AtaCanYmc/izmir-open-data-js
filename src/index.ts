@@ -11,6 +11,9 @@ import {iklim} from "./endpoints/iklim";
 import {eshot} from "./endpoints/eshot";
 import {bisim} from "./endpoints/bisim";
 import {tramvay} from "./endpoints/tramvay";
+import {metro} from "./endpoints/metro";
+import {izban} from "./endpoints/izban";
+import {otopark} from "./endpoints/otopark";
 
 export class IzmirAPI {
     private readonly client: IzmirClient;
@@ -27,6 +30,9 @@ export class IzmirAPI {
     eshot;
     bisim;
     tramvay;
+    metro;
+    izban;
+    otopark;
 
     constructor(baseUrl?: string) {
         this.client = new IzmirClient(baseUrl);
@@ -42,5 +48,8 @@ export class IzmirAPI {
         this.eshot = eshot(this.client);
         this.bisim = bisim(this.client);
         this.tramvay = tramvay(this.client);
+        this.metro = metro(this.client);
+        this.izban = izban(this.client);
+        this.otopark = otopark(this.client);
     }
 }
