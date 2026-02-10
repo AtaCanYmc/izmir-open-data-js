@@ -15,6 +15,7 @@ import {metro} from "./endpoints/metro";
 import {izban} from "./endpoints/izban";
 import {otopark} from "./endpoints/otopark";
 import {hizmet} from "./endpoints/hizmet";
+import {vapur} from "./endpoints/vapur";
 
 export class IzmirAPI {
     private readonly client: IzmirClient;
@@ -35,6 +36,7 @@ export class IzmirAPI {
     izban;
     otopark;
     hizmet;
+    vapur;
 
     constructor(baseUrl?: string) {
         this.client = new IzmirClient(baseUrl);
@@ -54,5 +56,6 @@ export class IzmirAPI {
         this.izban = izban(this.client);
         this.otopark = otopark(this.client);
         this.hizmet = hizmet(this.client);
+        this.vapur = vapur(this.client);
     }
 }
