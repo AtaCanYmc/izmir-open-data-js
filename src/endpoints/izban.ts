@@ -37,6 +37,26 @@ export function izban(client: IzmirClient) {
          */
         getTarife(BinisIstasyonuId: number, InisIstasyonuId: number, Aktarma: number, httMi: number) {
             return client.get(`izban/tutarhesaplama/${BinisIstasyonuId}/${InisIstasyonuId}/${Aktarma}/${httMi}`) as Promise<IzbanUcretDetay>;
+        },
+
+        /**
+         * Banliyö İstasyonlarının konum bilgileri içeren web servisi.
+         *
+         * Kaynak: https://acikveri.bizizmir.com/dataset/izban-istasyonlari
+         */
+        getIstasyonList() {
+            return client.get("izban/istasyonlar");
+        },
+
+        /**
+         * Banliyö hareket saatlerini içeren web servisi.
+         *
+         * Kaynak: https://acikveri.bizizmir.com/dataset/izban-banliyo-hareket-saatleri
+         * @param kalkisIstasyonId Kalkış istasyonu ID'si
+         * @param varisIstasyonId Varış istasyonu ID'si
+         */
+        getHareketSaatleri(kalkisIstasyonId: number, varisIstasyonId: number) {
+            return client.get(`sefersaatleri/${kalkisIstasyonId}/${varisIstasyonId}`);
         }
     };
 }
