@@ -1,0 +1,21 @@
+{
+  "name": "@ata/izmir-open-data",
+  "version": "1.0.0",
+  "description": "Izmir Open Data API wrapper",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": ["izmir", "api", "open-data"],
+  "author": "Ata",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  }
+}
