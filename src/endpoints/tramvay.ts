@@ -15,6 +15,15 @@ export interface TramvayIstasyonu {
     Boylam: number;
 }
 
+export interface TramvaySeferSikligi {
+    Sira: number;
+    BaslangicSaati: string; // "HH:mm:ss" formatında
+    BitisSaati: string;
+    Aralik: number;         // Sefer sıklığı (dakika cinsinden)
+    TarifeId: number;       //
+    SeferId: number;        // İlgili hattın veya seferin kimliği
+}
+
 export function tramvay(client: IzmirClient) {
     return {
         /**
@@ -30,9 +39,22 @@ export function tramvay(client: IzmirClient) {
          * Sefer numarasına göre tramvay istasyonları listesini içeren web servis.
          *
          * Kaynak: https://acikveri.bizizmir.com/dataset/izmir-tramvay-hatlari-ve-istasyonlari
+         *
+         * @param seferId Sefer numarası
          */
         getIstasyonList(seferId: number) {
             return client.get(`tramvay/istasyonlar/${seferId}`) as Promise<TramvayIstasyonu[]>;
+        },
+
+        /**
+         * Sefer numarasına göre tramvay sefer sıklıkları bilgisini veren web servisi.
+         *
+         * Kaynak: https://acikveri.bizizmir.com/dataset/tramvay-seferleri
+         *
+         * @param seferId Sefer numarası
+         */
+        getSeferSiklikList(seferId: number) {
+            return client.get(`tramvay/seferler/${seferId}`) as Promise<TramvaySeferSikligi[]>;
         }
     };
 }
