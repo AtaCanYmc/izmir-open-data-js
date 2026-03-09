@@ -145,16 +145,79 @@ describe("IzmirAPI yuzey sozlesmesi", () => {
       izban: expect.any(Object),
       otopark: expect.any(Object),
       hizmet: expect.any(Object),
-      vapur: expect.any(Object)
+      vapur: expect.any(Object),
+      // Yeni eklenen endpoint'ler
+      egitim: expect.any(Object),
+      saglik: expect.any(Object),
+      kutuphane: expect.any(Object),
+      tarihi: expect.any(Object),
+      plaj: expect.any(Object),
+      tren: expect.any(Object),
+      kamu: expect.any(Object),
+      sosyal: expect.any(Object),
+      spor: expect.any(Object),
+      cografi: expect.any(Object)
     });
   });
 });
 
-describe("Implement edilmemis endpoint gorunurlugu (soft mode)", () => {
-  it.todo("egitim endpoint'i IzmirAPI uzerine eklendiginde route testleri yazilacak");
-  it.todo("kutuphane endpoint'i IzmirAPI uzerine eklendiginde route testleri yazilacak");
-  it.todo("plaj endpoint'i IzmirAPI uzerine eklendiginde route testleri yazilacak");
-  it.todo("saglik endpoint'i IzmirAPI uzerine eklendiginde route testleri yazilacak");
-  it.todo("tarihi endpoint'i IzmirAPI uzerine eklendiginde route testleri yazilacak");
-  it.todo("tren endpoint'i IzmirAPI uzerine eklendiginde route testleri yazilacak");
+describe("Yeni eklenen endpoint'lerin varligi", () => {
+  it("egitim endpoint metodlari mevcut", () => {
+    const api = new IzmirAPI("https://example.test/api/");
+    expect(api.egitim.getAnaokullarList).toBeDefined();
+    expect(api.egitim.getIlkokullarList).toBeDefined();
+    expect(api.egitim.getUniversitelerList).toBeDefined();
+  });
+
+  it("saglik endpoint metodlari mevcut", () => {
+    const api = new IzmirAPI("https://example.test/api/");
+    expect(api.saglik.getHastanelerList).toBeDefined();
+    expect(api.saglik.getAcilYardimIstasyonlariList).toBeDefined();
+  });
+
+  it("kutuphane endpoint metodlari mevcut", () => {
+    const api = new IzmirAPI("https://example.test/api/");
+    expect(api.kutuphane.getKutuphanelerList).toBeDefined();
+    expect(api.kutuphane.getMuzelerList).toBeDefined();
+  });
+
+  it("tarihi endpoint metodlari mevcut", () => {
+    const api = new IzmirAPI("https://example.test/api/");
+    expect(api.tarihi.getAntikKentlerList).toBeDefined();
+    expect(api.tarihi.getTarihiYapilarList).toBeDefined();
+  });
+
+  it("plaj endpoint metodlari mevcut", () => {
+    const api = new IzmirAPI("https://example.test/api/");
+    expect(api.plaj.getPlajlarList).toBeDefined();
+    expect(api.plaj.getHamamlarList).toBeDefined();
+  });
+
+  it("tren endpoint metodlari mevcut", () => {
+    const api = new IzmirAPI("https://example.test/api/");
+    expect(api.tren.getTrenGarlariList).toBeDefined();
+    expect(api.tren.getHavaalaniList).toBeDefined();
+  });
+
+  it("kamu endpoint metodlari mevcut", () => {
+    const api = new IzmirAPI("https://example.test/api/");
+    expect(api.kamu.getBankalarList).toBeDefined();
+    expect(api.kamu.getPttList).toBeDefined();
+  });
+
+  it("sosyal endpoint metodlari mevcut", () => {
+    const api = new IzmirAPI("https://example.test/api/");
+    expect(api.sosyal.getHuzurevleriList).toBeDefined();
+  });
+
+  it("spor endpoint metodlari mevcut", () => {
+    const api = new IzmirAPI("https://example.test/api/");
+    expect(api.spor.getStadyumlarList).toBeDefined();
+  });
+
+  it("cografi endpoint metodlari mevcut", () => {
+    const api = new IzmirAPI("https://example.test/api/");
+    expect(api.cografi.getDagTepeList).toBeDefined();
+    expect(api.cografi.getGollerList).toBeDefined();
+  });
 });
