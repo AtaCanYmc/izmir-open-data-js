@@ -1,0 +1,35 @@
+name: Live API Tests
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Her gün saat 06:00 UTC'de çalışır
+    - cron: '0 6 * * *'
+
+jobs:
+  live-api-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run live API tests
+        run: npm run test:live
+        env:
+          LIVE_API_TESTS: '1'
+        continue-on-error: true
+
+      - name: Report status
+        if: failure()
+        run: echo "⚠️ Some live API tests failed. This may be due to API availability issues."
+

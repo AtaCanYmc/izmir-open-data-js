@@ -2,6 +2,7 @@
 
 İzmir Büyükşehir Belediyesi **Açık Veri Portalı** (acikveri.bizizmir.com) API'lerini JavaScript ve TypeScript projelerinizde kolayca kullanmanızı sağlayan hafif ve modern bir kütüphanedir.
 
+[![CI](https://github.com/atacan/izmir-open-data-js/actions/workflows/ci.yml/badge.svg)](https://github.com/atacan/izmir-open-data-js/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/izmir-open-data-js.svg)](https://www.npmjs.com/package/izmir-open-data-js)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -77,6 +78,24 @@ Bu kütüphane, verileri [İzmir Büyükşehir Belediyesi Açık Veri Portalı](
 3. Değişikliklerinizi yapın ve **commit** edin: `git commit -m 'Ekle: Yeni API uç noktası'`
 4. Dalınızı **push** edin: `git push origin feature/yeniOzellik`
 5. Bir **Pull Request** açın.
+
+---
+
+## 🧪 Test
+
+```bash
+# Unit testleri çalıştır
+npm test
+
+# Watch modunda testler
+npm run test:watch
+
+# Coverage raporuyla testler
+npm run test:coverage
+
+# Canlı API testleri (opsiyonel)
+npm run test:live
+```
 
 ---
 
