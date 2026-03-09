@@ -532,5 +532,56 @@ describeIfLive("Canlı API Integration Testleri", () => {
       expect(data).toBeDefined();
     });
   });
+
+  // ─────────────────────────────────────────────────────────────────
+  // İztek - İzmirim Kart
+  // ─────────────────────────────────────────────────────────────────
+  describe("iztek", () => {
+    it("getAskidaIzmirimKartIstatistik: istatistik objesi döner", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.iztek.getAskidaIzmirimKartIstatistik(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data).toBeDefined();
+      expect(typeof data).toBe("object");
+    });
+  });
+
+  // ─────────────────────────────────────────────────────────────────
+  // ESHOT - Otobüs Takip
+  // ─────────────────────────────────────────────────────────────────
+  describe("eshot - otobüs takip", () => {
+    it("getDuragaYaklasanOtobusList: array döner", async () => {
+      // Konak durağı (21050) için test
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getDuragaYaklasanOtobusList(21050), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(Array.isArray(data)).toBe(true);
+    });
+
+    it("getHattinYaklasanOtobusleri: array döner", async () => {
+      // 446 numaralı hat, 21056 numaralı durak için test
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getHattinYaklasanOtobusleri(446, 21056), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(Array.isArray(data)).toBe(true);
+    });
+
+    it("getHatOtobusKonumlari: HatOtobusKonumlariResponse formatında döner", async () => {
+      // 446 numaralı hat için test
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getHatOtobusKonumlari(446), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data).toBeDefined();
+      expect(typeof data).toBe("object");
+    });
+  });
 });
 

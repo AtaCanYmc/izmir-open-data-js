@@ -76,6 +76,12 @@ describe("IzmirAPI endpoint route sozlesmeleri", () => {
     await api.vapur.getHareketSaatleriByHat("1", 0);
     await api.vapur.getIskeleList();
 
+    // Yeni eklenen iztek ve eshot endpoint'leri
+    await api.iztek.getAskidaIzmirimKartIstatistik();
+    await api.eshot.getDuragaYaklasanOtobusList(21050);
+    await api.eshot.getHattinYaklasanOtobusleri(446, 21056);
+    await api.eshot.getHatOtobusKonumlari(446);
+
     const calls = (fetchMock.mock.calls as unknown[][]).map((c) => c[0]);
 
     expect(calls).toEqual([
@@ -119,7 +125,13 @@ describe("IzmirAPI endpoint route sozlesmeleri", () => {
       "https://example.test/api/izdeniz/vapursaatleri/1/2/0/1",
       "https://example.test/api/izdeniz/gunler",
       "https://example.test/api/izdeniz/iskelesefersaatleri/1/0",
-      "https://example.test/api/izdeniz/iskeleler"
+      "https://example.test/api/izdeniz/iskeleler",
+
+      // Yeni eklenen iztek ve eshot endpoint'leri
+      "https://example.test/api/iztek/askidaizmirimkart",
+      "https://example.test/api/iztek/duragayaklasanotobusler/21050",
+      "https://example.test/api/iztek/hattinyaklasanotobusleri/446/21056",
+      "https://example.test/api/iztek/hatotobuskonumlari/446"
     ]);
   });
 });
@@ -156,7 +168,8 @@ describe("IzmirAPI yuzey sozlesmesi", () => {
       kamu: expect.any(Object),
       sosyal: expect.any(Object),
       spor: expect.any(Object),
-      cografi: expect.any(Object)
+      cografi: expect.any(Object),
+      iztek: expect.any(Object)
     });
   });
 });
@@ -219,5 +232,17 @@ describe("Yeni eklenen endpoint'lerin varligi", () => {
     const api = new IzmirAPI("https://example.test/api/");
     expect(api.cografi.getDagTepeList).toBeDefined();
     expect(api.cografi.getGollerList).toBeDefined();
+  });
+
+  it("iztek endpoint metodlari mevcut", () => {
+    const api = new IzmirAPI("https://example.test/api/");
+    expect(api.iztek.getAskidaIzmirimKartIstatistik).toBeDefined();
+  });
+
+  it("eshot otobus takip metodlari mevcut", () => {
+    const api = new IzmirAPI("https://example.test/api/");
+    expect(api.eshot.getDuragaYaklasanOtobusList).toBeDefined();
+    expect(api.eshot.getHattinYaklasanOtobusleri).toBeDefined();
+    expect(api.eshot.getHatOtobusKonumlari).toBeDefined();
   });
 });

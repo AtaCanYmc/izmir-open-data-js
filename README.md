@@ -99,6 +99,9 @@ verileriGetir();
 | Metot | Açıklama |
 | :--- | :--- |
 | `getYakinDurakList(enlem, boylam)` | Belirtilen konuma yakın ESHOT duraklarını listeler |
+| `getDuragaYaklasanOtobusList(durakId)` | Bir durağa yaklaşan otobüsleri listeler |
+| `getHattinYaklasanOtobusleri(hatId, durakId)` | Bir hattın durağa yaklaşan otobüslerini listeler |
+| `getHatOtobusKonumlari(hatId)` | Hatta ait otobüslerin anlık konum bilgilerini döner |
 
 ### 🚲 Ulaşım - BİSİM (`api.bisim`)
 
@@ -308,6 +311,12 @@ verileriGetir();
 | `getNehirCaylarList()` | Nehir ve çayları listeler |
 | `getOrmanlarList()` | Ormanları listeler |
 | `getMeydanlarList()` | Meydanları listeler |
+
+### 🎫 İztek - İzmirim Kart (`api.iztek`)
+
+| Metot | Açıklama |
+| :--- | :--- |
+| `getAskidaIzmirimKartIstatistik()` | Askıda İzmirim Kart istatistiklerini döner |
 
 ---
 

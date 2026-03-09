@@ -27,6 +27,7 @@ import { kamu } from "./endpoints/kamu";
 import { sosyal } from "./endpoints/sosyal";
 import { spor } from "./endpoints/spor";
 import { cografi } from "./endpoints/cografi";
+import { iztek } from "./endpoints/iztek";
 
 export class IzmirAPI {
     private readonly client: IzmirClient;
@@ -59,6 +60,7 @@ export class IzmirAPI {
     sosyal;
     spor;
     cografi;
+    iztek;
 
     constructor(baseUrl?: string) {
         this.client = new IzmirClient(baseUrl);
@@ -90,5 +92,6 @@ export class IzmirAPI {
         this.sosyal = sosyal(this.client);
         this.spor = spor(this.client);
         this.cografi = cografi(this.client);
+        this.iztek = iztek(this.client);
     }
 }
