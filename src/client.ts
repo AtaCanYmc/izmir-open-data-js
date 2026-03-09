@@ -1,7 +1,7 @@
 export class IzmirClient {
     private readonly baseUrl: string;
 
-    constructor(baseUrl = "https://acikveri.bizizmir.com/api/") {
+    constructor(baseUrl = "https://openapi.izmir.bel.tr/api/") {
         this.baseUrl = baseUrl;
     }
 
