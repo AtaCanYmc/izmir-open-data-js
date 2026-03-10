@@ -60,6 +60,7 @@ describe("IzmirAPI endpoint route sozlesmeleri", () => {
     await api.eshot.getYakinDurakList(38.42, 27.12);
     await api.bisim.getIstasyonList();
     await api.tramvay.getHatList();
+    await api.tramvay.getSeferList();
     await api.tramvay.getIstasyonList(10);
     await api.tramvay.getSeferSiklikList(10);
     await api.metro.getIstasyonList();
@@ -111,6 +112,7 @@ describe("IzmirAPI endpoint route sozlesmeleri", () => {
       "https://example.test/api/ibb/cbs/noktayayakinduraklar?x=38.42&y=27.12",
       "https://example.test/api/izulas/bisim/istasyonlar",
       "https://example.test/api/tramvay/hatlar",
+      "https://example.test/api/tramvay/sefer",
       "https://example.test/api/tramvay/istasyonlar/10",
       "https://example.test/api/tramvay/seferler/10",
       "https://example.test/api/metro/istasyonlar",

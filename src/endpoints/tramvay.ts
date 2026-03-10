@@ -24,6 +24,15 @@ export interface TramvaySeferSikligi {
     SeferId: number;        // İlgili hattın veya seferin kimliği
 }
 
+/**
+ * Tüm tramvay sefer bilgileri (parametre almadan)
+ */
+export interface TramvaySefer {
+    BaslangicSaati: string; // "HH:mm:ss" formatında
+    BitisSaati: string;
+    Aralik: number;
+}
+
 export function tramvay(client: IzmirClient) {
     return {
         /**
@@ -33,6 +42,16 @@ export function tramvay(client: IzmirClient) {
          */
         getHatList() {
             return client.get('tramvay/hatlar') as Promise<TramvayHatti[]>;
+        },
+
+        /**
+         * Tüm tramvay sefer bilgilerini içeren web servisi.
+         *
+         * Kaynak: https://openapi.izmir.bel.tr/api/tramvay/sefer
+         * @deprecated API'de henüz aktif değil (404 dönüyor)
+         */
+        getSeferList() {
+            return client.get('tramvay/sefer') as Promise<TramvaySefer[]>;
         },
 
         /**

@@ -114,6 +114,7 @@ verileriGetir();
 | Metot | Açıklama |
 | :--- | :--- |
 | `getHatList()` | Tramvay hatlarını listeler |
+| `getSeferList()` | Tüm tramvay sefer bilgilerini listeler |
 | `getIstasyonList(seferId)` | Sefer numarasına göre tramvay istasyonlarını listeler |
 | `getSeferSiklikList(seferId)` | Sefer numarasına göre sefer sıklıklarını döner |
 
