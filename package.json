@@ -1,17 +1,31 @@
 {
-  "name": "@ata/izmir-open-data",
+  "name": "izmir-open-data-js",
   "version": "1.0.0",
-  "description": "Izmir Open Data API wrapper",
+  "description": "Izmir Open Data API wrapper - İzmir Büyükşehir Belediyesi Açık Veri API'leri için TypeScript/JavaScript kütüphanesi",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [
     "izmir",
     "api",
-    "open-data"
+    "open-data",
+    "turkey",
+    "municipality",
+    "typescript",
+    "eshot",
+    "izban",
+    "metro"
   ],
   "author": "Ata",
   "license": "MIT",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atacan/izmir-open-data-js"
+  },
+  "homepage": "https://github.com/atacan/izmir-open-data-js#readme",
+  "bugs": {
+    "url": "https://github.com/atacan/izmir-open-data-js/issues"
+  },
   "files": [
     "dist"
   ],
