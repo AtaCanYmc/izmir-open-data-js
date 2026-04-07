@@ -47,6 +47,18 @@ export interface EshotDurakCKAN {
 }
 
 /**
+ * ESHOT hat güzergah noktası bilgisi (CKAN datasından)
+ */
+export interface EshotHatGuzergah {
+    _id: number;
+    HAT_NO: number;
+    /** Güzergah yönü: 1 = Gidiş, 2 = Dönüş */
+    YON: number;
+    BOYLAM: number;
+    ENLEM: number;
+}
+
+/**
  * Durağa yaklaşan otobüs bilgisi
  */
 export interface YaklasanOtobus {
@@ -124,6 +136,22 @@ export function eshot(client: IzmirClient) {
         getDuraklar(limit = 100, offset = 0) {
             return client.getCKAN<CKANDatastoreResponse<EshotDurakCKAN>>('datastore_search', {
                 resource_id: '0c791266-a2e4-4f14-82b8-9a9b102fbf94',
+                limit,
+                offset
+            });
+        },
+
+        /**
+         * ESHOT hat güzergahlarını içeren web servisi (CKAN).
+         * Her hat için gidiş (YON=1) ve dönüş (YON=2) koordinat noktalarını içerir.
+         *
+         * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-hat-guzergahlari
+         * @param limit Döndürülecek kayıt sayısı (varsayılan: 100)
+         * @param offset Atlanacak kayıt sayısı (sayfalama için)
+         */
+        getHatGuzergahlari(limit = 100, offset = 0) {
+            return client.getCKAN<CKANDatastoreResponse<EshotHatGuzergah>>('datastore_search', {
+                resource_id: '543f2249-c734-48e4-8739-72efbbfc843c',
                 limit,
                 offset
             });

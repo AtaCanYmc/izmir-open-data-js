@@ -774,5 +774,57 @@ describeIfLive("Canlı API Integration Testleri", () => {
       expect(typeof data.total).toBe("number");
     });
   });
+
+  // ─────────────────────────────────────────────────────────────────
+  // CKAN API - ESHOT Hat Güzergahları
+  // ─────────────────────────────────────────────────────────────────
+  describe("CKAN API - eshot hat güzergahları", () => {
+    it("getHatGuzergahlari: CKAN datastore response formatında döner", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getHatGuzergahlari(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data).toBeDefined();
+      expect(data).toHaveProperty("records");
+      expect(data).toHaveProperty("total");
+      expect(Array.isArray(data.records)).toBe(true);
+    });
+
+    it("getHatGuzergahlari: her kayıtta HAT_NO, YON, ENLEM, BOYLAM alanları var", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getHatGuzergahlari(10), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data.records.length).toBeGreaterThan(0);
+      
+      const nokta = data.records[0];
+      expect(nokta).toHaveProperty("HAT_NO");
+      expect(nokta).toHaveProperty("YON");
+      expect(nokta).toHaveProperty("ENLEM");
+      expect(nokta).toHaveProperty("BOYLAM");
+    });
+
+    it("getHatGuzergahlari: limit parametresi çalışıyor", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getHatGuzergahlari(5), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data.records.length).toBeLessThanOrEqual(5);
+      expect(data.limit).toBe(5);
+    });
+
+    it("getHatGuzergahlari: toplam kayıt sayısı döner (30000+ nokta)", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getHatGuzergahlari(1), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data.total).toBeGreaterThan(30000);
+      expect(typeof data.total).toBe("number");
+    });
+  });
 });
 

@@ -205,5 +205,42 @@ describe("CKAN API testleri", () => {
             expect(typeof api.eshot.getDuraklar).toBe('function');
         });
     });
+
+    describe("eshot.getHatGuzergahlari", () => {
+        it("ESHOT hat güzergahlarını doğru parametrelerle çeker", async () => {
+            const mockRecords = [
+                { _id: 1, HAT_NO: 5, YON: 1, BOYLAM: 26.9913, ENLEM: 38.389 },
+                { _id: 2, HAT_NO: 5, YON: 1, BOYLAM: 26.9911, ENLEM: 38.389 }
+            ];
+
+            const mockResult = {
+                include_total: true,
+                resource_id: '543f2249-c734-48e4-8739-72efbbfc843c',
+                records: mockRecords,
+                limit: 100,
+                total: 30250
+            };
+
+            mockFetch.mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({ success: true, result: mockResult })
+            });
+
+            const api = new IzmirAPI();
+            const result = await api.eshot.getHatGuzergahlari();
+
+            expect(mockFetch).toHaveBeenCalledWith(
+                'https://acikveri.bizizmir.com/api/3/action/datastore_search?resource_id=543f2249-c734-48e4-8739-72efbbfc843c&limit=100&offset=0'
+            );
+            expect(result.records).toEqual(mockRecords);
+            expect(result.total).toBe(30250);
+        });
+
+        it("getHatGuzergahlari metodu mevcut", () => {
+            const api = new IzmirAPI();
+            expect(api.eshot.getHatGuzergahlari).toBeDefined();
+            expect(typeof api.eshot.getHatGuzergahlari).toBe('function');
+        });
+    });
 });
 
