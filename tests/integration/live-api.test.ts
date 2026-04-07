@@ -594,5 +594,77 @@ describeIfLive("Canlı API Integration Testleri", () => {
       expect(typeof data).toBe("object");
     });
   });
+
+  // ─────────────────────────────────────────────────────────────────
+  // CKAN API - Açık Veri Portalı
+  // ─────────────────────────────────────────────────────────────────
+  describe("CKAN API - eshot hatları", () => {
+    it("getHatlar: CKAN datastore response formatında döner", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getHatlar(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data).toBeDefined();
+      expect(data).toHaveProperty("records");
+      expect(data).toHaveProperty("total");
+      expect(Array.isArray(data.records)).toBe(true);
+    });
+
+    it("getHatlar: her kayıtta HAT_NO, HAT_ADI, HAT_BASLANGIC, HAT_BITIS alanları var", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getHatlar(10), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data.records.length).toBeGreaterThan(0);
+      
+      const hat = data.records[0];
+      expect(hat).toHaveProperty("HAT_NO");
+      expect(hat).toHaveProperty("HAT_ADI");
+      expect(hat).toHaveProperty("GUZERGAH_ACIKLAMA");
+      expect(hat).toHaveProperty("HAT_BASLANGIC");
+      expect(hat).toHaveProperty("HAT_BITIS");
+    });
+
+    it("getHatlar: limit parametresi çalışıyor", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getHatlar(5), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data.records.length).toBeLessThanOrEqual(5);
+      expect(data.limit).toBe(5);
+    });
+
+    it("getHatlar: offset parametresi (sayfalama) çalışıyor", async () => {
+      // İlk sayfa
+      const sayfa1 = await withTimeout(
+        withRetry(() => api.eshot.getHatlar(5, 0), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+      
+      // İkinci sayfa
+      const sayfa2 = await withTimeout(
+        withRetry(() => api.eshot.getHatlar(5, 5), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      // İki sayfa farklı kayıtlar içermeli
+      if (sayfa1.records.length > 0 && sayfa2.records.length > 0) {
+        expect(sayfa1.records[0]._id).not.toBe(sayfa2.records[0]._id);
+      }
+    });
+
+    it("getHatlar: toplam kayıt sayısı döner", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getHatlar(1), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data.total).toBeGreaterThan(0);
+      expect(typeof data.total).toBe("number");
+    });
+  });
 });
 

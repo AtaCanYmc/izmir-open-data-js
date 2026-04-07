@@ -30,6 +30,7 @@
     "dist"
   ],
   "devDependencies": {
+    "@types/fetch-jsonp": "^1.0.0",
     "@types/node": "^25.4.0",
     "@vitest/coverage-v8": "^3.2.4",
     "@vitest/expect": "^4.0.18",
@@ -45,5 +46,8 @@
     "test:live": "LIVE_API_TESTS=1 vitest run tests/integration/",
     "test:all": "LIVE_API_TESTS=1 vitest run",
     "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "fetch-jsonp": "^1.4.0"
   }
 }
