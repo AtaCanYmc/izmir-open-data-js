@@ -168,5 +168,42 @@ describe("CKAN API testleri", () => {
             expect(typeof api.eshot.getHareketSaatleri).toBe('function');
         });
     });
+
+    describe("eshot.getDuraklar", () => {
+        it("ESHOT duraklarını doğru parametrelerle çeker", async () => {
+            const mockRecords = [
+                { _id: 1, DURAK_ID: 10005, DURAK_ADI: "Bahribaba", ENLEM: 38.41526836260150, BOYLAM: 27.12763952722090, DURAKTAN_GECEN_HATLAR: "32" },
+                { _id: 2, DURAK_ID: 10007, DURAK_ADI: "Bahribaba", ENLEM: 38.415144105211, BOYLAM: 27.12772009127190, DURAKTAN_GECEN_HATLAR: "29-30" }
+            ];
+
+            const mockResult = {
+                include_total: true,
+                resource_id: '0c791266-a2e4-4f14-82b8-9a9b102fbf94',
+                records: mockRecords,
+                limit: 100,
+                total: 11740
+            };
+
+            mockFetch.mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({ success: true, result: mockResult })
+            });
+
+            const api = new IzmirAPI();
+            const result = await api.eshot.getDuraklar();
+
+            expect(mockFetch).toHaveBeenCalledWith(
+                'https://acikveri.bizizmir.com/api/3/action/datastore_search?resource_id=0c791266-a2e4-4f14-82b8-9a9b102fbf94&limit=100&offset=0'
+            );
+            expect(result.records).toEqual(mockRecords);
+            expect(result.total).toBe(11740);
+        });
+
+        it("getDuraklar metodu mevcut", () => {
+            const api = new IzmirAPI();
+            expect(api.eshot.getDuraklar).toBeDefined();
+            expect(typeof api.eshot.getDuraklar).toBe('function');
+        });
+    });
 });
 

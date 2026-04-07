@@ -35,6 +35,18 @@ export interface EshotHareketSaati {
 }
 
 /**
+ * ESHOT otobüs durağı bilgisi (CKAN datasından)
+ */
+export interface EshotDurakCKAN {
+    _id: number;
+    DURAK_ID: number;
+    DURAK_ADI: string;
+    ENLEM: number;
+    BOYLAM: number;
+    DURAKTAN_GECEN_HATLAR: string;
+}
+
+/**
  * Durağa yaklaşan otobüs bilgisi
  */
 export interface YaklasanOtobus {
@@ -97,6 +109,21 @@ export function eshot(client: IzmirClient) {
         getHareketSaatleri(limit = 100, offset = 0) {
             return client.getCKAN<CKANDatastoreResponse<EshotHareketSaati>>('datastore_search', {
                 resource_id: 'c6fa6046-f755-47d7-b69e-db6bb06a8b5a',
+                limit,
+                offset
+            });
+        },
+
+        /**
+         * ESHOT otobüs duraklarının listesini içeren web servisi (CKAN).
+         *
+         * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-duraklari
+         * @param limit Döndürülecek kayıt sayısı (varsayılan: 100)
+         * @param offset Atlanacak kayıt sayısı (sayfalama için)
+         */
+        getDuraklar(limit = 100, offset = 0) {
+            return client.getCKAN<CKANDatastoreResponse<EshotDurakCKAN>>('datastore_search', {
+                resource_id: '0c791266-a2e4-4f14-82b8-9a9b102fbf94',
                 limit,
                 offset
             });
