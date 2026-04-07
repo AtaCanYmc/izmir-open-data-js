@@ -59,6 +59,17 @@ export interface EshotHatGuzergah {
 }
 
 /**
+ * ESHOT bağlantı tipi bilgisi (CKAN datasından)
+ * Otobüs hatlarının diğer ulaşım araçları ile bağlantı tipleri
+ */
+export interface EshotBaglantiTipi {
+    _id: number;
+    BAGLANTI_TIP_ID: number;
+    /** Bağlantı tipi adı (METRO, IZBAN, VAPUR, TRAMVAY, vb.) */
+    BAGLANTI_TIPI: string;
+}
+
+/**
  * Durağa yaklaşan otobüs bilgisi
  */
 export interface YaklasanOtobus {
@@ -152,6 +163,22 @@ export function eshot(client: IzmirClient) {
         getHatGuzergahlari(limit = 100, offset = 0) {
             return client.getCKAN<CKANDatastoreResponse<EshotHatGuzergah>>('datastore_search', {
                 resource_id: '543f2249-c734-48e4-8739-72efbbfc843c',
+                limit,
+                offset
+            });
+        },
+
+        /**
+         * Otobüs hatlarının diğer ulaşım araçları ile bağlantı tiplerini içeren web servisi (CKAN).
+         * Metro, İzban, Vapur, Tramvay gibi bağlantı tiplerini listeler.
+         *
+         * Kaynak: https://acikveri.bizizmir.com/dataset/otobus-hatlarinin-diger-ulasim-araclari-ile-baglanti-tipleri
+         * @param limit Döndürülecek kayıt sayısı (varsayılan: 100)
+         * @param offset Atlanacak kayıt sayısı (sayfalama için)
+         */
+        getBaglantiTipleri(limit = 100, offset = 0) {
+            return client.getCKAN<CKANDatastoreResponse<EshotBaglantiTipi>>('datastore_search', {
+                resource_id: 'c228da75-adfd-422a-a480-2a4c7ffa7586',
                 limit,
                 offset
             });

@@ -250,5 +250,6 @@ describe("Yeni eklenen endpoint'lerin varligi", () => {
     expect(api.eshot.getHareketSaatleri).toBeDefined();
     expect(api.eshot.getDuraklar).toBeDefined();
     expect(api.eshot.getHatGuzergahlari).toBeDefined();
+    expect(api.eshot.getBaglantiTipleri).toBeDefined();
   });
 });

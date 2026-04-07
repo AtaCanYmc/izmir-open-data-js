@@ -826,5 +826,57 @@ describeIfLive("Canlı API Integration Testleri", () => {
       expect(typeof data.total).toBe("number");
     });
   });
+
+  // ─────────────────────────────────────────────────────────────────
+  // CKAN API - ESHOT Bağlantı Tipleri
+  // ─────────────────────────────────────────────────────────────────
+  describe("CKAN API - eshot bağlantı tipleri", () => {
+    it("getBaglantiTipleri: CKAN datastore response formatında döner", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getBaglantiTipleri(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data).toBeDefined();
+      expect(data).toHaveProperty("records");
+      expect(data).toHaveProperty("total");
+      expect(Array.isArray(data.records)).toBe(true);
+    });
+
+    it("getBaglantiTipleri: her kayıtta BAGLANTI_TIP_ID, BAGLANTI_TIPI alanları var", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getBaglantiTipleri(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data.records.length).toBeGreaterThan(0);
+      
+      const tip = data.records[0];
+      expect(tip).toHaveProperty("BAGLANTI_TIP_ID");
+      expect(tip).toHaveProperty("BAGLANTI_TIPI");
+    });
+
+    it("getBaglantiTipleri: METRO, IZBAN, VAPUR gibi bağlantı tipleri içerir", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getBaglantiTipleri(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      const tipAdlari = data.records.map(r => r.BAGLANTI_TIPI);
+      expect(tipAdlari).toContain("METRO");
+      expect(tipAdlari).toContain("IZBAN");
+      expect(tipAdlari).toContain("VAPUR");
+    });
+
+    it("getBaglantiTipleri: toplam kayıt sayısı döner", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getBaglantiTipleri(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data.total).toBeGreaterThan(0);
+      expect(typeof data.total).toBe("number");
+    });
+  });
 });
 

@@ -242,5 +242,43 @@ describe("CKAN API testleri", () => {
             expect(typeof api.eshot.getHatGuzergahlari).toBe('function');
         });
     });
+
+    describe("eshot.getBaglantiTipleri", () => {
+        it("ESHOT bağlantı tiplerini doğru parametrelerle çeker", async () => {
+            const mockRecords = [
+                { _id: 1, BAGLANTI_TIP_ID: 1, BAGLANTI_TIPI: "METRO" },
+                { _id: 2, BAGLANTI_TIP_ID: 2, BAGLANTI_TIPI: "IZBAN" },
+                { _id: 3, BAGLANTI_TIP_ID: 3, BAGLANTI_TIPI: "VAPUR" }
+            ];
+
+            const mockResult = {
+                include_total: true,
+                resource_id: 'c228da75-adfd-422a-a480-2a4c7ffa7586',
+                records: mockRecords,
+                limit: 100,
+                total: 5
+            };
+
+            mockFetch.mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({ success: true, result: mockResult })
+            });
+
+            const api = new IzmirAPI();
+            const result = await api.eshot.getBaglantiTipleri();
+
+            expect(mockFetch).toHaveBeenCalledWith(
+                'https://acikveri.bizizmir.com/api/3/action/datastore_search?resource_id=c228da75-adfd-422a-a480-2a4c7ffa7586&limit=100&offset=0'
+            );
+            expect(result.records).toEqual(mockRecords);
+            expect(result.total).toBe(5);
+        });
+
+        it("getBaglantiTipleri metodu mevcut", () => {
+            const api = new IzmirAPI();
+            expect(api.eshot.getBaglantiTipleri).toBeDefined();
+            expect(typeof api.eshot.getBaglantiTipleri).toBe('function');
+        });
+    });
 });
 
