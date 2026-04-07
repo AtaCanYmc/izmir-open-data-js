@@ -252,4 +252,10 @@ describe("Yeni eklenen endpoint'lerin varligi", () => {
     expect(api.eshot.getHatGuzergahlari).toBeDefined();
     expect(api.eshot.getBaglantiTipleri).toBeDefined();
   });
+
+  it("otopark metodlari mevcut", () => {
+    const api = new IzmirAPI("https://example.test/api/");
+    expect(api.otopark.getList).toBeDefined();
+    expect(api.otopark.getUcretler).toBeDefined();
+  });
 });

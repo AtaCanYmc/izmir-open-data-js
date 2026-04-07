@@ -280,5 +280,41 @@ describe("CKAN API testleri", () => {
             expect(typeof api.eshot.getBaglantiTipleri).toBe('function');
         });
     });
+
+    describe("otopark.getUcretler", () => {
+        it("otopark ücretlerini doğru parametrelerle çeker", async () => {
+            const mockRecords = [
+                { _id: 1, "Otopark / Fiyat": "Alsancak Punta Katlı Otoparkı", "0-2 saat": 150, "2-4 saat": 180 }
+            ];
+
+            const mockResult = {
+                include_total: true,
+                resource_id: 'b45d2e9f-f258-476e-a12d-d0ff62471ee0',
+                records: mockRecords,
+                limit: 100,
+                total: 10
+            };
+
+            mockFetch.mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({ success: true, result: mockResult })
+            });
+
+            const api = new IzmirAPI();
+            const result = await api.otopark.getUcretler();
+
+            expect(mockFetch).toHaveBeenCalledWith(
+                'https://acikveri.bizizmir.com/api/3/action/datastore_search?resource_id=b45d2e9f-f258-476e-a12d-d0ff62471ee0&limit=100&offset=0'
+            );
+            expect(result.records).toEqual(mockRecords);
+            expect(result.total).toBe(10);
+        });
+
+        it("getUcretler metodu mevcut", () => {
+            const api = new IzmirAPI();
+            expect(api.otopark.getUcretler).toBeDefined();
+            expect(typeof api.otopark.getUcretler).toBe('function');
+        });
+    });
 });
 

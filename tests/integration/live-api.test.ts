@@ -878,5 +878,46 @@ describeIfLive("Canlı API Integration Testleri", () => {
       expect(typeof data.total).toBe("number");
     });
   });
+
+  // ─────────────────────────────────────────────────────────────────
+  // CKAN API - Otopark Ücretleri
+  // ─────────────────────────────────────────────────────────────────
+  describe("CKAN API - otopark ücretleri", () => {
+    it("getUcretler: CKAN datastore response formatında döner", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.otopark.getUcretler(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data).toBeDefined();
+      expect(data).toHaveProperty("records");
+      expect(data).toHaveProperty("total");
+      expect(Array.isArray(data.records)).toBe(true);
+    });
+
+    it("getUcretler: her kayıtta otopark adı ve ücret bilgileri var", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.otopark.getUcretler(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data.records.length).toBeGreaterThan(0);
+      
+      const ucret = data.records[0];
+      expect(ucret).toHaveProperty("Otopark / Fiyat");
+      expect(ucret).toHaveProperty("0-2 saat");
+      expect(ucret).toHaveProperty("Kayıp Bilet");
+    });
+
+    it("getUcretler: toplam kayıt sayısı döner", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.otopark.getUcretler(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data.total).toBeGreaterThan(0);
+      expect(typeof data.total).toBe("number");
+    });
+  });
 });
 
