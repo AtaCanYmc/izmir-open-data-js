@@ -2,7 +2,7 @@
 
 İzmir Büyükşehir Belediyesi **Açık Veri Portalı** (acikveri.bizizmir.com) API'lerini JavaScript ve TypeScript projelerinizde kolayca kullanmanızı sağlayan hafif ve modern bir kütüphanedir.
 
-[![CI](https://github.com/atacan/izmir-open-data-js/actions/workflows/ci.yml/badge.svg)](https://github.com/atacan/izmir-open-data-js/actions/workflows/ci.yml)
+[![CI](https://github.com/AtaCanYmc/izmir-open-data-js/actions/workflows/ci.yml/badge.svg)](https://github.com/atacan/izmir-open-data-js/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/izmir-open-data-js.svg)](https://www.npmjs.com/package/izmir-open-data-js)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
