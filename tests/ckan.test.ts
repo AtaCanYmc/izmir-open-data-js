@@ -132,5 +132,41 @@ describe("CKAN API testleri", () => {
             expect(typeof api.eshot.getHatlar).toBe('function');
         });
     });
+
+    describe("eshot.getHareketSaatleri", () => {
+        it("ESHOT hareket saatlerini doğru parametrelerle çeker", async () => {
+            const mockRecords = [
+                { _id: 1, HAT_NO: 5, TARIFE_ID: 1, GIDIS_SAATI: "06:00", DONUS_SAATI: "06:35", SIRA: 1, GIDIS_ENGELLI_DESTEGI: "True", DONUS_ENGELLI_DESTEGI: "True", BISIKLETLI_GIDIS: "True", BISIKLETLI_DONUS: "True", GIDIS_ELEKTRIKLI_OTOBUS: "False", DONUS_ELEKTRIKLI_OTOBUS: "False" }
+            ];
+
+            const mockResult = {
+                include_total: true,
+                resource_id: 'c6fa6046-f755-47d7-b69e-db6bb06a8b5a',
+                records: mockRecords,
+                limit: 100,
+                total: 1
+            };
+
+            mockFetch.mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({ success: true, result: mockResult })
+            });
+
+            const api = new IzmirAPI();
+            const result = await api.eshot.getHareketSaatleri();
+
+            expect(mockFetch).toHaveBeenCalledWith(
+                'https://acikveri.bizizmir.com/api/3/action/datastore_search?resource_id=c6fa6046-f755-47d7-b69e-db6bb06a8b5a&limit=100&offset=0'
+            );
+            expect(result.records).toEqual(mockRecords);
+            expect(result.total).toBe(1);
+        });
+
+        it("getHareketSaatleri metodu mevcut", () => {
+            const api = new IzmirAPI();
+            expect(api.eshot.getHareketSaatleri).toBeDefined();
+            expect(typeof api.eshot.getHareketSaatleri).toBe('function');
+        });
+    });
 });
 

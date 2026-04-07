@@ -17,6 +17,24 @@ export interface EshotHat {
 }
 
 /**
+ * ESHOT otobüs hareket saati bilgisi (CKAN datasından)
+ */
+export interface EshotHareketSaati {
+    _id: number;
+    HAT_NO: number;
+    TARIFE_ID: number;
+    GIDIS_SAATI: string;
+    DONUS_SAATI: string;
+    SIRA: number;
+    GIDIS_ENGELLI_DESTEGI: string;
+    DONUS_ENGELLI_DESTEGI: string;
+    BISIKLETLI_GIDIS: string;
+    BISIKLETLI_DONUS: string;
+    GIDIS_ELEKTRIKLI_OTOBUS: string;
+    DONUS_ELEKTRIKLI_OTOBUS: string;
+}
+
+/**
  * Durağa yaklaşan otobüs bilgisi
  */
 export interface YaklasanOtobus {
@@ -64,6 +82,21 @@ export function eshot(client: IzmirClient) {
         getHatlar(limit = 100, offset = 0) {
             return client.getCKAN<CKANDatastoreResponse<EshotHat>>('datastore_search', {
                 resource_id: 'bd6c84f8-49ba-4cf4-81f8-81a0fbb5caa3',
+                limit,
+                offset
+            });
+        },
+
+        /**
+         * ESHOT otobüs hareket saatlerini içeren web servisi (CKAN).
+         *
+         * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-otobus-hareket-saatleri
+         * @param limit Döndürülecek kayıt sayısı (varsayılan: 100)
+         * @param offset Atlanacak kayıt sayısı (sayfalama için)
+         */
+        getHareketSaatleri(limit = 100, offset = 0) {
+            return client.getCKAN<CKANDatastoreResponse<EshotHareketSaati>>('datastore_search', {
+                resource_id: 'c6fa6046-f755-47d7-b69e-db6bb06a8b5a',
                 limit,
                 offset
             });

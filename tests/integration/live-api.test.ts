@@ -666,5 +666,60 @@ describeIfLive("Canlı API Integration Testleri", () => {
       expect(typeof data.total).toBe("number");
     });
   });
+
+  // ─────────────────────────────────────────────────────────────────
+  // CKAN API - ESHOT Hareket Saatleri
+  // ─────────────────────────────────────────────────────────────────
+  describe("CKAN API - eshot hareket saatleri", () => {
+    it("getHareketSaatleri: CKAN datastore response formatında döner", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getHareketSaatleri(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data).toBeDefined();
+      expect(data).toHaveProperty("records");
+      expect(data).toHaveProperty("total");
+      expect(Array.isArray(data.records)).toBe(true);
+    });
+
+    it("getHareketSaatleri: her kayıtta HAT_NO, GIDIS_SAATI, DONUS_SAATI alanları var", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getHareketSaatleri(10), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data.records.length).toBeGreaterThan(0);
+      
+      const saat = data.records[0];
+      expect(saat).toHaveProperty("HAT_NO");
+      expect(saat).toHaveProperty("TARIFE_ID");
+      expect(saat).toHaveProperty("GIDIS_SAATI");
+      expect(saat).toHaveProperty("DONUS_SAATI");
+      expect(saat).toHaveProperty("SIRA");
+      expect(saat).toHaveProperty("GIDIS_ENGELLI_DESTEGI");
+      expect(saat).toHaveProperty("BISIKLETLI_GIDIS");
+    });
+
+    it("getHareketSaatleri: limit parametresi çalışıyor", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getHareketSaatleri(5), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data.records.length).toBeLessThanOrEqual(5);
+      expect(data.limit).toBe(5);
+    });
+
+    it("getHareketSaatleri: toplam kayıt sayısı döner", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getHareketSaatleri(1), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data.total).toBeGreaterThan(0);
+      expect(typeof data.total).toBe("number");
+    });
+  });
 });
 
