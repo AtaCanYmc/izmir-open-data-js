@@ -14,6 +14,7 @@
 * 📊 **Geniş Veri Yelpazesi:** Eczanelerden ulaşım ağlarına kadar birçok veriye erişim.
 * 🔄 **Modern Yapı:** `async/await` desteği ile temiz ve okunabilir kod.
 * 🏗️ **Esnek:** Hem Node.js hem de modern tarayıcı ortamlarında kullanılabilir.
+* 📦 **CKAN Desteği:** Açık veri portalının CKAN API'si üzerinden detaylı veri setlerine erişim.
 
 ---
 
@@ -49,6 +50,37 @@ async function verileriGetir() {
 }
 
 verileriGetir();
+```
+
+### Örnek: ESHOT Hat ve Durak Bilgileri (CKAN)
+
+```javascript
+import { IzmirAPI } from 'izmir-open-data-js';
+
+const api = new IzmirAPI();
+
+async function eshotVerileri() {
+  // Tüm ESHOT hatlarını çek
+  const hatlar = await api.eshot.getHatlar();
+  console.log(`Toplam ${hatlar.total} hat bulundu`);
+  
+  // İlk 10 hattı göster
+  hatlar.records.slice(0, 10).forEach(hat => {
+    console.log(`Hat ${hat.HAT_NO}: ${hat.HAT_ADI}`);
+  });
+
+  // Tüm durakları çek (sayfalama ile)
+  const duraklar = await api.eshot.getDuraklar(100, 0);
+  console.log(`Toplam ${duraklar.total} durak mevcut`);
+
+  // Otopark ücretlerini çek
+  const ucretler = await api.otopark.getUcretler();
+  ucretler.records.forEach(otopark => {
+    console.log(`${otopark["Otopark / Fiyat"]}: ${otopark["0-2 saat"]} TL (0-2 saat)`);
+  });
+}
+
+eshotVerileri();
 ```
 
 ---
@@ -102,6 +134,11 @@ verileriGetir();
 | `getDuragaYaklasanOtobusList(durakId)` | Bir durağa yaklaşan otobüsleri listeler |
 | `getHattinYaklasanOtobusleri(hatId, durakId)` | Bir hattın durağa yaklaşan otobüslerini listeler |
 | `getHatOtobusKonumlari(hatId)` | Hatta ait otobüslerin anlık konum bilgilerini döner |
+| `getHatlar(limit, offset)` | ESHOT hat bilgilerini döner (CKAN) |
+| `getHareketSaatleri(limit, offset)` | Otobüs hareket saatlerini döner (CKAN) |
+| `getDuraklar(limit, offset)` | Tüm ESHOT duraklarını listeler (CKAN) |
+| `getHatGuzergahlari(limit, offset)` | Hat güzergah koordinatlarını döner (CKAN) |
+| `getBaglantiTipleri(limit, offset)` | Diğer ulaşım araçları ile bağlantı tiplerini döner (CKAN) |
 
 ### 🚲 Ulaşım - BİSİM (`api.bisim`)
 
@@ -155,6 +192,7 @@ verileriGetir();
 | Metot | Açıklama |
 | :--- | :--- |
 | `getList()` | Otoparkların doluluk ve konum bilgilerini döner |
+| `getUcretler(limit, offset)` | İzelman otopark ücretlerini döner (CKAN) |
 
 ### 🚕 Taksi (`api.taksi`)
 
