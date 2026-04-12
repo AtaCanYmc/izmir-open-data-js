@@ -346,5 +346,35 @@ ESREFPASA HAST. KAVSAGI;38.42319238;27.16143187`;
             expect(typeof api.trafik.getKameraList).toBe('function');
         });
     });
+
+    describe("vapur.getDetayList", () => {
+        it("Vapur detaylarını CSV'den çeker", async () => {
+            const mockCSV = `GEMI_ADI;GEMI_TIPI;YOLCU_KAPASITESI;ARAC_KAPASITESI;BISIKLET_PARK_YERI_KAPASITESI;ENGELLI_ERISIMINE_UYGUNLUK;ENGELLI_ASANSORU_SAYISI;ERKEK_TUVALETI_SAYISI;KADIN_TUVALETI_SAYISI;ENGELLI_TUVALETI_SAYISI;BEBEK_BAKIM_ODASI_SAYISI;BUFE_VEYA_OTOMAT;EVCIL_HAYVAN_TASIMA_KAFESI_SAYISI;WIZMIRNET_KABLOSUZ_INTERNET
+AKABEY;Yolcu Gemisi;426;-;13;Var;-;1;1;1;1;Var;3;Var
+DOKUZEYLÜL;Yolcu Gemisi;426;-;13;Var;-;1;1;1;1;Var;3;Var`;
+
+            mockFetch.mockResolvedValueOnce({
+                ok: true,
+                text: async () => mockCSV
+            });
+
+            const api = new IzmirAPI();
+            const result = await api.vapur.getDetayList();
+
+            expect(mockFetch).toHaveBeenCalledWith(
+                'https://acikveri.bizizmir.com/dataset/87b38b23-4f73-4650-9d96-c72ad6ee73e3/resource/e6d7425a-694c-4f39-b452-4aade132635c/download/vapurdetay.csv'
+            );
+            expect(result.length).toBe(2);
+            expect(result[0].GEMI_ADI).toBe("AKABEY");
+            expect(result[0].GEMI_TIPI).toBe("Yolcu Gemisi");
+            expect(result[0].YOLCU_KAPASITESI).toBe(426);
+        });
+
+        it("getDetayList metodu mevcut", () => {
+            const api = new IzmirAPI();
+            expect(api.vapur.getDetayList).toBeDefined();
+            expect(typeof api.vapur.getDetayList).toBe('function');
+        });
+    });
 });
 

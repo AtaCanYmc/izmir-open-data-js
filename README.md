@@ -178,6 +178,7 @@ eshotVerileri();
 | `getCalismaGunleri()` | Vapurların çalışma günlerini döner |
 | `getHareketSaatleriByHat(iskeleId, gunId)` | İskele bazlı hareket saatlerini döner |
 | `getIskeleList()` | Vapur iskelelerini listeler |
+| `getDetayList()` | Vapurların kapasite ve donanım bilgilerini döner (~20 gemi) |
 
 ### 🚃 Ulaşım - Tren & Diğer (`api.tren`)
 

@@ -862,6 +862,37 @@ describeIfLive("Canlı API Integration Testleri", () => {
   });
 
   // ─────────────────────────────────────────────────────────────────
+  // CSV API - Vapur Detayları
+  // ─────────────────────────────────────────────────────────────────
+  describe("CSV API - vapur detayları", () => {
+    it("getDetayList: array döner", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.vapur.getDetayList(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(Array.isArray(data)).toBe(true);
+      expect(data.length).toBeGreaterThan(15); // ~20 gemi
+    });
+
+    it("getDetayList: her kayıtta GEMI_ADI, GEMI_TIPI, YOLCU_KAPASITESI alanları var", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.vapur.getDetayList(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data.length).toBeGreaterThan(0);
+      
+      const gemi = data[0];
+      expect(gemi).toHaveProperty("GEMI_ADI");
+      expect(gemi).toHaveProperty("GEMI_TIPI");
+      expect(gemi).toHaveProperty("YOLCU_KAPASITESI");
+      expect(gemi).toHaveProperty("ENGELLI_ERISIMINE_UYGUNLUK");
+      expect(gemi).toHaveProperty("WIZMIRNET_KABLOSUZ_INTERNET");
+    });
+  });
+
+  // ─────────────────────────────────────────────────────────────────
   // CKAN API - Otopark Ücretleri
   // ─────────────────────────────────────────────────────────────────
   describe("CKAN API - otopark ücretleri", () => {
