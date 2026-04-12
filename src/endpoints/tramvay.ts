@@ -33,6 +33,21 @@ export interface TramvaySefer {
     Aralik: number;
 }
 
+/**
+ * Planlanan sefer sayıları (CSV datasından)
+ * Metro ve tramvay hatları için aylık planlanan sefer sayıları
+ */
+export interface TramvayPlanlananiSefer {
+    YIL: number;
+    AY: number;
+    /** İzmir Metrosu planlanan sefer sayısı */
+    IZMIR_METROSU: number;
+    /** Karşıyaka ve Çiğli Tramvayı planlanan sefer sayısı */
+    KARSIYAKA_TRAMVAYI_VE_CIGLI_TRAMVAYI: number;
+    /** Konak Tramvayı planlanan sefer sayısı */
+    KONAK_TRAMVAYI: number;
+}
+
 export function tramvay(client: IzmirClient) {
     return {
         /**
@@ -74,6 +89,18 @@ export function tramvay(client: IzmirClient) {
          */
         getSeferSiklikList(seferId: number) {
             return client.get(`tramvay/seferler/${seferId}`) as Promise<TramvaySeferSikligi[]>;
+        },
+
+        /**
+         * Metro ve tramvay hatları için aylık planlanan sefer sayılarını içeren web servisi (CSV).
+         * İzmir Metrosu, Karşıyaka/Çiğli Tramvayı ve Konak Tramvayı verilerini içerir.
+         *
+         * Kaynak: https://acikveri.bizizmir.com/dataset/planlanan-sefer-sayilari
+         */
+        getPlanlananiSeferSayilari(): Promise<TramvayPlanlananiSefer[]> {
+            return client.getCSV<TramvayPlanlananiSefer>(
+                'https://acikveri.bizizmir.com/dataset/ace45290-413e-4786-82e4-d23fd56591b1/resource/2fc4d0cf-9628-43b7-95d3-df5742a95f02/download/planlanan_sefer_sayilari.csv'
+            );
         }
     };
 }

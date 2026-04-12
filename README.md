@@ -154,6 +154,7 @@ eshotVerileri();
 | `getSeferList()` | Tüm tramvay sefer bilgilerini listeler |
 | `getIstasyonList(seferId)` | Sefer numarasına göre tramvay istasyonlarını listeler |
 | `getSeferSiklikList(seferId)` | Sefer numarasına göre sefer sıklıklarını döner |
+| `getPlanlananiSeferSayilari()` | Metro ve tramvay için aylık planlanan sefer sayılarını döner (~74 kayıt) |
 
 ### 🚇 Ulaşım - Metro (`api.metro`)
 

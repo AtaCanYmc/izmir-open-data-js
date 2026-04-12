@@ -286,5 +286,35 @@ describe("CKAN API testleri", () => {
             expect(typeof api.otopark.getUcretler).toBe('function');
         });
     });
+
+    describe("tramvay.getPlanlananiSeferSayilari", () => {
+        it("Planlanan sefer sayılarını CSV'den çeker", async () => {
+            const mockCSV = `YIL;AY;IZMIR_METROSU;KARSIYAKA_TRAMVAYI_VE_CIGLI_TRAMVAYI;KONAK_TRAMVAYI
+2020;1;15195;8498;11642
+2020;2;15273;8057;10924`;
+
+            mockFetch.mockResolvedValueOnce({
+                ok: true,
+                text: async () => mockCSV
+            });
+
+            const api = new IzmirAPI();
+            const result = await api.tramvay.getPlanlananiSeferSayilari();
+
+            expect(mockFetch).toHaveBeenCalledWith(
+                'https://acikveri.bizizmir.com/dataset/ace45290-413e-4786-82e4-d23fd56591b1/resource/2fc4d0cf-9628-43b7-95d3-df5742a95f02/download/planlanan_sefer_sayilari.csv'
+            );
+            expect(result.length).toBe(2);
+            expect(result[0].YIL).toBe(2020);
+            expect(result[0].AY).toBe(1);
+            expect(result[0].IZMIR_METROSU).toBe(15195);
+        });
+
+        it("getPlanlananiSeferSayilari metodu mevcut", () => {
+            const api = new IzmirAPI();
+            expect(api.tramvay.getPlanlananiSeferSayilari).toBeDefined();
+            expect(typeof api.tramvay.getPlanlananiSeferSayilari).toBe('function');
+        });
+    });
 });
 

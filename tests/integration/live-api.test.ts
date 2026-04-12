@@ -799,6 +799,38 @@ describeIfLive("Canlı API Integration Testleri", () => {
   });
 
   // ─────────────────────────────────────────────────────────────────
+  // CSV API - Tramvay Planlanan Sefer Sayıları
+  // ─────────────────────────────────────────────────────────────────
+  describe("CSV API - tramvay planlanan sefer sayıları", () => {
+    it("getPlanlananiSeferSayilari: array döner", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.tramvay.getPlanlananiSeferSayilari(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(Array.isArray(data)).toBe(true);
+      expect(data.length).toBeGreaterThan(50); // ~74 kayıt
+    });
+
+    it("getPlanlananiSeferSayilari: her kayıtta YIL, AY, IZMIR_METROSU alanları var", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.tramvay.getPlanlananiSeferSayilari(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data.length).toBeGreaterThan(0);
+      
+      const kayit = data[0];
+      expect(kayit).toHaveProperty("YIL");
+      expect(kayit).toHaveProperty("AY");
+      expect(kayit).toHaveProperty("IZMIR_METROSU");
+      expect(kayit).toHaveProperty("KONAK_TRAMVAYI");
+      expect(typeof kayit.YIL).toBe("number");
+      expect(typeof kayit.IZMIR_METROSU).toBe("number");
+    });
+  });
+
+  // ─────────────────────────────────────────────────────────────────
   // CKAN API - Otopark Ücretleri
   // ─────────────────────────────────────────────────────────────────
   describe("CKAN API - otopark ücretleri", () => {
