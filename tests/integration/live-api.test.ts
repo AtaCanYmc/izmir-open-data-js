@@ -653,10 +653,10 @@ describeIfLive("Canlı API Integration Testleri", () => {
   });
 
   // ─────────────────────────────────────────────────────────────────
-  // CKAN API - ESHOT Hareket Saatleri
+  // CKAN API - ESHOT Hareket Saatleri (Dump endpoint)
   // ─────────────────────────────────────────────────────────────────
   describe("CKAN API - eshot hareket saatleri", () => {
-    it("getHareketSaatleri: CKAN datastore response formatında döner", async () => {
+    it("getHareketSaatleri: CKAN dump response formatında döner", async () => {
       const data = await withTimeout(
         withRetry(() => api.eshot.getHareketSaatleri(), RETRY_OPTIONS),
         TIMEOUT_MS
@@ -664,19 +664,47 @@ describeIfLive("Canlı API Integration Testleri", () => {
 
       expect(data).toBeDefined();
       expect(data).toHaveProperty("records");
-      expect(data).toHaveProperty("total");
+      expect(data).toHaveProperty("fields");
       expect(Array.isArray(data.records)).toBe(true);
+      expect(Array.isArray(data.fields)).toBe(true);
     });
 
-    it("getHareketSaatleri: her kayıtta HAT_NO, GIDIS_SAATI, DONUS_SAATI alanları var", async () => {
+    it("getHareketSaatleri: fields HAT_NO, GIDIS_SAATI, DONUS_SAATI alanlarını içerir", async () => {
       const data = await withTimeout(
-        withRetry(() => api.eshot.getHareketSaatleri(10), RETRY_OPTIONS),
+        withRetry(() => api.eshot.getHareketSaatleri(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      const fieldIds = data.fields.map(f => f.id);
+      expect(fieldIds).toContain("HAT_NO");
+      expect(fieldIds).toContain("TARIFE_ID");
+      expect(fieldIds).toContain("GIDIS_SAATI");
+      expect(fieldIds).toContain("DONUS_SAATI");
+      expect(fieldIds).toContain("SIRA");
+      expect(fieldIds).toContain("GIDIS_ENGELLI_DESTEGI");
+      expect(fieldIds).toContain("BISIKLETLI_GIDIS");
+    });
+
+    it("getHareketSaatleri: tüm hareket saatlerini döner", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getHareketSaatleri(), RETRY_OPTIONS),
         TIMEOUT_MS
       );
 
       expect(data.records.length).toBeGreaterThan(0);
+    });
+
+    it("getHareketSaatleriParsed: nesne formatında döner", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getHareketSaatleriParsed(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(Array.isArray(data)).toBe(true);
+      expect(data.length).toBeGreaterThan(0);
       
-      const saat = data.records[0];
+      const saat = data[0];
+      expect(saat).toHaveProperty("_id");
       expect(saat).toHaveProperty("HAT_NO");
       expect(saat).toHaveProperty("TARIFE_ID");
       expect(saat).toHaveProperty("GIDIS_SAATI");
@@ -684,26 +712,6 @@ describeIfLive("Canlı API Integration Testleri", () => {
       expect(saat).toHaveProperty("SIRA");
       expect(saat).toHaveProperty("GIDIS_ENGELLI_DESTEGI");
       expect(saat).toHaveProperty("BISIKLETLI_GIDIS");
-    });
-
-    it("getHareketSaatleri: limit parametresi çalışıyor", async () => {
-      const data = await withTimeout(
-        withRetry(() => api.eshot.getHareketSaatleri(5), RETRY_OPTIONS),
-        TIMEOUT_MS
-      );
-
-      expect(data.records.length).toBeLessThanOrEqual(5);
-      expect(data.limit).toBe(5);
-    });
-
-    it("getHareketSaatleri: toplam kayıt sayısı döner", async () => {
-      const data = await withTimeout(
-        withRetry(() => api.eshot.getHareketSaatleri(1), RETRY_OPTIONS),
-        TIMEOUT_MS
-      );
-
-      expect(data.total).toBeGreaterThan(0);
-      expect(typeof data.total).toBe("number");
     });
   });
 

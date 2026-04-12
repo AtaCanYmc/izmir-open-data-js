@@ -145,18 +145,37 @@ export function eshot(client: IzmirClient) {
         },
 
         /**
-         * ESHOT otobüs hareket saatlerini içeren web servisi (CKAN).
+         * ESHOT otobüs hareket saatlerini içeren web servisi (CKAN Dump).
+         * Tüm hareket saati verilerini tek seferde döndürür.
          *
          * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-otobus-hareket-saatleri
-         * @param limit Döndürülecek kayıt sayısı (varsayılan: 100)
-         * @param offset Atlanacak kayıt sayısı (sayfalama için)
          */
-        getHareketSaatleri(limit = 100, offset = 0) {
-            return client.getCKAN<CKANDatastoreResponse<EshotHareketSaati>>('datastore_search', {
-                resource_id: 'c6fa6046-f755-47d7-b69e-db6bb06a8b5a',
-                limit,
-                offset
-            });
+        getHareketSaatleri() {
+            return client.getCKANDump<CKANDumpResponse>('c6fa6046-f755-47d7-b69e-db6bb06a8b5a');
+        },
+
+        /**
+         * ESHOT otobüs hareket saatlerini nesne formatında döndürür.
+         * Raw dump verisini EshotHareketSaati nesnelerine dönüştürür.
+         *
+         * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-otobus-hareket-saatleri
+         */
+        async getHareketSaatleriParsed(): Promise<EshotHareketSaati[]> {
+            const dump = await client.getCKANDump<CKANDumpResponse>('c6fa6046-f755-47d7-b69e-db6bb06a8b5a');
+            return dump.records.map(record => ({
+                _id: record[0] as number,
+                HAT_NO: record[1] as number,
+                TARIFE_ID: record[2] as number,
+                GIDIS_SAATI: record[3] as string,
+                DONUS_SAATI: record[4] as string,
+                SIRA: record[5] as number,
+                GIDIS_ENGELLI_DESTEGI: record[6] as string,
+                DONUS_ENGELLI_DESTEGI: record[7] as string,
+                BISIKLETLI_GIDIS: record[8] as string,
+                BISIKLETLI_DONUS: record[9] as string,
+                GIDIS_ELEKTRIKLI_OTOBUS: record[10] as string,
+                DONUS_ELEKTRIKLI_OTOBUS: record[11] as string
+            }));
         },
 
         /**

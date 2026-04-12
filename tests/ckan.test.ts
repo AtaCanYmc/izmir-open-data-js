@@ -140,31 +140,74 @@ describe("CKAN API testleri", () => {
 
     describe("eshot.getHareketSaatleri", () => {
         it("ESHOT hareket saatlerini doğru parametrelerle çeker", async () => {
-            const mockRecords = [
-                { _id: 1, HAT_NO: 5, TARIFE_ID: 1, GIDIS_SAATI: "06:00", DONUS_SAATI: "06:35", SIRA: 1, GIDIS_ENGELLI_DESTEGI: "True", DONUS_ENGELLI_DESTEGI: "True", BISIKLETLI_GIDIS: "True", BISIKLETLI_DONUS: "True", GIDIS_ELEKTRIKLI_OTOBUS: "False", DONUS_ELEKTRIKLI_OTOBUS: "False" }
-            ];
-
-            const mockResult = {
-                include_total: true,
-                resource_id: 'c6fa6046-f755-47d7-b69e-db6bb06a8b5a',
-                records: mockRecords,
-                limit: 100,
-                total: 1
+            const mockResponse = {
+                fields: [
+                    { type: "int", id: "_id" },
+                    { type: "numeric", id: "HAT_NO" },
+                    { type: "numeric", id: "TARIFE_ID" },
+                    { type: "text", id: "GIDIS_SAATI" },
+                    { type: "text", id: "DONUS_SAATI" },
+                    { type: "numeric", id: "SIRA" },
+                    { type: "text", id: "GIDIS_ENGELLI_DESTEGI" },
+                    { type: "text", id: "DONUS_ENGELLI_DESTEGI" },
+                    { type: "text", id: "BISIKLETLI_GIDIS" },
+                    { type: "text", id: "BISIKLETLI_DONUS" },
+                    { type: "text", id: "GIDIS_ELEKTRIKLI_OTOBUS" },
+                    { type: "text", id: "DONUS_ELEKTRIKLI_OTOBUS" }
+                ],
+                records: [
+                    [1, 5, 1, "06:00", "06:35", 1, "True", "True", "True", "True", "False", "False"],
+                    [2, 5, 1, "06:30", "07:05", 2, "True", "True", "True", "True", "False", "False"]
+                ]
             };
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                json: async () => ({ success: true, result: mockResult })
+                json: async () => mockResponse
             });
 
             const api = new IzmirAPI();
             const result = await api.eshot.getHareketSaatleri();
 
             expect(mockFetch).toHaveBeenCalledWith(
-                'https://acikveri.bizizmir.com/api/3/action/datastore_search?resource_id=c6fa6046-f755-47d7-b69e-db6bb06a8b5a&limit=100&offset=0'
+                'https://acikveri.bizizmir.com/datastore/dump/c6fa6046-f755-47d7-b69e-db6bb06a8b5a?format=json'
             );
-            expect(result.records).toEqual(mockRecords);
-            expect(result.total).toBe(1);
+            expect(result.records).toEqual(mockResponse.records);
+            expect(result.fields.length).toBe(12);
+        });
+
+        it("getHareketSaatleriParsed nesne formatında döndürür", async () => {
+            const mockResponse = {
+                fields: [
+                    { type: "int", id: "_id" },
+                    { type: "numeric", id: "HAT_NO" },
+                    { type: "numeric", id: "TARIFE_ID" },
+                    { type: "text", id: "GIDIS_SAATI" },
+                    { type: "text", id: "DONUS_SAATI" },
+                    { type: "numeric", id: "SIRA" },
+                    { type: "text", id: "GIDIS_ENGELLI_DESTEGI" },
+                    { type: "text", id: "DONUS_ENGELLI_DESTEGI" },
+                    { type: "text", id: "BISIKLETLI_GIDIS" },
+                    { type: "text", id: "BISIKLETLI_DONUS" },
+                    { type: "text", id: "GIDIS_ELEKTRIKLI_OTOBUS" },
+                    { type: "text", id: "DONUS_ELEKTRIKLI_OTOBUS" }
+                ],
+                records: [
+                    [1, 5, 1, "06:00", "06:35", 1, "True", "True", "True", "True", "False", "False"]
+                ]
+            };
+
+            mockFetch.mockResolvedValueOnce({
+                ok: true,
+                json: async () => mockResponse
+            });
+
+            const api = new IzmirAPI();
+            const result = await api.eshot.getHareketSaatleriParsed();
+
+            expect(result).toEqual([
+                { _id: 1, HAT_NO: 5, TARIFE_ID: 1, GIDIS_SAATI: "06:00", DONUS_SAATI: "06:35", SIRA: 1, GIDIS_ENGELLI_DESTEGI: "True", DONUS_ENGELLI_DESTEGI: "True", BISIKLETLI_GIDIS: "True", BISIKLETLI_DONUS: "True", GIDIS_ELEKTRIKLI_OTOBUS: "False", DONUS_ELEKTRIKLI_OTOBUS: "False" }
+            ]);
         });
 
         it("getHareketSaatleri metodu mevcut", () => {
