@@ -190,34 +190,27 @@ describe("CKAN API testleri", () => {
     });
 
     describe("eshot.getBaglantiTipleri", () => {
-        it("ESHOT bağlantı tiplerini doğru parametrelerle çeker", async () => {
-            const mockRecords = [
-                { _id: 1, BAGLANTI_TIP_ID: 1, BAGLANTI_TIPI: "METRO" },
-                { _id: 2, BAGLANTI_TIP_ID: 2, BAGLANTI_TIPI: "IZBAN" },
-                { _id: 3, BAGLANTI_TIP_ID: 3, BAGLANTI_TIPI: "VAPUR" }
-            ];
-
-            const mockResult = {
-                include_total: true,
-                resource_id: 'c228da75-adfd-422a-a480-2a4c7ffa7586',
-                records: mockRecords,
-                limit: 100,
-                total: 5
-            };
+        it("ESHOT bağlantı tiplerini CSV'den çeker", async () => {
+            const mockCSV = `BAGLANTI_TIP_ID;BAGLANTI_TIPI
+1;METRO
+2;IZBAN
+3;VAPUR`;
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                json: async () => ({ success: true, result: mockResult })
+                text: async () => mockCSV
             });
 
             const api = new IzmirAPI();
             const result = await api.eshot.getBaglantiTipleri();
 
             expect(mockFetch).toHaveBeenCalledWith(
-                'https://acikveri.bizizmir.com/api/3/action/datastore_search?resource_id=c228da75-adfd-422a-a480-2a4c7ffa7586&limit=100&offset=0'
+                'https://acikveri.bizizmir.com/dataset/f0964595-53e0-4b94-bf11-9423f8bb595e/resource/c228da75-adfd-422a-a480-2a4c7ffa7586/download/eshot-otobus-baglanti-tipleri.csv'
             );
-            expect(result.records).toEqual(mockRecords);
-            expect(result.total).toBe(5);
+            expect(result.length).toBe(3);
+            expect(result[0].BAGLANTI_TIP_ID).toBe(1);
+            expect(result[0].BAGLANTI_TIPI).toBe("METRO");
+            expect(result[1].BAGLANTI_TIPI).toBe("IZBAN");
         });
 
         it("getBaglantiTipleri metodu mevcut", () => {
