@@ -176,32 +176,64 @@ describe("CKAN API testleri", () => {
 
     describe("eshot.getDuraklar", () => {
         it("ESHOT duraklarını doğru parametrelerle çeker", async () => {
-            const mockRecords = [
-                { _id: 1, DURAK_ID: 10005, DURAK_ADI: "Bahribaba", ENLEM: 38.41526836260150, BOYLAM: 27.12763952722090, DURAKTAN_GECEN_HATLAR: "32" },
-                { _id: 2, DURAK_ID: 10007, DURAK_ADI: "Bahribaba", ENLEM: 38.415144105211, BOYLAM: 27.12772009127190, DURAKTAN_GECEN_HATLAR: "29-30" }
-            ];
-
-            const mockResult = {
-                include_total: true,
-                resource_id: '0c791266-a2e4-4f14-82b8-9a9b102fbf94',
-                records: mockRecords,
-                limit: 100,
-                total: 11740
+            const mockResponse = {
+                fields: [
+                    { type: "int", id: "_id" },
+                    { type: "numeric", id: "DURAK_ID" },
+                    { type: "text", id: "DURAK_ADI" },
+                    { type: "numeric", id: "ENLEM" },
+                    { type: "numeric", id: "BOYLAM" },
+                    { type: "text", id: "DURAKTAN_GECEN_HATLAR" }
+                ],
+                records: [
+                    [1, 10005, "Bahribaba", 38.4152683626015, 27.1276395272209, "32"],
+                    [2, 10007, "Bahribaba", 38.415144105211, 27.1277200912719, "29-30"]
+                ]
             };
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                json: async () => ({ success: true, result: mockResult })
+                json: async () => mockResponse
             });
 
             const api = new IzmirAPI();
             const result = await api.eshot.getDuraklar();
 
             expect(mockFetch).toHaveBeenCalledWith(
-                'https://acikveri.bizizmir.com/api/3/action/datastore_search?resource_id=0c791266-a2e4-4f14-82b8-9a9b102fbf94&limit=100&offset=0'
+                'https://acikveri.bizizmir.com/datastore/dump/0c791266-a2e4-4f14-82b8-9a9b102fbf94?format=json'
             );
-            expect(result.records).toEqual(mockRecords);
-            expect(result.total).toBe(11740);
+            expect(result.records).toEqual(mockResponse.records);
+            expect(result.fields.length).toBe(6);
+        });
+
+        it("getDurakalarParsed nesne formatında döndürür", async () => {
+            const mockResponse = {
+                fields: [
+                    { type: "int", id: "_id" },
+                    { type: "numeric", id: "DURAK_ID" },
+                    { type: "text", id: "DURAK_ADI" },
+                    { type: "numeric", id: "ENLEM" },
+                    { type: "numeric", id: "BOYLAM" },
+                    { type: "text", id: "DURAKTAN_GECEN_HATLAR" }
+                ],
+                records: [
+                    [1, 10005, "Bahribaba", 38.4152683626015, 27.1276395272209, "32"],
+                    [2, 10007, "Bahribaba", 38.415144105211, 27.1277200912719, "29-30"]
+                ]
+            };
+
+            mockFetch.mockResolvedValueOnce({
+                ok: true,
+                json: async () => mockResponse
+            });
+
+            const api = new IzmirAPI();
+            const result = await api.eshot.getDurakalarParsed();
+
+            expect(result).toEqual([
+                { _id: 1, DURAK_ID: 10005, DURAK_ADI: "Bahribaba", ENLEM: 38.4152683626015, BOYLAM: 27.1276395272209, DURAKTAN_GECEN_HATLAR: "32" },
+                { _id: 2, DURAK_ID: 10007, DURAK_ADI: "Bahribaba", ENLEM: 38.415144105211, BOYLAM: 27.1277200912719, DURAKTAN_GECEN_HATLAR: "29-30" }
+            ]);
         });
 
         it("getDuraklar metodu mevcut", () => {

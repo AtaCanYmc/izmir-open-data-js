@@ -160,18 +160,31 @@ export function eshot(client: IzmirClient) {
         },
 
         /**
-         * ESHOT otobüs duraklarının listesini içeren web servisi (CKAN).
+         * ESHOT otobüs duraklarının listesini içeren web servisi (CKAN Dump).
+         * Tüm durak verilerini tek seferde döndürür.
          *
          * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-duraklari
-         * @param limit Döndürülecek kayıt sayısı (varsayılan: 100)
-         * @param offset Atlanacak kayıt sayısı (sayfalama için)
          */
-        getDuraklar(limit = 100, offset = 0) {
-            return client.getCKAN<CKANDatastoreResponse<EshotDurakCKAN>>('datastore_search', {
-                resource_id: '0c791266-a2e4-4f14-82b8-9a9b102fbf94',
-                limit,
-                offset
-            });
+        getDuraklar() {
+            return client.getCKANDump<CKANDumpResponse>('0c791266-a2e4-4f14-82b8-9a9b102fbf94');
+        },
+
+        /**
+         * ESHOT otobüs duraklarını nesne formatında döndürür.
+         * Raw dump verisini EshotDurakCKAN nesnelerine dönüştürür.
+         *
+         * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-duraklari
+         */
+        async getDurakalarParsed(): Promise<EshotDurakCKAN[]> {
+            const dump = await client.getCKANDump<CKANDumpResponse>('0c791266-a2e4-4f14-82b8-9a9b102fbf94');
+            return dump.records.map(record => ({
+                _id: record[0] as number,
+                DURAK_ID: record[1] as number,
+                DURAK_ADI: record[2] as string,
+                ENLEM: record[3] as number,
+                BOYLAM: record[4] as number,
+                DURAKTAN_GECEN_HATLAR: record[5] as string
+            }));
         },
 
         /**

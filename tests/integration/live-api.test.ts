@@ -708,10 +708,10 @@ describeIfLive("Canlı API Integration Testleri", () => {
   });
 
   // ─────────────────────────────────────────────────────────────────
-  // CKAN API - ESHOT Duraklar
+  // CKAN API - ESHOT Duraklar (Dump endpoint)
   // ─────────────────────────────────────────────────────────────────
   describe("CKAN API - eshot duraklar", () => {
-    it("getDuraklar: CKAN datastore response formatında döner", async () => {
+    it("getDuraklar: CKAN dump response formatında döner", async () => {
       const data = await withTimeout(
         withRetry(() => api.eshot.getDuraklar(), RETRY_OPTIONS),
         TIMEOUT_MS
@@ -719,44 +719,50 @@ describeIfLive("Canlı API Integration Testleri", () => {
 
       expect(data).toBeDefined();
       expect(data).toHaveProperty("records");
-      expect(data).toHaveProperty("total");
+      expect(data).toHaveProperty("fields");
       expect(Array.isArray(data.records)).toBe(true);
+      expect(Array.isArray(data.fields)).toBe(true);
     });
 
-    it("getDuraklar: her kayıtta DURAK_ID, DURAK_ADI, ENLEM, BOYLAM alanları var", async () => {
+    it("getDuraklar: fields DURAK_ID, DURAK_ADI, ENLEM, BOYLAM alanlarını içerir", async () => {
       const data = await withTimeout(
-        withRetry(() => api.eshot.getDuraklar(10), RETRY_OPTIONS),
+        withRetry(() => api.eshot.getDuraklar(), RETRY_OPTIONS),
         TIMEOUT_MS
       );
 
-      expect(data.records.length).toBeGreaterThan(0);
+      const fieldIds = data.fields.map(f => f.id);
+      expect(fieldIds).toContain("DURAK_ID");
+      expect(fieldIds).toContain("DURAK_ADI");
+      expect(fieldIds).toContain("ENLEM");
+      expect(fieldIds).toContain("BOYLAM");
+      expect(fieldIds).toContain("DURAKTAN_GECEN_HATLAR");
+    });
+
+    it("getDuraklar: tüm durakları döner (10000+ durak)", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getDuraklar(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data.records.length).toBeGreaterThan(10000);
+    });
+
+    it("getDurakalarParsed: nesne formatında döner", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getDurakalarParsed(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(Array.isArray(data)).toBe(true);
+      expect(data.length).toBeGreaterThan(0);
       
-      const durak = data.records[0];
+      const durak = data[0];
+      expect(durak).toHaveProperty("_id");
       expect(durak).toHaveProperty("DURAK_ID");
       expect(durak).toHaveProperty("DURAK_ADI");
       expect(durak).toHaveProperty("ENLEM");
       expect(durak).toHaveProperty("BOYLAM");
       expect(durak).toHaveProperty("DURAKTAN_GECEN_HATLAR");
-    });
-
-    it("getDuraklar: limit parametresi çalışıyor", async () => {
-      const data = await withTimeout(
-        withRetry(() => api.eshot.getDuraklar(5), RETRY_OPTIONS),
-        TIMEOUT_MS
-      );
-
-      expect(data.records.length).toBeLessThanOrEqual(5);
-      expect(data.limit).toBe(5);
-    });
-
-    it("getDuraklar: toplam kayıt sayısı döner (11000+ durak)", async () => {
-      const data = await withTimeout(
-        withRetry(() => api.eshot.getDuraklar(1), RETRY_OPTIONS),
-        TIMEOUT_MS
-      );
-
-      expect(data.total).toBeGreaterThan(10000);
-      expect(typeof data.total).toBe("number");
     });
   });
 
