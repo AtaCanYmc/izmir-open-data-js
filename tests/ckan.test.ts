@@ -287,62 +287,25 @@ describe("CKAN API testleri", () => {
     });
 
     describe("eshot.getHatGuzergahlari", () => {
-        it("ESHOT hat güzergahlarını doğru parametrelerle çeker", async () => {
-            const mockResponse = {
-                fields: [
-                    { type: "int", id: "_id" },
-                    { type: "numeric", id: "HAT_NO" },
-                    { type: "numeric", id: "YON" },
-                    { type: "numeric", id: "BOYLAM" },
-                    { type: "numeric", id: "ENLEM" }
-                ],
-                records: [
-                    [1, 5, 1, 26.9913, 38.389],
-                    [2, 5, 1, 26.9911, 38.389]
-                ]
-            };
+        it("ESHOT hat güzergahlarını CSV'den çeker", async () => {
+            const mockCSV = `HAT_NO;YON;BOYLAM;ENLEM
+5;1;26.9899;38.3926
+5;1;26.9899;38.3927`;
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                json: async () => mockResponse
+                text: async () => mockCSV
             });
 
             const api = new IzmirAPI();
             const result = await api.eshot.getHatGuzergahlari();
 
             expect(mockFetch).toHaveBeenCalledWith(
-                'https://acikveri.bizizmir.com/datastore/dump/543f2249-c734-48e4-8739-72efbbfc843c?format=json'
+                'https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hat-guzergahlari.csv'
             );
-            expect(result.records).toEqual(mockResponse.records);
-            expect(result.fields.length).toBe(5);
-        });
-
-        it("getHatGuzergahlariParsed nesne formatında döndürür", async () => {
-            const mockResponse = {
-                fields: [
-                    { type: "int", id: "_id" },
-                    { type: "numeric", id: "HAT_NO" },
-                    { type: "numeric", id: "YON" },
-                    { type: "numeric", id: "BOYLAM" },
-                    { type: "numeric", id: "ENLEM" }
-                ],
-                records: [
-                    [1, 5, 1, 26.9913, 38.389],
-                    [2, 5, 1, 26.9911, 38.389]
-                ]
-            };
-
-            mockFetch.mockResolvedValueOnce({
-                ok: true,
-                json: async () => mockResponse
-            });
-
-            const api = new IzmirAPI();
-            const result = await api.eshot.getHatGuzergahlariParsed();
-
             expect(result).toEqual([
-                { _id: 1, HAT_NO: 5, YON: 1, BOYLAM: 26.9913, ENLEM: 38.389 },
-                { _id: 2, HAT_NO: 5, YON: 1, BOYLAM: 26.9911, ENLEM: 38.389 }
+                { HAT_NO: 5, YON: 1, BOYLAM: 26.9899, ENLEM: 38.3926 },
+                { HAT_NO: 5, YON: 1, BOYLAM: 26.9899, ENLEM: 38.3927 }
             ]);
         });
 

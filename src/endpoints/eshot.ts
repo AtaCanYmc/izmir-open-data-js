@@ -47,10 +47,9 @@ export interface EshotDurakCKAN {
 }
 
 /**
- * ESHOT hat güzergah noktası bilgisi (CKAN datasından)
+ * ESHOT hat güzergah noktası bilgisi (CSV datasından)
  */
 export interface EshotHatGuzergah {
-    _id: number;
     HAT_NO: number;
     /** Güzergah yönü: 1 = Gidiş, 2 = Dönüş */
     YON: number;
@@ -207,31 +206,16 @@ export function eshot(client: IzmirClient) {
         },
 
         /**
-         * ESHOT hat güzergahlarını içeren web servisi (CKAN Dump).
+         * ESHOT hat güzergahlarını içeren web servisi (CSV).
          * Her hat için gidiş (YON=1) ve dönüş (YON=2) koordinat noktalarını içerir.
-         * Tüm güzergah verilerini tek seferde döndürür.
+         * Tüm güzergah verilerini tek seferde döndürür (~560,000+ nokta).
          *
-         * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-hat-guzergahlari
+         * Kaynak: https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hat-guzergahlari.csv
          */
-        getHatGuzergahlari() {
-            return client.getCKANDump<CKANDumpResponse>('543f2249-c734-48e4-8739-72efbbfc843c');
-        },
-
-        /**
-         * ESHOT hat güzergahlarını nesne formatında döndürür.
-         * Raw dump verisini EshotHatGuzergah nesnelerine dönüştürür.
-         *
-         * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-hat-guzergahlari
-         */
-        async getHatGuzergahlariParsed(): Promise<EshotHatGuzergah[]> {
-            const dump = await client.getCKANDump<CKANDumpResponse>('543f2249-c734-48e4-8739-72efbbfc843c');
-            return dump.records.map(record => ({
-                _id: record[0] as number,
-                HAT_NO: record[1] as number,
-                YON: record[2] as number,
-                BOYLAM: record[3] as number,
-                ENLEM: record[4] as number
-            }));
+        getHatGuzergahlari(): Promise<EshotHatGuzergah[]> {
+            return client.getCSV<EshotHatGuzergah>(
+                'https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hat-guzergahlari.csv'
+            );
         },
 
         /**

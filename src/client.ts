@@ -166,4 +166,56 @@ export class IzmirClient {
             throw new Error("Bilinmeyen CKAN Dump hatası");
         }
     }
+
+    /**
+     * CSV dosyasını çeker ve parse eder.
+     * @param url CSV dosyasının URL'i
+     * @param delimiter Ayırıcı karakter (varsayılan: ;)
+     */
+    async getCSV<T = Record<string, string>>(url: string, delimiter = ';'): Promise<T[]> {
+        try {
+            const res = await fetch(url);
+
+            if (!res.ok) {
+                throw new Error(`CSV API response error: ${res.status}`);
+            }
+
+            const text = await res.text();
+            return this.parseCSV<T>(text, delimiter);
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new Error(`CSV Hatası: ${error.message}`);
+            }
+            throw new Error("Bilinmeyen CSV hatası");
+        }
+    }
+
+    /**
+     * CSV string'i parse eder.
+     * @param csv CSV string
+     * @param delimiter Ayırıcı karakter
+     */
+    private parseCSV<T>(csv: string, delimiter: string): T[] {
+        const lines = csv.trim().split('\n');
+        if (lines.length < 2) return [];
+
+        const headers = lines[0].split(delimiter).map(h => h.trim());
+        const results: T[] = [];
+
+        for (let i = 1; i < lines.length; i++) {
+            const values = lines[i].split(delimiter);
+            const obj: Record<string, string | number> = {};
+
+            for (let j = 0; j < headers.length; j++) {
+                const value = values[j]?.trim() || '';
+                // Sayısal değerleri number'a çevir
+                const numValue = parseFloat(value);
+                obj[headers[j]] = !isNaN(numValue) && value !== '' ? numValue : value;
+            }
+
+            results.push(obj as T);
+        }
+
+        return results;
+    }
 }

@@ -775,59 +775,34 @@ describeIfLive("Canlı API Integration Testleri", () => {
   });
 
   // ─────────────────────────────────────────────────────────────────
-  // CKAN API - ESHOT Hat Güzergahları (Dump endpoint)
+  // CSV API - ESHOT Hat Güzergahları
   // ─────────────────────────────────────────────────────────────────
-  describe("CKAN API - eshot hat güzergahları", () => {
-    it("getHatGuzergahlari: CKAN dump response formatında döner", async () => {
+  describe("CSV API - eshot hat güzergahları", () => {
+    it("getHatGuzergahlari: array döner", async () => {
       const data = await withTimeout(
         withRetry(() => api.eshot.getHatGuzergahlari(), RETRY_OPTIONS),
-        TIMEOUT_MS
-      );
-
-      expect(data).toBeDefined();
-      expect(data).toHaveProperty("records");
-      expect(data).toHaveProperty("fields");
-      expect(Array.isArray(data.records)).toBe(true);
-      expect(Array.isArray(data.fields)).toBe(true);
-    });
-
-    it("getHatGuzergahlari: fields HAT_NO, YON, ENLEM, BOYLAM alanlarını içerir", async () => {
-      const data = await withTimeout(
-        withRetry(() => api.eshot.getHatGuzergahlari(), RETRY_OPTIONS),
-        TIMEOUT_MS
-      );
-
-      const fieldIds = data.fields.map(f => f.id);
-      expect(fieldIds).toContain("HAT_NO");
-      expect(fieldIds).toContain("YON");
-      expect(fieldIds).toContain("ENLEM");
-      expect(fieldIds).toContain("BOYLAM");
-    });
-
-    it("getHatGuzergahlari: tüm güzergah noktalarını döner (30000+ nokta)", async () => {
-      const data = await withTimeout(
-        withRetry(() => api.eshot.getHatGuzergahlari(), RETRY_OPTIONS),
-        TIMEOUT_MS
-      );
-
-      expect(data.records.length).toBeGreaterThan(30000);
-    });
-
-    it("getHatGuzergahlariParsed: nesne formatında döner", async () => {
-      const data = await withTimeout(
-        withRetry(() => api.eshot.getHatGuzergahlariParsed(), RETRY_OPTIONS),
-        TIMEOUT_MS
+        60000 // CSV büyük olduğu için 60 saniye timeout
       );
 
       expect(Array.isArray(data)).toBe(true);
+      expect(data.length).toBeGreaterThan(500000); // 560,000+ nokta
+    });
+
+    it("getHatGuzergahlari: her kayıtta HAT_NO, YON, ENLEM, BOYLAM alanları var", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getHatGuzergahlari(), RETRY_OPTIONS),
+        60000
+      );
+
       expect(data.length).toBeGreaterThan(0);
       
       const nokta = data[0];
-      expect(nokta).toHaveProperty("_id");
       expect(nokta).toHaveProperty("HAT_NO");
       expect(nokta).toHaveProperty("YON");
       expect(nokta).toHaveProperty("ENLEM");
       expect(nokta).toHaveProperty("BOYLAM");
+      expect(typeof nokta.HAT_NO).toBe("number");
+      expect(typeof nokta.ENLEM).toBe("number");
     });
   });
 
