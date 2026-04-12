@@ -766,6 +766,39 @@ describeIfLive("Canlı API Integration Testleri", () => {
   });
 
   // ─────────────────────────────────────────────────────────────────
+  // CSV API - ESHOT Bağlantılı Hatlar
+  // ─────────────────────────────────────────────────────────────────
+  describe("CSV API - eshot bağlantılı hatlar", () => {
+    it("getBaglantiHatlari: array döner", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getBaglantiHatlari(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(Array.isArray(data)).toBe(true);
+      expect(data.length).toBeGreaterThan(500); // ~583 kayıt
+    });
+
+    it("getBaglantiHatlari: her kayıtta BAGLANTI_TIP_ID, HAT_NO, HAT_ADI alanları var", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getBaglantiHatlari(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data.length).toBeGreaterThan(0);
+      
+      const hat = data[0];
+      expect(hat).toHaveProperty("BAGLANTI_TIP_ID");
+      expect(hat).toHaveProperty("HAT_NO");
+      expect(hat).toHaveProperty("HAT_ADI");
+      expect(hat).toHaveProperty("GIDIS_CALISMA_SAATI");
+      expect(hat).toHaveProperty("DONUS_CALISMA_SAATI");
+      expect(typeof hat.BAGLANTI_TIP_ID).toBe("number");
+      expect(typeof hat.HAT_NO).toBe("number");
+    });
+  });
+
+  // ─────────────────────────────────────────────────────────────────
   // CKAN API - Otopark Ücretleri
   // ─────────────────────────────────────────────────────────────────
   describe("CKAN API - otopark ücretleri", () => {

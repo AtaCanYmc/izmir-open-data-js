@@ -220,6 +220,37 @@ describe("CKAN API testleri", () => {
         });
     });
 
+    describe("eshot.getBaglantiHatlari", () => {
+        it("ESHOT bağlantılı hatlarını CSV'den çeker", async () => {
+            const mockCSV = `BAGLANTI_TIP_ID;HAT_NO;HAT_ADI;GUZERGAH_ACIKLAMA;ACIKLAMA;HAT_BASLANGIC;HAT_BITIS;GIDIS_CALISMA_SAATI;DONUS_CALISMA_SAATI
+1;5;NARLIDERE - KUYULAR İSKELE;MİTHAT PAŞA CAD.;;NARLIDERE;KUYULAR İSKELE;06:00 - 23:00;06:35 - 23:40
+2;100;TEST HAT;GUZERGAH;;BASLANGIC;BITIS;05:00 - 22:00;05:30 - 22:30`;
+
+            mockFetch.mockResolvedValueOnce({
+                ok: true,
+                text: async () => mockCSV
+            });
+
+            const api = new IzmirAPI();
+            const result = await api.eshot.getBaglantiHatlari();
+
+            expect(mockFetch).toHaveBeenCalledWith(
+                'https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-baglantili-hatlar.csv'
+            );
+            expect(result.length).toBe(2);
+            expect(result[0].BAGLANTI_TIP_ID).toBe(1);
+            expect(result[0].HAT_NO).toBe(5);
+            expect(result[0].HAT_ADI).toBe("NARLIDERE - KUYULAR İSKELE");
+            expect(result[0].GIDIS_CALISMA_SAATI).toBe("06:00 - 23:00");
+        });
+
+        it("getBaglantiHatlari metodu mevcut", () => {
+            const api = new IzmirAPI();
+            expect(api.eshot.getBaglantiHatlari).toBeDefined();
+            expect(typeof api.eshot.getBaglantiHatlari).toBe('function');
+        });
+    });
+
     describe("otopark.getUcretler", () => {
         it("otopark ücretlerini doğru parametrelerle çeker", async () => {
             const mockRecords = [

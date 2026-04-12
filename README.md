@@ -52,7 +52,7 @@ async function verileriGetir() {
 verileriGetir();
 ```
 
-### Örnek: ESHOT Hat ve Durak Bilgileri (CKAN)
+### Örnek: ESHOT Hat ve Durak Bilgileri
 
 ```javascript
 import { IzmirAPI } from 'izmir-open-data-js';
@@ -60,24 +60,23 @@ import { IzmirAPI } from 'izmir-open-data-js';
 const api = new IzmirAPI();
 
 async function eshotVerileri() {
-  // Tüm ESHOT hatlarını çek
+  // Tüm ESHOT hatlarını çek (~441 hat)
   const hatlar = await api.eshot.getHatlar();
-  console.log(`Toplam ${hatlar.total} hat bulundu`);
+  console.log(`Toplam ${hatlar.length} hat bulundu`);
   
   // İlk 10 hattı göster
-  hatlar.records.slice(0, 10).forEach(hat => {
+  hatlar.slice(0, 10).forEach(hat => {
     console.log(`Hat ${hat.HAT_NO}: ${hat.HAT_ADI}`);
   });
 
-  // Tüm durakları çek (sayfalama ile)
-  const duraklar = await api.eshot.getDuraklar(100, 0);
-  console.log(`Toplam ${duraklar.total} durak mevcut`);
+  // Tüm durakları çek (~11,770 durak)
+  const duraklar = await api.eshot.getDuraklar();
+  console.log(`Toplam ${duraklar.length} durak mevcut`);
 
-  // Otopark ücretlerini çek
-  const ucretler = await api.otopark.getUcretler();
-  ucretler.records.forEach(otopark => {
-    console.log(`${otopark["Otopark / Fiyat"]}: ${otopark["0-2 saat"]} TL (0-2 saat)`);
-  });
+  // Metro, İzban, Vapur bağlantılı hatları çek
+  const baglantilar = await api.eshot.getBaglantiHatlari();
+  const metroHatlari = baglantilar.filter(h => h.BAGLANTI_TIP_ID === 1);
+  console.log(`Metro bağlantılı ${metroHatlari.length} hat var`);
 }
 
 eshotVerileri();
@@ -134,11 +133,12 @@ eshotVerileri();
 | `getDuragaYaklasanOtobusList(durakId)` | Bir durağa yaklaşan otobüsleri listeler |
 | `getHattinYaklasanOtobusleri(hatId, durakId)` | Bir hattın durağa yaklaşan otobüslerini listeler |
 | `getHatOtobusKonumlari(hatId)` | Hatta ait otobüslerin anlık konum bilgilerini döner |
-| `getHatlar(limit, offset)` | ESHOT hat bilgilerini döner (CKAN) |
-| `getHareketSaatleri(limit, offset)` | Otobüs hareket saatlerini döner (CKAN) |
-| `getDuraklar(limit, offset)` | Tüm ESHOT duraklarını listeler (CKAN) |
-| `getHatGuzergahlari(limit, offset)` | Hat güzergah koordinatlarını döner (CKAN) |
-| `getBaglantiTipleri(limit, offset)` | Diğer ulaşım araçları ile bağlantı tiplerini döner (CKAN) |
+| `getHatlar()` | Tüm ESHOT hat bilgilerini döner (~441 hat) |
+| `getHareketSaatleri()` | Tüm otobüs hareket saatlerini döner (~101,000+ kayıt) |
+| `getDuraklar()` | Tüm ESHOT duraklarını listeler (~11,770 durak) |
+| `getHatGuzergahlari()` | Hat güzergah koordinatlarını döner (~563,000+ nokta) |
+| `getBaglantiTipleri()` | Diğer ulaşım araçları ile bağlantı tiplerini döner |
+| `getBaglantiHatlari()` | Diğer ulaşım araçlarına bağlantılı hatları ve çalışma saatlerini döner (~583 kayıt) |
 
 ### 🚲 Ulaşım - BİSİM (`api.bisim`)
 

@@ -65,6 +65,25 @@ export interface EshotBaglantiTipi {
 }
 
 /**
+ * ESHOT bağlantılı hat bilgisi (CSV datasından)
+ * Diğer ulaşım araçları ile bağlantılı otobüs hatları
+ */
+export interface EshotBaglantiHat {
+    /** Bağlantı tipi ID'si (1=METRO, 2=IZBAN, 3=VAPUR, 4=HAVAALANI, 5=OTOGAR) */
+    BAGLANTI_TIP_ID: number;
+    HAT_NO: number;
+    HAT_ADI: string;
+    GUZERGAH_ACIKLAMA: string;
+    ACIKLAMA: string;
+    HAT_BASLANGIC: string;
+    HAT_BITIS: string;
+    /** Gidiş çalışma saati aralığı (örn: "06:00 - 23:00") */
+    GIDIS_CALISMA_SAATI: string;
+    /** Dönüş çalışma saati aralığı (örn: "06:35 - 23:40") */
+    DONUS_CALISMA_SAATI: string;
+}
+
+/**
  * Durağa yaklaşan otobüs bilgisi
  */
 export interface YaklasanOtobus {
@@ -168,6 +187,18 @@ export function eshot(client: IzmirClient) {
         getBaglantiTipleri(): Promise<EshotBaglantiTipi[]> {
             return client.getCSV<EshotBaglantiTipi>(
                 'https://acikveri.bizizmir.com/dataset/f0964595-53e0-4b94-bf11-9423f8bb595e/resource/c228da75-adfd-422a-a480-2a4c7ffa7586/download/eshot-otobus-baglanti-tipleri.csv'
+            );
+        },
+
+        /**
+         * Diğer ulaşım araçları ile bağlantılı otobüs hatlarının listesini içeren web servisi (CSV).
+         * Her hattın hangi ulaşım aracına bağlantılı olduğunu ve çalışma saatlerini gösterir (~583 kayıt).
+         *
+         * Kaynak: https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-baglantili-hatlar.csv
+         */
+        getBaglantiHatlari(): Promise<EshotBaglantiHat[]> {
+            return client.getCSV<EshotBaglantiHat>(
+                'https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-baglantili-hatlar.csv'
             );
         },
 
