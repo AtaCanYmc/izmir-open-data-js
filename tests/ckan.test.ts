@@ -208,32 +208,62 @@ describe("CKAN API testleri", () => {
 
     describe("eshot.getHatGuzergahlari", () => {
         it("ESHOT hat güzergahlarını doğru parametrelerle çeker", async () => {
-            const mockRecords = [
-                { _id: 1, HAT_NO: 5, YON: 1, BOYLAM: 26.9913, ENLEM: 38.389 },
-                { _id: 2, HAT_NO: 5, YON: 1, BOYLAM: 26.9911, ENLEM: 38.389 }
-            ];
-
-            const mockResult = {
-                include_total: true,
-                resource_id: '543f2249-c734-48e4-8739-72efbbfc843c',
-                records: mockRecords,
-                limit: 100,
-                total: 30250
+            const mockResponse = {
+                fields: [
+                    { type: "int", id: "_id" },
+                    { type: "numeric", id: "HAT_NO" },
+                    { type: "numeric", id: "YON" },
+                    { type: "numeric", id: "BOYLAM" },
+                    { type: "numeric", id: "ENLEM" }
+                ],
+                records: [
+                    [1, 5, 1, 26.9913, 38.389],
+                    [2, 5, 1, 26.9911, 38.389]
+                ]
             };
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                json: async () => ({ success: true, result: mockResult })
+                json: async () => mockResponse
             });
 
             const api = new IzmirAPI();
             const result = await api.eshot.getHatGuzergahlari();
 
             expect(mockFetch).toHaveBeenCalledWith(
-                'https://acikveri.bizizmir.com/api/3/action/datastore_search?resource_id=543f2249-c734-48e4-8739-72efbbfc843c&limit=100&offset=0'
+                'https://acikveri.bizizmir.com/datastore/dump/543f2249-c734-48e4-8739-72efbbfc843c?format=json'
             );
-            expect(result.records).toEqual(mockRecords);
-            expect(result.total).toBe(30250);
+            expect(result.records).toEqual(mockResponse.records);
+            expect(result.fields.length).toBe(5);
+        });
+
+        it("getHatGuzergahlariParsed nesne formatında döndürür", async () => {
+            const mockResponse = {
+                fields: [
+                    { type: "int", id: "_id" },
+                    { type: "numeric", id: "HAT_NO" },
+                    { type: "numeric", id: "YON" },
+                    { type: "numeric", id: "BOYLAM" },
+                    { type: "numeric", id: "ENLEM" }
+                ],
+                records: [
+                    [1, 5, 1, 26.9913, 38.389],
+                    [2, 5, 1, 26.9911, 38.389]
+                ]
+            };
+
+            mockFetch.mockResolvedValueOnce({
+                ok: true,
+                json: async () => mockResponse
+            });
+
+            const api = new IzmirAPI();
+            const result = await api.eshot.getHatGuzergahlariParsed();
+
+            expect(result).toEqual([
+                { _id: 1, HAT_NO: 5, YON: 1, BOYLAM: 26.9913, ENLEM: 38.389 },
+                { _id: 2, HAT_NO: 5, YON: 1, BOYLAM: 26.9911, ENLEM: 38.389 }
+            ]);
         });
 
         it("getHatGuzergahlari metodu mevcut", () => {

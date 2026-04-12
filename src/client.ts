@@ -6,14 +6,17 @@ type FetchJsonpFunction = (url: string, options?: { jsonpCallback?: string; time
 export class IzmirClient {
     private readonly baseUrl: string;
     private readonly ckanBaseUrl: string;
+    private readonly ckanDumpBaseUrl: string;
     private fetchJsonp: FetchJsonpFunction | null = null;
 
     constructor(
         baseUrl = "https://openapi.izmir.bel.tr/api/",
-        ckanBaseUrl = "https://acikveri.bizizmir.com/api/3/action/"
+        ckanBaseUrl = "https://acikveri.bizizmir.com/api/3/action/",
+        ckanDumpBaseUrl = "https://acikveri.bizizmir.com/datastore/dump/"
     ) {
         this.baseUrl = baseUrl;
         this.ckanBaseUrl = ckanBaseUrl;
+        this.ckanDumpBaseUrl = ckanDumpBaseUrl;
     }
 
     async get(path: string) {
@@ -100,6 +103,67 @@ export class IzmirClient {
                 throw new Error(`CKAN Hatası: ${error.message}`);
             }
             throw new Error("Bilinmeyen CKAN hatası");
+        }
+    }
+
+    /**
+     * CKAN dump endpoint'inden veri çeker.
+     * Tüm veriyi JSON formatında döndürür.
+     * @param resourceId Kaynak ID'si
+     */
+    async getCKANDump<T = any>(resourceId: string): Promise<T> {
+        const url = `${this.ckanDumpBaseUrl}${resourceId}?format=json`;
+
+        if (isBrowser) {
+            return this.getCKANDumpWithJsonp<T>(url);
+        } else {
+            return this.getCKANDumpWithFetch<T>(url);
+        }
+    }
+
+    /**
+     * JSONP ile CKAN dump API çağrısı (tarayıcı için)
+     */
+    private async getCKANDumpWithJsonp<T>(url: string): Promise<T> {
+        try {
+            if (!this.fetchJsonp) {
+                const module = await import('fetch-jsonp');
+                this.fetchJsonp = module.default;
+            }
+
+            const response = await this.fetchJsonp(url, {
+                jsonpCallback: 'callback',
+                timeout: 30000, // Dump daha büyük olabilir
+            });
+
+            const data = await response.json();
+            return data as T;
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new Error(`JSONP Hatası: ${error.message}`);
+            }
+            throw new Error("Bilinmeyen JSONP hatası");
+        }
+    }
+
+    /**
+     * Normal fetch ile CKAN dump API çağrısı (Node.js için)
+     */
+    private async getCKANDumpWithFetch<T>(url: string): Promise<T> {
+        try {
+            const res = await fetch(url);
+
+            if (!res.ok) {
+                throw new Error(`CKAN Dump API response error: ${res.status}`);
+            }
+
+            const data = await res.json();
+            return data as T;
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new Error(`CKAN Dump Hatası: ${error.message}`);
+            }
+            throw new Error("Bilinmeyen CKAN Dump hatası");
         }
     }
 }

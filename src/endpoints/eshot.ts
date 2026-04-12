@@ -105,6 +105,14 @@ export interface CKANDatastoreResponse<T> {
     total: number;
 }
 
+/**
+ * CKAN dump response tipi (array formatında kayıtlar)
+ */
+export interface CKANDumpResponse {
+    fields: { type: string; id: string; info?: { notes?: string; type_override?: string; label?: string } }[];
+    records: (number | string | null)[][];
+}
+
 export function eshot(client: IzmirClient) {
     return {
         /**
@@ -153,19 +161,31 @@ export function eshot(client: IzmirClient) {
         },
 
         /**
-         * ESHOT hat güzergahlarını içeren web servisi (CKAN).
+         * ESHOT hat güzergahlarını içeren web servisi (CKAN Dump).
          * Her hat için gidiş (YON=1) ve dönüş (YON=2) koordinat noktalarını içerir.
+         * Tüm güzergah verilerini tek seferde döndürür.
          *
          * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-hat-guzergahlari
-         * @param limit Döndürülecek kayıt sayısı (varsayılan: 100)
-         * @param offset Atlanacak kayıt sayısı (sayfalama için)
          */
-        getHatGuzergahlari(limit = 100, offset = 0) {
-            return client.getCKAN<CKANDatastoreResponse<EshotHatGuzergah>>('datastore_search', {
-                resource_id: '543f2249-c734-48e4-8739-72efbbfc843c',
-                limit,
-                offset
-            });
+        getHatGuzergahlari() {
+            return client.getCKANDump<CKANDumpResponse>('543f2249-c734-48e4-8739-72efbbfc843c');
+        },
+
+        /**
+         * ESHOT hat güzergahlarını nesne formatında döndürür.
+         * Raw dump verisini EshotHatGuzergah nesnelerine dönüştürür.
+         *
+         * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-hat-guzergahlari
+         */
+        async getHatGuzergahlariParsed(): Promise<EshotHatGuzergah[]> {
+            const dump = await client.getCKANDump<CKANDumpResponse>('543f2249-c734-48e4-8739-72efbbfc843c');
+            return dump.records.map(record => ({
+                _id: record[0] as number,
+                HAT_NO: record[1] as number,
+                YON: record[2] as number,
+                BOYLAM: record[3] as number,
+                ENLEM: record[4] as number
+            }));
         },
 
         /**
