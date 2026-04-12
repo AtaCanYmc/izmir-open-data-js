@@ -316,5 +316,35 @@ describe("CKAN API testleri", () => {
             expect(typeof api.tramvay.getPlanlananiSeferSayilari).toBe('function');
         });
     });
+
+    describe("trafik.getKameraList", () => {
+        it("Trafik kameralarını CSV'den çeker", async () => {
+            const mockCSV = `ADI;ENLEM;BOYLAM
+TEPECIK KAVSAGI;38.42222492;27.15298285
+ESREFPASA HAST. KAVSAGI;38.42319238;27.16143187`;
+
+            mockFetch.mockResolvedValueOnce({
+                ok: true,
+                text: async () => mockCSV
+            });
+
+            const api = new IzmirAPI();
+            const result = await api.trafik.getKameraList();
+
+            expect(mockFetch).toHaveBeenCalledWith(
+                'https://acikveri.bizizmir.com/dataset/a5cda2f2-ccbd-4fac-a4bb-c691abff28f1/resource/b91cb15d-05c6-45b7-8a75-48e030aad368/download/trafikkameralari.csv'
+            );
+            expect(result.length).toBe(2);
+            expect(result[0].ADI).toBe("TEPECIK KAVSAGI");
+            expect(result[0].ENLEM).toBe(38.42222492);
+            expect(result[0].BOYLAM).toBe(27.15298285);
+        });
+
+        it("getKameraList metodu mevcut", () => {
+            const api = new IzmirAPI();
+            expect(api.trafik.getKameraList).toBeDefined();
+            expect(typeof api.trafik.getKameraList).toBe('function');
+        });
+    });
 });
 

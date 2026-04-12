@@ -831,6 +831,37 @@ describeIfLive("Canlı API Integration Testleri", () => {
   });
 
   // ─────────────────────────────────────────────────────────────────
+  // CSV API - Trafik Kameraları
+  // ─────────────────────────────────────────────────────────────────
+  describe("CSV API - trafik kameraları", () => {
+    it("getKameraList: array döner", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.trafik.getKameraList(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(Array.isArray(data)).toBe(true);
+      expect(data.length).toBeGreaterThan(80); // ~92 kamera
+    });
+
+    it("getKameraList: her kayıtta ADI, ENLEM, BOYLAM alanları var", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.trafik.getKameraList(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(data.length).toBeGreaterThan(0);
+      
+      const kamera = data[0];
+      expect(kamera).toHaveProperty("ADI");
+      expect(kamera).toHaveProperty("ENLEM");
+      expect(kamera).toHaveProperty("BOYLAM");
+      expect(typeof kamera.ENLEM).toBe("number");
+      expect(typeof kamera.BOYLAM).toBe("number");
+    });
+  });
+
+  // ─────────────────────────────────────────────────────────────────
   // CKAN API - Otopark Ücretleri
   // ─────────────────────────────────────────────────────────────────
   describe("CKAN API - otopark ücretleri", () => {

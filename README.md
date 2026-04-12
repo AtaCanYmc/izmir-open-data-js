@@ -195,6 +195,12 @@ eshotVerileri();
 | `getList()` | Otoparkların doluluk ve konum bilgilerini döner |
 | `getUcretler(limit, offset)` | İzelman otopark ücretlerini döner (CKAN) |
 
+### 🚦 Trafik (`api.trafik`)
+
+| Metot | Açıklama |
+| :--- | :--- |
+| `getKameraList()` | Trafik kameralarının konum bilgilerini döner (~92 kamera) |
+
 ### 🚕 Taksi (`api.taksi`)
 
 | Metot | Açıklama |
