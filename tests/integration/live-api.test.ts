@@ -596,181 +596,99 @@ describeIfLive("Canlı API Integration Testleri", () => {
   });
 
   // ─────────────────────────────────────────────────────────────────
-  // CKAN API - Açık Veri Portalı (Dump endpoint)
+  // CSV API - ESHOT Hatları
   // ─────────────────────────────────────────────────────────────────
-  describe("CKAN API - eshot hatları", () => {
-    it("getHatlar: CKAN dump response formatında döner", async () => {
+  describe("CSV API - eshot hatları", () => {
+    it("getHatlar: array döner", async () => {
       const data = await withTimeout(
         withRetry(() => api.eshot.getHatlar(), RETRY_OPTIONS),
-        TIMEOUT_MS
-      );
-
-      expect(data).toBeDefined();
-      expect(data).toHaveProperty("records");
-      expect(data).toHaveProperty("fields");
-      expect(Array.isArray(data.records)).toBe(true);
-      expect(Array.isArray(data.fields)).toBe(true);
-    });
-
-    it("getHatlar: fields HAT_NO, HAT_ADI, HAT_BASLANGIC, HAT_BITIS alanlarını içerir", async () => {
-      const data = await withTimeout(
-        withRetry(() => api.eshot.getHatlar(), RETRY_OPTIONS),
-        TIMEOUT_MS
-      );
-
-      const fieldIds = data.fields.map(f => f.id);
-      expect(fieldIds).toContain("HAT_NO");
-      expect(fieldIds).toContain("HAT_ADI");
-      expect(fieldIds).toContain("HAT_BASLANGIC");
-      expect(fieldIds).toContain("HAT_BITIS");
-    });
-
-    it("getHatlar: tüm hatları döner", async () => {
-      const data = await withTimeout(
-        withRetry(() => api.eshot.getHatlar(), RETRY_OPTIONS),
-        TIMEOUT_MS
-      );
-
-      expect(data.records.length).toBeGreaterThan(0);
-    });
-
-    it("getHatlarParsed: nesne formatında döner", async () => {
-      const data = await withTimeout(
-        withRetry(() => api.eshot.getHatlarParsed(), RETRY_OPTIONS),
         TIMEOUT_MS
       );
 
       expect(Array.isArray(data)).toBe(true);
+      expect(data.length).toBeGreaterThan(400); // ~441 hat
+    });
+
+    it("getHatlar: her kayıtta HAT_NO, HAT_ADI, HAT_BASLANGIC, HAT_BITIS alanları var", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getHatlar(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
       expect(data.length).toBeGreaterThan(0);
       
       const hat = data[0];
-      expect(hat).toHaveProperty("_id");
       expect(hat).toHaveProperty("HAT_NO");
       expect(hat).toHaveProperty("HAT_ADI");
+      expect(hat).toHaveProperty("GUZERGAH_ACIKLAMA");
       expect(hat).toHaveProperty("HAT_BASLANGIC");
       expect(hat).toHaveProperty("HAT_BITIS");
+      expect(typeof hat.HAT_NO).toBe("number");
     });
   });
 
   // ─────────────────────────────────────────────────────────────────
-  // CKAN API - ESHOT Hareket Saatleri (Dump endpoint)
+  // CSV API - ESHOT Hareket Saatleri
   // ─────────────────────────────────────────────────────────────────
-  describe("CKAN API - eshot hareket saatleri", () => {
-    it("getHareketSaatleri: CKAN dump response formatında döner", async () => {
+  describe("CSV API - eshot hareket saatleri", () => {
+    it("getHareketSaatleri: array döner", async () => {
       const data = await withTimeout(
         withRetry(() => api.eshot.getHareketSaatleri(), RETRY_OPTIONS),
-        TIMEOUT_MS
-      );
-
-      expect(data).toBeDefined();
-      expect(data).toHaveProperty("records");
-      expect(data).toHaveProperty("fields");
-      expect(Array.isArray(data.records)).toBe(true);
-      expect(Array.isArray(data.fields)).toBe(true);
-    });
-
-    it("getHareketSaatleri: fields HAT_NO, GIDIS_SAATI, DONUS_SAATI alanlarını içerir", async () => {
-      const data = await withTimeout(
-        withRetry(() => api.eshot.getHareketSaatleri(), RETRY_OPTIONS),
-        TIMEOUT_MS
-      );
-
-      const fieldIds = data.fields.map(f => f.id);
-      expect(fieldIds).toContain("HAT_NO");
-      expect(fieldIds).toContain("TARIFE_ID");
-      expect(fieldIds).toContain("GIDIS_SAATI");
-      expect(fieldIds).toContain("DONUS_SAATI");
-      expect(fieldIds).toContain("SIRA");
-      expect(fieldIds).toContain("GIDIS_ENGELLI_DESTEGI");
-      expect(fieldIds).toContain("BISIKLETLI_GIDIS");
-    });
-
-    it("getHareketSaatleri: tüm hareket saatlerini döner", async () => {
-      const data = await withTimeout(
-        withRetry(() => api.eshot.getHareketSaatleri(), RETRY_OPTIONS),
-        TIMEOUT_MS
-      );
-
-      expect(data.records.length).toBeGreaterThan(0);
-    });
-
-    it("getHareketSaatleriParsed: nesne formatında döner", async () => {
-      const data = await withTimeout(
-        withRetry(() => api.eshot.getHareketSaatleriParsed(), RETRY_OPTIONS),
-        TIMEOUT_MS
+        60000 // Büyük veri için 60 saniye timeout
       );
 
       expect(Array.isArray(data)).toBe(true);
+      expect(data.length).toBeGreaterThan(100000); // ~101,000+ kayıt
+    });
+
+    it("getHareketSaatleri: her kayıtta HAT_NO, GIDIS_SAATI, DONUS_SAATI alanları var", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getHareketSaatleri(), RETRY_OPTIONS),
+        60000
+      );
+
       expect(data.length).toBeGreaterThan(0);
       
       const saat = data[0];
-      expect(saat).toHaveProperty("_id");
       expect(saat).toHaveProperty("HAT_NO");
       expect(saat).toHaveProperty("TARIFE_ID");
       expect(saat).toHaveProperty("GIDIS_SAATI");
       expect(saat).toHaveProperty("DONUS_SAATI");
       expect(saat).toHaveProperty("SIRA");
-      expect(saat).toHaveProperty("GIDIS_ENGELLI_DESTEGI");
-      expect(saat).toHaveProperty("BISIKLETLI_GIDIS");
+      expect(typeof saat.HAT_NO).toBe("number");
     });
   });
 
   // ─────────────────────────────────────────────────────────────────
-  // CKAN API - ESHOT Duraklar (Dump endpoint)
+  // CSV API - ESHOT Duraklar
   // ─────────────────────────────────────────────────────────────────
-  describe("CKAN API - eshot duraklar", () => {
-    it("getDuraklar: CKAN dump response formatında döner", async () => {
+  describe("CSV API - eshot duraklar", () => {
+    it("getDuraklar: array döner", async () => {
       const data = await withTimeout(
         withRetry(() => api.eshot.getDuraklar(), RETRY_OPTIONS),
-        TIMEOUT_MS
-      );
-
-      expect(data).toBeDefined();
-      expect(data).toHaveProperty("records");
-      expect(data).toHaveProperty("fields");
-      expect(Array.isArray(data.records)).toBe(true);
-      expect(Array.isArray(data.fields)).toBe(true);
-    });
-
-    it("getDuraklar: fields DURAK_ID, DURAK_ADI, ENLEM, BOYLAM alanlarını içerir", async () => {
-      const data = await withTimeout(
-        withRetry(() => api.eshot.getDuraklar(), RETRY_OPTIONS),
-        TIMEOUT_MS
-      );
-
-      const fieldIds = data.fields.map(f => f.id);
-      expect(fieldIds).toContain("DURAK_ID");
-      expect(fieldIds).toContain("DURAK_ADI");
-      expect(fieldIds).toContain("ENLEM");
-      expect(fieldIds).toContain("BOYLAM");
-      expect(fieldIds).toContain("DURAKTAN_GECEN_HATLAR");
-    });
-
-    it("getDuraklar: tüm durakları döner (10000+ durak)", async () => {
-      const data = await withTimeout(
-        withRetry(() => api.eshot.getDuraklar(), RETRY_OPTIONS),
-        TIMEOUT_MS
-      );
-
-      expect(data.records.length).toBeGreaterThan(10000);
-    });
-
-    it("getDurakalarParsed: nesne formatında döner", async () => {
-      const data = await withTimeout(
-        withRetry(() => api.eshot.getDurakalarParsed(), RETRY_OPTIONS),
         TIMEOUT_MS
       );
 
       expect(Array.isArray(data)).toBe(true);
+      expect(data.length).toBeGreaterThan(11000); // ~11,770 durak
+    });
+
+    it("getDuraklar: her kayıtta DURAK_ID, DURAK_ADI, ENLEM, BOYLAM alanları var", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.eshot.getDuraklar(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
       expect(data.length).toBeGreaterThan(0);
       
       const durak = data[0];
-      expect(durak).toHaveProperty("_id");
       expect(durak).toHaveProperty("DURAK_ID");
       expect(durak).toHaveProperty("DURAK_ADI");
       expect(durak).toHaveProperty("ENLEM");
       expect(durak).toHaveProperty("BOYLAM");
       expect(durak).toHaveProperty("DURAKTAN_GECEN_HATLAR");
+      expect(typeof durak.DURAK_ID).toBe("number");
+      expect(typeof durak.ENLEM).toBe("number");
     });
   });
 

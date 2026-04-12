@@ -70,64 +70,25 @@ describe("CKAN API testleri", () => {
     });
 
     describe("eshot.getHatlar", () => {
-        it("ESHOT hatlarını doğru parametrelerle çeker", async () => {
-            const mockResponse = {
-                fields: [
-                    { type: "int", id: "_id" },
-                    { type: "numeric", id: "HAT_NO" },
-                    { type: "text", id: "HAT_ADI" },
-                    { type: "text", id: "HAT_BASLANGIC" },
-                    { type: "text", id: "HAT_BITIS" }
-                ],
-                records: [
-                    [1, 5, "NARLIDERE - KUYULAR İSKELE", "NARLIDERE", "KUYULAR İSKELE"],
-                    [2, 6, "ARIKENT - KUYULAR İSK.", "ARIKENT", "KUYULAR İSKELE"]
-                ]
-            };
+        it("ESHOT hatlarını CSV'den çeker", async () => {
+            const mockCSV = `HAT_NO;HAT_ADI;GUZERGAH_ACIKLAMA;ACIKLAMA;HAT_BASLANGIC;HAT_BITIS
+5;NARLIDERE - KUYULAR İSKELE;MİTHAT PAŞA CAD.;;NARLIDERE;KUYULAR İSKELE
+6;ARIKENT - KUYULAR İSK.;MİTHAT PAŞA CAD.;;ARIKENT;KUYULAR İSKELE`;
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                json: async () => mockResponse
+                text: async () => mockCSV
             });
 
             const api = new IzmirAPI();
             const result = await api.eshot.getHatlar();
 
             expect(mockFetch).toHaveBeenCalledWith(
-                'https://acikveri.bizizmir.com/datastore/dump/bd6c84f8-49ba-4cf4-81f8-81a0fbb5caa3?format=json'
+                'https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hatlari.csv'
             );
-            expect(result.records).toEqual(mockResponse.records);
-            expect(result.fields.length).toBe(5);
-        });
-
-        it("getHatlarParsed nesne formatında döndürür", async () => {
-            const mockResponse = {
-                fields: [
-                    { type: "int", id: "_id" },
-                    { type: "numeric", id: "HAT_NO" },
-                    { type: "text", id: "HAT_ADI" },
-                    { type: "text", id: "GUZERGAH_ACIKLAMA" },
-                    { type: "text", id: "ACIKLAMA" },
-                    { type: "text", id: "HAT_BASLANGIC" },
-                    { type: "text", id: "HAT_BITIS" }
-                ],
-                records: [
-                    [1, 5, "NARLIDERE - KUYULAR İSKELE", "MİTHAT PAŞA CAD.", "", "NARLIDERE", "KUYULAR İSKELE"],
-                    [2, 6, "ARIKENT - KUYULAR İSK.", "MİTHAT PAŞA CAD.", "", "ARIKENT", "KUYULAR İSKELE"]
-                ]
-            };
-
-            mockFetch.mockResolvedValueOnce({
-                ok: true,
-                json: async () => mockResponse
-            });
-
-            const api = new IzmirAPI();
-            const result = await api.eshot.getHatlarParsed();
-
             expect(result).toEqual([
-                { _id: 1, HAT_NO: 5, HAT_ADI: "NARLIDERE - KUYULAR İSKELE", GUZERGAH_ACIKLAMA: "MİTHAT PAŞA CAD.", ACIKLAMA: "", HAT_BASLANGIC: "NARLIDERE", HAT_BITIS: "KUYULAR İSKELE" },
-                { _id: 2, HAT_NO: 6, HAT_ADI: "ARIKENT - KUYULAR İSK.", GUZERGAH_ACIKLAMA: "MİTHAT PAŞA CAD.", ACIKLAMA: "", HAT_BASLANGIC: "ARIKENT", HAT_BITIS: "KUYULAR İSKELE" }
+                { HAT_NO: 5, HAT_ADI: "NARLIDERE - KUYULAR İSKELE", GUZERGAH_ACIKLAMA: "MİTHAT PAŞA CAD.", ACIKLAMA: "", HAT_BASLANGIC: "NARLIDERE", HAT_BITIS: "KUYULAR İSKELE" },
+                { HAT_NO: 6, HAT_ADI: "ARIKENT - KUYULAR İSK.", GUZERGAH_ACIKLAMA: "MİTHAT PAŞA CAD.", ACIKLAMA: "", HAT_BASLANGIC: "ARIKENT", HAT_BITIS: "KUYULAR İSKELE" }
             ]);
         });
 
@@ -139,75 +100,26 @@ describe("CKAN API testleri", () => {
     });
 
     describe("eshot.getHareketSaatleri", () => {
-        it("ESHOT hareket saatlerini doğru parametrelerle çeker", async () => {
-            const mockResponse = {
-                fields: [
-                    { type: "int", id: "_id" },
-                    { type: "numeric", id: "HAT_NO" },
-                    { type: "numeric", id: "TARIFE_ID" },
-                    { type: "text", id: "GIDIS_SAATI" },
-                    { type: "text", id: "DONUS_SAATI" },
-                    { type: "numeric", id: "SIRA" },
-                    { type: "text", id: "GIDIS_ENGELLI_DESTEGI" },
-                    { type: "text", id: "DONUS_ENGELLI_DESTEGI" },
-                    { type: "text", id: "BISIKLETLI_GIDIS" },
-                    { type: "text", id: "BISIKLETLI_DONUS" },
-                    { type: "text", id: "GIDIS_ELEKTRIKLI_OTOBUS" },
-                    { type: "text", id: "DONUS_ELEKTRIKLI_OTOBUS" }
-                ],
-                records: [
-                    [1, 5, 1, "06:00", "06:35", 1, "True", "True", "True", "True", "False", "False"],
-                    [2, 5, 1, "06:30", "07:05", 2, "True", "True", "True", "True", "False", "False"]
-                ]
-            };
+        it("ESHOT hareket saatlerini CSV'den çeker", async () => {
+            const mockCSV = `HAT_NO;TARIFE_ID;GIDIS_SAATI;DONUS_SAATI;SIRA;GIDIS_ENGELLI_DESTEGI;DONUS_ENGELLI_DESTEGI;BISIKLETLI_GIDIS;BISIKLETLI_DONUS;GIDIS_ELEKTRIKLI_OTOBUS;DONUS_ELEKTRIKLI_OTOBUS
+5;1;06:00;06:35;1;True;True;True;True;False;False
+5;1;06:30;07:05;2;True;True;True;True;False;False`;
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                json: async () => mockResponse
+                text: async () => mockCSV
             });
 
             const api = new IzmirAPI();
             const result = await api.eshot.getHareketSaatleri();
 
             expect(mockFetch).toHaveBeenCalledWith(
-                'https://acikveri.bizizmir.com/datastore/dump/c6fa6046-f755-47d7-b69e-db6bb06a8b5a?format=json'
+                'https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hareketsaatleri.csv'
             );
-            expect(result.records).toEqual(mockResponse.records);
-            expect(result.fields.length).toBe(12);
-        });
-
-        it("getHareketSaatleriParsed nesne formatında döndürür", async () => {
-            const mockResponse = {
-                fields: [
-                    { type: "int", id: "_id" },
-                    { type: "numeric", id: "HAT_NO" },
-                    { type: "numeric", id: "TARIFE_ID" },
-                    { type: "text", id: "GIDIS_SAATI" },
-                    { type: "text", id: "DONUS_SAATI" },
-                    { type: "numeric", id: "SIRA" },
-                    { type: "text", id: "GIDIS_ENGELLI_DESTEGI" },
-                    { type: "text", id: "DONUS_ENGELLI_DESTEGI" },
-                    { type: "text", id: "BISIKLETLI_GIDIS" },
-                    { type: "text", id: "BISIKLETLI_DONUS" },
-                    { type: "text", id: "GIDIS_ELEKTRIKLI_OTOBUS" },
-                    { type: "text", id: "DONUS_ELEKTRIKLI_OTOBUS" }
-                ],
-                records: [
-                    [1, 5, 1, "06:00", "06:35", 1, "True", "True", "True", "True", "False", "False"]
-                ]
-            };
-
-            mockFetch.mockResolvedValueOnce({
-                ok: true,
-                json: async () => mockResponse
-            });
-
-            const api = new IzmirAPI();
-            const result = await api.eshot.getHareketSaatleriParsed();
-
-            expect(result).toEqual([
-                { _id: 1, HAT_NO: 5, TARIFE_ID: 1, GIDIS_SAATI: "06:00", DONUS_SAATI: "06:35", SIRA: 1, GIDIS_ENGELLI_DESTEGI: "True", DONUS_ENGELLI_DESTEGI: "True", BISIKLETLI_GIDIS: "True", BISIKLETLI_DONUS: "True", GIDIS_ELEKTRIKLI_OTOBUS: "False", DONUS_ELEKTRIKLI_OTOBUS: "False" }
-            ]);
+            expect(result.length).toBe(2);
+            expect(result[0].HAT_NO).toBe(5);
+            expect(result[0].GIDIS_SAATI).toBe("06:00");
+            expect(result[0].TARIFE_ID).toBe(1);
         });
 
         it("getHareketSaatleri metodu mevcut", () => {
@@ -218,65 +130,26 @@ describe("CKAN API testleri", () => {
     });
 
     describe("eshot.getDuraklar", () => {
-        it("ESHOT duraklarını doğru parametrelerle çeker", async () => {
-            const mockResponse = {
-                fields: [
-                    { type: "int", id: "_id" },
-                    { type: "numeric", id: "DURAK_ID" },
-                    { type: "text", id: "DURAK_ADI" },
-                    { type: "numeric", id: "ENLEM" },
-                    { type: "numeric", id: "BOYLAM" },
-                    { type: "text", id: "DURAKTAN_GECEN_HATLAR" }
-                ],
-                records: [
-                    [1, 10005, "Bahribaba", 38.4152683626015, 27.1276395272209, "32"],
-                    [2, 10007, "Bahribaba", 38.415144105211, 27.1277200912719, "29-30"]
-                ]
-            };
+        it("ESHOT duraklarını CSV'den çeker", async () => {
+            const mockCSV = `DURAK_ID;DURAK_ADI;ENLEM;BOYLAM;DURAKTAN_GECEN_HATLAR
+10005;Bahribaba;38.4152683626015;27.1276395272209;32
+10007;Bahribaba;38.415144105211;27.1277200912719;29-30`;
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                json: async () => mockResponse
+                text: async () => mockCSV
             });
 
             const api = new IzmirAPI();
             const result = await api.eshot.getDuraklar();
 
             expect(mockFetch).toHaveBeenCalledWith(
-                'https://acikveri.bizizmir.com/datastore/dump/0c791266-a2e4-4f14-82b8-9a9b102fbf94?format=json'
+                'https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-duraklari.csv'
             );
-            expect(result.records).toEqual(mockResponse.records);
-            expect(result.fields.length).toBe(6);
-        });
-
-        it("getDurakalarParsed nesne formatında döndürür", async () => {
-            const mockResponse = {
-                fields: [
-                    { type: "int", id: "_id" },
-                    { type: "numeric", id: "DURAK_ID" },
-                    { type: "text", id: "DURAK_ADI" },
-                    { type: "numeric", id: "ENLEM" },
-                    { type: "numeric", id: "BOYLAM" },
-                    { type: "text", id: "DURAKTAN_GECEN_HATLAR" }
-                ],
-                records: [
-                    [1, 10005, "Bahribaba", 38.4152683626015, 27.1276395272209, "32"],
-                    [2, 10007, "Bahribaba", 38.415144105211, 27.1277200912719, "29-30"]
-                ]
-            };
-
-            mockFetch.mockResolvedValueOnce({
-                ok: true,
-                json: async () => mockResponse
-            });
-
-            const api = new IzmirAPI();
-            const result = await api.eshot.getDurakalarParsed();
-
-            expect(result).toEqual([
-                { _id: 1, DURAK_ID: 10005, DURAK_ADI: "Bahribaba", ENLEM: 38.4152683626015, BOYLAM: 27.1276395272209, DURAKTAN_GECEN_HATLAR: "32" },
-                { _id: 2, DURAK_ID: 10007, DURAK_ADI: "Bahribaba", ENLEM: 38.415144105211, BOYLAM: 27.1277200912719, DURAKTAN_GECEN_HATLAR: "29-30" }
-            ]);
+            expect(result.length).toBe(2);
+            expect(result[0].DURAK_ID).toBe(10005);
+            expect(result[0].DURAK_ADI).toBe("Bahribaba");
+            expect(result[1].DURAKTAN_GECEN_HATLAR).toBe("29-30");
         });
 
         it("getDuraklar metodu mevcut", () => {

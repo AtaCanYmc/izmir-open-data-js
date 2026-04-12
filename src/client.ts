@@ -208,9 +208,15 @@ export class IzmirClient {
 
             for (let j = 0; j < headers.length; j++) {
                 const value = values[j]?.trim() || '';
-                // Sayısal değerleri number'a çevir
-                const numValue = parseFloat(value);
-                obj[headers[j]] = !isNaN(numValue) && value !== '' ? numValue : value;
+                // Sayısal değerleri number'a çevir, ancak özel karakterler içeriyorsa string bırak
+                // Örn: "06:00" (saat), "29-30" (hat numaraları), "True/False" string kalmalı
+                if (value === '' || value.includes(':') || value.includes('-') || 
+                    value.toLowerCase() === 'true' || value.toLowerCase() === 'false') {
+                    obj[headers[j]] = value;
+                } else {
+                    const numValue = parseFloat(value);
+                    obj[headers[j]] = !isNaN(numValue) ? numValue : value;
+                }
             }
 
             results.push(obj as T);

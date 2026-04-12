@@ -4,10 +4,9 @@ import {DefaultOnemliYer, OnemliYerWrapper} from "../common/types/onemliYer";
 export interface EshotDurak extends DefaultOnemliYer {}
 
 /**
- * ESHOT hat bilgisi (CKAN datasından)
+ * ESHOT hat bilgisi (CSV datasından)
  */
 export interface EshotHat {
-    _id: number;
     HAT_NO: number;
     HAT_ADI: string;
     GUZERGAH_ACIKLAMA: string;
@@ -17,10 +16,9 @@ export interface EshotHat {
 }
 
 /**
- * ESHOT otobüs hareket saati bilgisi (CKAN datasından)
+ * ESHOT otobüs hareket saati bilgisi (CSV datasından)
  */
 export interface EshotHareketSaati {
-    _id: number;
     HAT_NO: number;
     TARIFE_ID: number;
     GIDIS_SAATI: string;
@@ -35,10 +33,9 @@ export interface EshotHareketSaati {
 }
 
 /**
- * ESHOT otobüs durağı bilgisi (CKAN datasından)
+ * ESHOT otobüs durağı bilgisi (CSV datasından)
  */
-export interface EshotDurakCKAN {
-    _id: number;
+export interface EshotDurakCSV {
     DURAK_ID: number;
     DURAK_ADI: string;
     ENLEM: number;
@@ -115,94 +112,39 @@ export interface CKANDumpResponse {
 export function eshot(client: IzmirClient) {
     return {
         /**
-         * ESHOT hatlarının listesini içeren web servisi (CKAN Dump).
-         * Tüm hat verilerini tek seferde döndürür.
+         * ESHOT hatlarının listesini içeren web servisi (CSV).
+         * Tüm hat verilerini tek seferde döndürür (~441 hat).
          *
-         * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-hat-bilgileri
+         * Kaynak: https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hatlari.csv
          */
-        getHatlar() {
-            return client.getCKANDump<CKANDumpResponse>('bd6c84f8-49ba-4cf4-81f8-81a0fbb5caa3');
+        getHatlar(): Promise<EshotHat[]> {
+            return client.getCSV<EshotHat>(
+                'https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hatlari.csv'
+            );
         },
 
         /**
-         * ESHOT hatlarını nesne formatında döndürür.
-         * Raw dump verisini EshotHat nesnelerine dönüştürür.
+         * ESHOT otobüs hareket saatlerini içeren web servisi (CSV).
+         * Tüm hareket saati verilerini tek seferde döndürür (~101,000+ kayıt).
          *
-         * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-hat-bilgileri
+         * Kaynak: https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hareketsaatleri.csv
          */
-        async getHatlarParsed(): Promise<EshotHat[]> {
-            const dump = await client.getCKANDump<CKANDumpResponse>('bd6c84f8-49ba-4cf4-81f8-81a0fbb5caa3');
-            return dump.records.map(record => ({
-                _id: record[0] as number,
-                HAT_NO: record[1] as number,
-                HAT_ADI: record[2] as string,
-                GUZERGAH_ACIKLAMA: record[3] as string,
-                ACIKLAMA: record[4] as string,
-                HAT_BASLANGIC: record[5] as string,
-                HAT_BITIS: record[6] as string
-            }));
+        getHareketSaatleri(): Promise<EshotHareketSaati[]> {
+            return client.getCSV<EshotHareketSaati>(
+                'https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hareketsaatleri.csv'
+            );
         },
 
         /**
-         * ESHOT otobüs hareket saatlerini içeren web servisi (CKAN Dump).
-         * Tüm hareket saati verilerini tek seferde döndürür.
+         * ESHOT otobüs duraklarının listesini içeren web servisi (CSV).
+         * Tüm durak verilerini tek seferde döndürür (~11,770 durak).
          *
-         * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-otobus-hareket-saatleri
+         * Kaynak: https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-duraklari.csv
          */
-        getHareketSaatleri() {
-            return client.getCKANDump<CKANDumpResponse>('c6fa6046-f755-47d7-b69e-db6bb06a8b5a');
-        },
-
-        /**
-         * ESHOT otobüs hareket saatlerini nesne formatında döndürür.
-         * Raw dump verisini EshotHareketSaati nesnelerine dönüştürür.
-         *
-         * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-otobus-hareket-saatleri
-         */
-        async getHareketSaatleriParsed(): Promise<EshotHareketSaati[]> {
-            const dump = await client.getCKANDump<CKANDumpResponse>('c6fa6046-f755-47d7-b69e-db6bb06a8b5a');
-            return dump.records.map(record => ({
-                _id: record[0] as number,
-                HAT_NO: record[1] as number,
-                TARIFE_ID: record[2] as number,
-                GIDIS_SAATI: record[3] as string,
-                DONUS_SAATI: record[4] as string,
-                SIRA: record[5] as number,
-                GIDIS_ENGELLI_DESTEGI: record[6] as string,
-                DONUS_ENGELLI_DESTEGI: record[7] as string,
-                BISIKLETLI_GIDIS: record[8] as string,
-                BISIKLETLI_DONUS: record[9] as string,
-                GIDIS_ELEKTRIKLI_OTOBUS: record[10] as string,
-                DONUS_ELEKTRIKLI_OTOBUS: record[11] as string
-            }));
-        },
-
-        /**
-         * ESHOT otobüs duraklarının listesini içeren web servisi (CKAN Dump).
-         * Tüm durak verilerini tek seferde döndürür.
-         *
-         * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-duraklari
-         */
-        getDuraklar() {
-            return client.getCKANDump<CKANDumpResponse>('0c791266-a2e4-4f14-82b8-9a9b102fbf94');
-        },
-
-        /**
-         * ESHOT otobüs duraklarını nesne formatında döndürür.
-         * Raw dump verisini EshotDurakCKAN nesnelerine dönüştürür.
-         *
-         * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-duraklari
-         */
-        async getDurakalarParsed(): Promise<EshotDurakCKAN[]> {
-            const dump = await client.getCKANDump<CKANDumpResponse>('0c791266-a2e4-4f14-82b8-9a9b102fbf94');
-            return dump.records.map(record => ({
-                _id: record[0] as number,
-                DURAK_ID: record[1] as number,
-                DURAK_ADI: record[2] as string,
-                ENLEM: record[3] as number,
-                BOYLAM: record[4] as number,
-                DURAKTAN_GECEN_HATLAR: record[5] as string
-            }));
+        getDuraklar(): Promise<EshotDurakCSV[]> {
+            return client.getCSV<EshotDurakCSV>(
+                'https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-duraklari.csv'
+            );
         },
 
         /**
