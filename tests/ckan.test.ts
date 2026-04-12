@@ -71,59 +71,64 @@ describe("CKAN API testleri", () => {
 
     describe("eshot.getHatlar", () => {
         it("ESHOT hatlarını doğru parametrelerle çeker", async () => {
-            const mockRecords = [
-                { _id: 1, HAT_NO: 5, HAT_ADI: "NARLIDERE - KUYULAR İSKELE", GUZERGAH_ACIKLAMA: "MİTHAT PAŞA CAD.", ACIKLAMA: "", HAT_BASLANGIC: "NARLIDERE", HAT_BITIS: "KUYULAR İSKELE" },
-                { _id: 2, HAT_NO: 6, HAT_ADI: "ARIKENT - KUYULAR İSK.", GUZERGAH_ACIKLAMA: "MİTHAT PAŞA CAD.", ACIKLAMA: "", HAT_BASLANGIC: "ARIKENT", HAT_BITIS: "KUYULAR İSKELE" }
-            ];
-
-            const mockResult = {
-                include_total: true,
-                resource_id: 'bd6c84f8-49ba-4cf4-81f8-81a0fbb5caa3',
+            const mockResponse = {
                 fields: [
                     { type: "int", id: "_id" },
-                    { type: "int", id: "HAT_NO" },
-                    { type: "text", id: "HAT_ADI" }
+                    { type: "numeric", id: "HAT_NO" },
+                    { type: "text", id: "HAT_ADI" },
+                    { type: "text", id: "HAT_BASLANGIC" },
+                    { type: "text", id: "HAT_BITIS" }
                 ],
-                records_format: "objects",
-                records: mockRecords,
-                limit: 100,
-                total: 2
+                records: [
+                    [1, 5, "NARLIDERE - KUYULAR İSKELE", "NARLIDERE", "KUYULAR İSKELE"],
+                    [2, 6, "ARIKENT - KUYULAR İSK.", "ARIKENT", "KUYULAR İSKELE"]
+                ]
             };
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                json: async () => ({ success: true, result: mockResult })
+                json: async () => mockResponse
             });
 
             const api = new IzmirAPI();
             const result = await api.eshot.getHatlar();
 
             expect(mockFetch).toHaveBeenCalledWith(
-                'https://acikveri.bizizmir.com/api/3/action/datastore_search?resource_id=bd6c84f8-49ba-4cf4-81f8-81a0fbb5caa3&limit=100&offset=0'
+                'https://acikveri.bizizmir.com/datastore/dump/bd6c84f8-49ba-4cf4-81f8-81a0fbb5caa3?format=json'
             );
-            expect(result.records).toEqual(mockRecords);
-            expect(result.total).toBe(2);
+            expect(result.records).toEqual(mockResponse.records);
+            expect(result.fields.length).toBe(5);
         });
 
-        it("sayfalama parametreleri ile çalışır", async () => {
-            const mockResult = {
-                records: [],
-                total: 500,
-                limit: 50,
-                offset: 100
+        it("getHatlarParsed nesne formatında döndürür", async () => {
+            const mockResponse = {
+                fields: [
+                    { type: "int", id: "_id" },
+                    { type: "numeric", id: "HAT_NO" },
+                    { type: "text", id: "HAT_ADI" },
+                    { type: "text", id: "GUZERGAH_ACIKLAMA" },
+                    { type: "text", id: "ACIKLAMA" },
+                    { type: "text", id: "HAT_BASLANGIC" },
+                    { type: "text", id: "HAT_BITIS" }
+                ],
+                records: [
+                    [1, 5, "NARLIDERE - KUYULAR İSKELE", "MİTHAT PAŞA CAD.", "", "NARLIDERE", "KUYULAR İSKELE"],
+                    [2, 6, "ARIKENT - KUYULAR İSK.", "MİTHAT PAŞA CAD.", "", "ARIKENT", "KUYULAR İSKELE"]
+                ]
             };
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                json: async () => ({ success: true, result: mockResult })
+                json: async () => mockResponse
             });
 
             const api = new IzmirAPI();
-            await api.eshot.getHatlar(50, 100);
+            const result = await api.eshot.getHatlarParsed();
 
-            expect(mockFetch).toHaveBeenCalledWith(
-                'https://acikveri.bizizmir.com/api/3/action/datastore_search?resource_id=bd6c84f8-49ba-4cf4-81f8-81a0fbb5caa3&limit=50&offset=100'
-            );
+            expect(result).toEqual([
+                { _id: 1, HAT_NO: 5, HAT_ADI: "NARLIDERE - KUYULAR İSKELE", GUZERGAH_ACIKLAMA: "MİTHAT PAŞA CAD.", ACIKLAMA: "", HAT_BASLANGIC: "NARLIDERE", HAT_BITIS: "KUYULAR İSKELE" },
+                { _id: 2, HAT_NO: 6, HAT_ADI: "ARIKENT - KUYULAR İSK.", GUZERGAH_ACIKLAMA: "MİTHAT PAŞA CAD.", ACIKLAMA: "", HAT_BASLANGIC: "ARIKENT", HAT_BITIS: "KUYULAR İSKELE" }
+            ]);
         });
 
         it("getHatlar metodu mevcut", () => {

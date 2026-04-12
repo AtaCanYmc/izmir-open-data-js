@@ -116,18 +116,32 @@ export interface CKANDumpResponse {
 export function eshot(client: IzmirClient) {
     return {
         /**
-         * ESHOT hatlarının listesini içeren web servisi (CKAN).
+         * ESHOT hatlarının listesini içeren web servisi (CKAN Dump).
+         * Tüm hat verilerini tek seferde döndürür.
          *
          * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-hat-bilgileri
-         * @param limit Döndürülecek kayıt sayısı (varsayılan: 100)
-         * @param offset Atlanacak kayıt sayısı (sayfalama için)
          */
-        getHatlar(limit = 100, offset = 0) {
-            return client.getCKAN<CKANDatastoreResponse<EshotHat>>('datastore_search', {
-                resource_id: 'bd6c84f8-49ba-4cf4-81f8-81a0fbb5caa3',
-                limit,
-                offset
-            });
+        getHatlar() {
+            return client.getCKANDump<CKANDumpResponse>('bd6c84f8-49ba-4cf4-81f8-81a0fbb5caa3');
+        },
+
+        /**
+         * ESHOT hatlarını nesne formatında döndürür.
+         * Raw dump verisini EshotHat nesnelerine dönüştürür.
+         *
+         * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-hat-bilgileri
+         */
+        async getHatlarParsed(): Promise<EshotHat[]> {
+            const dump = await client.getCKANDump<CKANDumpResponse>('bd6c84f8-49ba-4cf4-81f8-81a0fbb5caa3');
+            return dump.records.map(record => ({
+                _id: record[0] as number,
+                HAT_NO: record[1] as number,
+                HAT_ADI: record[2] as string,
+                GUZERGAH_ACIKLAMA: record[3] as string,
+                ACIKLAMA: record[4] as string,
+                HAT_BASLANGIC: record[5] as string,
+                HAT_BITIS: record[6] as string
+            }));
         },
 
         /**
