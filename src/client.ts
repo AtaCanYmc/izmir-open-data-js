@@ -199,7 +199,16 @@ export class IzmirClient {
         const lines = csv.trim().split('\n');
         if (lines.length < 2) return [];
 
-        const headers = lines[0].split(delimiter).map(h => h.trim());
+        // Tırnak işaretlerini temizle
+        const cleanValue = (val: string): string => {
+            let cleaned = val.trim();
+            if (cleaned.startsWith('"') && cleaned.endsWith('"')) {
+                cleaned = cleaned.slice(1, -1);
+            }
+            return cleaned;
+        };
+
+        const headers = lines[0].split(delimiter).map(h => cleanValue(h));
         const results: T[] = [];
 
         for (let i = 1; i < lines.length; i++) {
@@ -207,7 +216,8 @@ export class IzmirClient {
             const obj: Record<string, string | number> = {};
 
             for (let j = 0; j < headers.length; j++) {
-                const value = values[j]?.trim() || '';
+                const rawValue = values[j]?.trim() || '';
+                const value = cleanValue(rawValue);
                 // Sayısal değerleri number'a çevir, ancak özel karakterler içeriyorsa string bırak
                 // Örn: "06:00" (saat), "29-30" (hat numaraları), "True/False" string kalmalı
                 if (value === '' || value.includes(':') || value.includes('-') || 

@@ -161,6 +161,7 @@ eshotVerileri();
 | Metot | Açıklama |
 | :--- | :--- |
 | `getIstasyonList()` | Metro istasyonlarını listeler |
+| `getDurakMesafeleri()` | Metro istasyonları arasındaki mesafe bilgilerini döner |
 
 ### 🚆 Ulaşım - İZBAN (`api.izban`)
 
