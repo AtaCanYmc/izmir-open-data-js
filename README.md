@@ -199,6 +199,12 @@ eshotVerileri();
 | `getList()` | Otoparkların doluluk ve konum bilgilerini döner |
 | `getUcretler(limit, offset)` | İzelman otopark ücretlerini döner (CKAN) |
 
+### 💳 İzmirimKart (`api.izmirimkart`)
+
+| Metot | Açıklama |
+| :--- | :--- |
+| `getDolumNoktalari()` | İzmirimKart dolum noktalarının adres ve konum bilgilerini döner |
+
 ### 🚦 Trafik (`api.trafik`)
 
 | Metot | Açıklama |

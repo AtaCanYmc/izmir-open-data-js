@@ -988,5 +988,25 @@ describeIfLive("Canlı API Integration Testleri", () => {
       expect(typeof data.total).toBe("number");
     });
   });
+
+  // ─────────────────────────────────────────────────────────────────
+  // İzmirimKart
+  // ─────────────────────────────────────────────────────────────────
+  describe("izmirimkart", () => {
+    it("getDolumNoktalari: array döner ve her item'da ADDRESS, LONGITUDE, LATITUDE alanları var", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.izmirimkart.getDolumNoktalari(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(Array.isArray(data)).toBe(true);
+      if (data.length > 0) {
+        const item = data[0];
+        expect(item).toHaveProperty("ADDRESS");
+        expect(item).toHaveProperty("LONGITUDE");
+        expect(item).toHaveProperty("LATITUDE");
+      }
+    });
+  });
 });
 

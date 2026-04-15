@@ -29,6 +29,7 @@ import { spor } from "./endpoints/spor";
 import { cografi } from "./endpoints/cografi";
 import { iztek } from "./endpoints/iztek";
 import { trafik } from "./endpoints/trafik";
+import { izmirimkart } from "./endpoints/izmirimkart";
 
 export class IzmirAPI {
     private readonly client: IzmirClient;
@@ -63,6 +64,7 @@ export class IzmirAPI {
     cografi;
     iztek;
     trafik;
+    izmirimkart;
 
     constructor(baseUrl?: string) {
         this.client = new IzmirClient(baseUrl);
@@ -96,5 +98,6 @@ export class IzmirAPI {
         this.cografi = cografi(this.client);
         this.iztek = iztek(this.client);
         this.trafik = trafik(this.client);
+        this.izmirimkart = izmirimkart(this.client);
     }
 }
