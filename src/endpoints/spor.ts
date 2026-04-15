@@ -5,6 +5,28 @@ import { DefaultOnemliYer, OnemliYerWrapper } from "../common/types/onemliYer";
 export interface SporTesisi extends DefaultOnemliYer {}
 
 /**
+ * Yürüyüş yolu/parkur bilgisi (CSV datasından)
+ */
+export interface YuruyusYolu {
+    /** Parkur adı */
+    PARKUR: string;
+    /** Yürüyüşe uygunluk durumu */
+    YURUYUS: string;
+    /** Mesafe (km) */
+    MESAFE: number | string;
+    /** Minimum yükseklik (metre) */
+    MINIMUM_YUKSEKLIK: number | string;
+    /** Maksimum yükseklik (metre) */
+    MAKSIMUM_YUKSEKLIK: number | string;
+    /** Tahmini süre (dakika) */
+    ZAMAN: number | string;
+    /** Zorluk derecesi (Kolay, Orta, Zorlu vb.) */
+    ZORLUK_DERECESI: string;
+    /** Bisiklete uygunluk durumu */
+    BISIKLET: string;
+}
+
+/**
  * Spor tesisleri endpoint'leri.
  * NOT: Bu endpoint'ler PDF dokümantasyonunda belirtilmiş ancak
  * API'de henüz aktif değil (404 dönüyor). İleride aktif olabilir.
@@ -36,6 +58,18 @@ export function spor(client: IzmirClient) {
          */
         getStadyumlarList() {
             return client.get("ibb/cbs/stadyumlar") as Promise<OnemliYerWrapper<SporTesisi>>;
+        },
+
+        /**
+         * Yürüyüş ve bisiklet parkurlarının bilgilerini içeren web servisi (CSV).
+         * Parkur adı, mesafe, yükseklik, zorluk derecesi gibi bilgileri içerir.
+         *
+         * Kaynak: https://acikveri.bizizmir.com/dataset/yuruyus-yollari
+         */
+        getYuruyusYollari(): Promise<YuruyusYolu[]> {
+            return client.getCSV<YuruyusYolu>(
+                'https://acikveri.bizizmir.com/dataset/48fa21a3-b286-40f2-a286-28aa9dc328df/resource/4896beb8-0139-4135-9475-d790c18bbb19/download/yuruyus-yollar.csv'
+            );
         }
     };
 }

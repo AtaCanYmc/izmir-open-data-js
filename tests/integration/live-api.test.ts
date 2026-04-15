@@ -587,6 +587,21 @@ describeIfLive("Canlı API Integration Testleri", () => {
 
       expect(data).toBeDefined();
     });
+
+    it("getYuruyusYollari: array döner ve her item'da PARKUR, MESAFE alanları var", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.spor.getYuruyusYollari(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(Array.isArray(data)).toBe(true);
+      if (data.length > 0) {
+        const item = data[0];
+        expect(item).toHaveProperty("PARKUR");
+        expect(item).toHaveProperty("MESAFE");
+        expect(item).toHaveProperty("ZORLUK_DERECESI");
+      }
+    });
   });
 
   // ─────────────────────────────────────────────────────────────────

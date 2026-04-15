@@ -353,8 +353,9 @@ eshotVerileri();
 | `getHipodromList()` | Hipodromları listeler |
 | `getSporSalonlariList()` | Spor salonlarını listeler |
 | `getStadyumlarList()` | Stadyumları listeler |
+| `getYuruyusYollari()` | Yürüyüş ve bisiklet parkurlarını döner (mesafe, zorluk, süre bilgileri) |
 
-> ⚠️ **Not:** Spor endpoint'leri API'de henüz tam aktif olmayabilir.
+> ⚠️ **Not:** Bazı spor endpoint'leri API'de henüz tam aktif olmayabilir.
 
 ### 🗺️ Coğrafi Özellikler (`api.cografi`)
 
