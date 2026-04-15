@@ -302,6 +302,28 @@ describeIfLive("Canlı API Integration Testleri", () => {
   });
 
   // ─────────────────────────────────────────────────────────────────
+  // İklim
+  // ─────────────────────────────────────────────────────────────────
+  describe("iklim", () => {
+    it("getHavaKalitesiIstasyonlari: array döner ve her item'da ILCE, ISTASYON_ADI alanları var", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.iklim.getHavaKalitesiIstasyonlari(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(Array.isArray(data)).toBe(true);
+      if (data.length > 0) {
+        const item = data[0];
+        expect(item).toHaveProperty("BOLGE");
+        expect(item).toHaveProperty("ILCE");
+        expect(item).toHaveProperty("ISTASYON_ADI");
+        expect(item).toHaveProperty("ENLEM");
+        expect(item).toHaveProperty("BOYLAM");
+      }
+    });
+  });
+
+  // ─────────────────────────────────────────────────────────────────
   // Otopark
   // ─────────────────────────────────────────────────────────────────
   describe("otopark", () => {

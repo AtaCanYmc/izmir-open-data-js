@@ -229,6 +229,7 @@ eshotVerileri();
 | Metot | Açıklama |
 | :--- | :--- |
 | `getGunlukHavaKalitesiOlcumleri(tarih)` | Belirtilen tarihe göre hava kalitesi ölçümlerini döner |
+| `getHavaKalitesiIstasyonlari()` | Hava kalitesi ölçüm istasyonlarının konum bilgilerini döner |
 
 ### 🛒 Pazarlar (`api.pazarlar`)
 
