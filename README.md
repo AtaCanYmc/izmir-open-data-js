@@ -155,6 +155,7 @@ eshotVerileri();
 | `getIstasyonList(seferId)` | Sefer numarasına göre tramvay istasyonlarını listeler |
 | `getSeferSiklikList(seferId)` | Sefer numarasına göre sefer sıklıklarını döner |
 | `getPlanlananiSeferSayilari()` | Metro ve tramvay için aylık planlanan sefer sayılarını döner (~74 kayıt) |
+| `getDurakMesafeleri(hat)` | Tramvay hattı durak mesafelerini döner. Hat: `'karsiyaka'`, `'konak-sag'`, `'konak-sol'`, `'cigili'` |
 
 ### 🚇 Ulaşım - Metro (`api.metro`)
 

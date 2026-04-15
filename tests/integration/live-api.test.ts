@@ -209,6 +209,31 @@ describeIfLive("Canlı API Integration Testleri", () => {
 
       expect(Array.isArray(data)).toBe(true);
     });
+
+    it("getDurakMesafeleri: Karşıyaka hattı için array döner", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.tramvay.getDurakMesafeleri('karsiyaka'), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(Array.isArray(data)).toBe(true);
+      if (data.length > 0) {
+        const item = data[0];
+        expect(item).toHaveProperty("ISTASYON_ID");
+        expect(item).toHaveProperty("ISTASYON_ADI");
+        expect(item).toHaveProperty("MESAFE");
+      }
+    });
+
+    it("getDurakMesafeleri: Çiğli hattı için array döner", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.tramvay.getDurakMesafeleri('cigili'), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(Array.isArray(data)).toBe(true);
+      expect(data.length).toBeGreaterThan(0);
+    });
   });
 
   // ─────────────────────────────────────────────────────────────────
