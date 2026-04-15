@@ -24,6 +24,21 @@ export interface IzbanUcretDetay {
     MinBakiyeSerbest: number;
 }
 
+/**
+ * İZBAN duraklar arası mesafe bilgisi (CSV datasından)
+ * İstasyonlar arası mesafe bilgilerini içerir
+ */
+export interface IzbanDurakMesafesi {
+    /** İstasyon ID'si */
+    ISTASYON_ID: number | string;
+    /** İstasyon adı */
+    ISTASYON_ADI: string;
+    /** Hat üzerindeki istasyon sırası */
+    ISTAYON_SIRASI: number | string;
+    /** Bir önceki istasyona olan mesafe (metre cinsinden) */
+    MESAFE: number | string;
+}
+
 export function izban(client: IzmirClient) {
     return {
         /**
@@ -57,6 +72,18 @@ export function izban(client: IzmirClient) {
          */
         getHareketSaatleri(kalkisIstasyonId: number, varisIstasyonId: number) {
             return client.get(`sefersaatleri/${kalkisIstasyonId}/${varisIstasyonId}`);
+        },
+
+        /**
+         * İZBAN istasyonları arasındaki mesafe bilgilerini içeren web servisi (CSV).
+         * Her istasyonun bir önceki istasyona olan mesafesini metre cinsinden içerir.
+         *
+         * Kaynak: https://acikveri.bizizmir.com/dataset/izban-duraklar-arasi-mesafe
+         */
+        getDurakMesafeleri(): Promise<IzbanDurakMesafesi[]> {
+            return client.getCSV<IzbanDurakMesafesi>(
+                'https://acikveri.bizizmir.com/dataset/c40b5759-9394-41b0-a479-0e7c53e18072/resource/53ff5f4b-c514-43aa-a4cd-4a12e03976e1/download/izban-duraklar-arasi-mesafe.csv'
+            );
         }
     };
 }

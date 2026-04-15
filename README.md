@@ -171,6 +171,7 @@ eshotVerileri();
 | `getTarife(binisId, inisId, aktarma, httMi)` | İZBAN fiyat tarifesini hesaplar |
 | `getIstasyonList()` | İZBAN istasyonlarını listeler |
 | `getHareketSaatleri(kalkisId, varisId)` | İZBAN hareket saatlerini döner |
+| `getDurakMesafeleri()` | İZBAN istasyonları arasındaki mesafe bilgilerini döner |
 
 ### ⛴️ Ulaşım - Vapur (`api.vapur`)
 

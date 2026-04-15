@@ -284,6 +284,21 @@ describeIfLive("Canlı API Integration Testleri", () => {
 
       expect(data).toBeDefined();
     });
+
+    it("getDurakMesafeleri: array döner ve her item'da ISTASYON_ADI, MESAFE alanları var", async () => {
+      const data = await withTimeout(
+        withRetry(() => api.izban.getDurakMesafeleri(), RETRY_OPTIONS),
+        TIMEOUT_MS
+      );
+
+      expect(Array.isArray(data)).toBe(true);
+      if (data.length > 0) {
+        const item = data[0];
+        expect(item).toHaveProperty("ISTASYON_ID");
+        expect(item).toHaveProperty("ISTASYON_ADI");
+        expect(item).toHaveProperty("MESAFE");
+      }
+    });
   });
 
   // ─────────────────────────────────────────────────────────────────
