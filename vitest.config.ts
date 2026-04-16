@@ -5,7 +5,7 @@ export default defineConfig({
     include: ["tests/**/*.test.ts"],
     environment: "node",
     testTimeout: 30000, // 30 saniye global timeout (canlı API testleri için)
-    setupFiles: ["dotenv/config"],
+    setupFiles: ["dotenv/config", "./tests/setup.ts"],
     typecheck: {
       tsconfig: "./tsconfig.test.json"
     },
