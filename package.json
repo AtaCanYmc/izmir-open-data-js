@@ -1,6 +1,6 @@
 {
   "name": "izmir-open-data-js",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Izmir Open Data API wrapper - İzmir Büyükşehir Belediyesi Açık Veri API'leri için TypeScript/JavaScript kütüphanesi",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
