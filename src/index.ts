@@ -101,3 +101,5 @@ export class IzmirAPI {
         this.izmirimkart = izmirimkart(this.client);
     }
 }
+
+export * from "./endpoints/eshot";

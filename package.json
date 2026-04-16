@@ -50,6 +50,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
+    "cheerio": "^1.2.0",
     "fetch-jsonp": "^1.4.0"
   }
 }

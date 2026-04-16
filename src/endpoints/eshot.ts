@@ -1,5 +1,6 @@
 import {IzmirClient} from "../client";
 import {DefaultOnemliYer, OnemliYerWrapper} from "../common/types/onemliYer";
+import * as cheerio from 'cheerio';
 
 export interface EshotDurak extends DefaultOnemliYer {}
 
@@ -240,6 +241,62 @@ export function eshot(client: IzmirClient) {
          */
         getHatOtobusKonumlari(hatId: number) {
             return client.get(`iztek/hatotobuskonumlari/${hatId}`) as Promise<HatOtobusKonumlariResponse>;
+        },
+
+        /**
+         * ESHOT duraklarının sıralı listesini çeken web servisi.
+         *
+         * Belirli bir hat numarası ve yön için durak listesini sıralı olarak döndürür.
+         * Gidiş için 0, dönüş için 1 değeri kullanılmalıdır.
+         *
+         * Kaynak: https://www.eshot.gov.tr/tr/UlasimSaatleri/{hatNo}/288
+         * @param hatNo Hat numarası (ör: '390')
+         * @param yon 0: Gidiş, 1: Dönüş
+         * @returns Sıralı durak listesi [{hatNo, yon, durakAdi, sira}]
+         */
+        async scrapEshotSiraliDurakListesi(hatNo: string, yon: 0 | 1): Promise<EshotSiraliDurak[]> {
+            const url = `https://www.eshot.gov.tr/tr/UlasimSaatleri/${hatNo}/288`;
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                    },
+                    body: new URLSearchParams({ 'hatYon': yon.toString() })
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP hata kodu: ${response.status}`);
+                }
+                const html = await response.text();
+                const $ = cheerio.load(html);
+                let stops: string[] = [];
+                $('.block-transfer').each((_, block) => {
+                    const ul = $(block).find('ul.transfer');
+                    if (ul.length > 0) {
+                        stops = ul.find('li.ring')
+                            .map((_, li) => $(li).text().trim())
+                            .get();
+                        if (stops.length > 0) return false;
+                    }
+                });
+                return stops.map((durakAdi, idx) => ({
+                    hatNo,
+                    yon,
+                    durakAdi,
+                    sira: idx + 1
+                }));
+            } catch (error) {
+                console.error(`ESHOT durakları çekilirken hata oluştu:`, error);
+                return [];
+            }
         }
     };
+}
+
+export interface EshotSiraliDurak {
+    hatNo: string;
+    yon: 0 | 1;
+    durakAdi: string;
+    sira: number;
 }
