@@ -280,10 +280,11 @@ export function eshot(client: IzmirClient) {
                         if (stops.length > 0) return false;
                     }
                 });
-                return stops.map((durakAdi, idx) => ({
+                return stops.map((durak, idx) => ({
                     hatNo,
                     yon,
-                    durakAdi,
+                    durakAdi: durak.split(' - ')[0] ?? "-",
+                    durakId: durak.split(' - ')[1] ?? "-",
                     sira: idx + 1
                 }));
             } catch (error) {
@@ -298,5 +299,6 @@ export interface EshotSiraliDurak {
     hatNo: string;
     yon: 0 | 1;
     durakAdi: string;
+    durakId: string;
     sira: number;
 }
