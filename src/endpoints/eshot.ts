@@ -99,6 +99,14 @@ export interface YaklasanOtobus {
     OtobusId: number;
 }
 
+export interface EshotSiraliDurak {
+    hatNo: string;
+    yon: 0 | 1;
+    durakAdi: string;
+    durakId: string;
+    sira: number;
+}
+
 /**
  * Hat otobüs konum bilgisi response
  */
@@ -293,12 +301,4 @@ export function eshot(client: IzmirClient) {
             }
         }
     };
-}
-
-export interface EshotSiraliDurak {
-    hatNo: string;
-    yon: 0 | 1;
-    durakAdi: string;
-    durakId: string;
-    sira: number;
 }
