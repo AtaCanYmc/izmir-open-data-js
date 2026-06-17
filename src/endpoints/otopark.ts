@@ -102,7 +102,7 @@ export function otopark(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/otopark-doluluk-ve-lokasyon-bilgileri
          */
         getList() {
-            return client.get("izum/otoparklar") as Promise<OtoparkBilgisi[]>;
+            return client.get<OtoparkBilgisi[]>("izum/otoparklar");
         },
 
         /**

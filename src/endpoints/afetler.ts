@@ -11,7 +11,7 @@ export function afetler(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/afet-ve-acil-durum-toplanma-alanlari
          */
         getAcilDurumToplanmaAlanlari() {
-            return client.get("ibb/cbs/afetaciltoplanmaalani") as Promise<OnemliYerWrapper<AfetToplanmaAlanlari>>;
+            return client.get<OnemliYerWrapper<AfetToplanmaAlanlari>>("ibb/cbs/afetaciltoplanmaalani");
         }
     };
 }

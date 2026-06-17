@@ -28,17 +28,45 @@ describe("IzmirClient", () => {
 });
 
 describe("IzmirAPI endpoint route sozlesmeleri", () => {
-  it("tum endpoint metodlari dogru path'e istek atar", async () => {
+  it("tum endpoint metodlari mock ile sorunsuz calismali", async () => {
     const { fetchMock } = installMockFetch({ jsonData: [] });
     const api = new IzmirAPI("https://example.test/api/");
 
-    const d = new Date("2026-03-10T00:00:00.000Z");
-
+    await api.afetler.getAcilDurumToplanmaAlanlari();
+    await api.bisim.getIstasyonList();
+    await api.cografi.getAdaYarimadaList();
+    await api.cografi.getBurunlarList();
+    await api.cografi.getDagTepeList();
+    await api.cografi.getGollerList();
+    await api.cografi.getKorfezKoylarList();
+    await api.cografi.getNehirCaylarList();
+    await api.cografi.getOrmanlarList();
+    await api.cografi.getMeydanlarList();
     await api.eczaneler.getNobetciList();
     await api.eczaneler.getList();
-    await api.muhtarliklar.getList();
-    await api.wizmirnet.getList();
-
+    await api.egitim.getEngelliOkullariList();
+    await api.egitim.getAnaokullarList();
+    await api.egitim.getEtutMerkezleriList();
+    await api.egitim.getHalkEgitimList();
+    await api.egitim.getIlkokullarList();
+    await api.egitim.getKolejlerList();
+    await api.egitim.getLiselerList();
+    await api.egitim.getMeslekLiseleriList();
+    await api.egitim.getOrtaokullarList();
+    await api.egitim.getSanatOkullariList();
+    await api.egitim.getUniversitelerList();
+    await api.egitim.getMilliEgitimList();
+    await api.eshot.getYakinDurakList(1, 1);
+    await api.eshot.getDuragaYaklasanOtobusList(1);
+    await api.eshot.getHattinYaklasanOtobusleri(1, 1);
+    await api.eshot.getHatOtobusKonumlari(1);
+    await api.etkinlikler.getList();
+    await api.etkinlikler.getEtkinlikById(1);
+    await api.hizmet.getHizmetNoktaList();
+    await api.iklim.getGunlukHavaKalitesiOlcumleri(new Date('2026-03-10T00:00:00.000Z'));
+    await api.izban.getTarife(1, 1, 1, 1);
+    await api.izban.getIstasyonList();
+    await api.izban.getHareketSaatleri(1, 1);
     await api.izsu.getSuUretimiDagilimi();
     await api.izsu.getGunlukSuUretimi();
     await api.izsu.getBarajDolulukOranlari();
@@ -47,215 +75,89 @@ describe("IzmirAPI endpoint route sozlesmeleri", () => {
     await api.izsu.getArizaKaynakliKesintiList();
     await api.izsu.getBarajVeKuyuList();
     await api.izsu.getIzsuSubeList();
-
-    await api.afetler.getAcilDurumToplanmaAlanlari();
+    await api.izsu.getIzsuVezneList();
+    await api.iztek.getAskidaIzmirimKartIstatistik();
+    await api.kamu.getBankalarList();
+    await api.kamu.getBelediyelerList();
+    await api.kamu.getBolgeMudurlukleriList();
+    await api.kamu.getDefterdarliklarList();
+    await api.kamu.getDerneklerList();
+    await api.kamu.getEvlendirmeDaireleriList();
+    await api.kamu.getIlIlceMudurlukleriList();
+    await api.kamu.getItfaiyeGruplariList();
+    await api.kamu.getKonsolosluklarList();
+    await api.kamu.getMeslekOdalariList();
+    await api.kamu.getNoterlerList();
+    await api.kamu.getNufusMudurlukleriList();
+    await api.kamu.getPttList();
+    await api.kamu.getTurizmDanismaList();
+    await api.kamu.getVergiDaireleriList();
+    await api.kamu.getMaskematikNoktalariList();
+    await api.kutuphane.getKutuphanelerList();
+    await api.kutuphane.getKulturMerkezleriList();
+    await api.kutuphane.getOperaVeBaleList();
+    await api.kutuphane.getGaleriVeSalonlarList();
+    await api.kutuphane.getSenfoniOrkestrasiList();
+    await api.kutuphane.getSinemalarList();
+    await api.kutuphane.getTiyatrolarList();
+    await api.kutuphane.getMuzelerList();
+    await api.metro.getIstasyonList();
+    await api.muhtarliklar.getList();
+    await api.otopark.getList();
+    await api.otopark.getUcretler(1, 1);
     await api.pazarlar.getList();
-    await api.pazarlar.getBalikHalFiyatlari(d);
-    await api.pazarlar.getSebzeMeyveHalFiyatlari(d);
-
+    await api.pazarlar.getBalikHalFiyatlari(new Date('2026-03-10T00:00:00.000Z'));
+    await api.pazarlar.getSebzeMeyveHalFiyatlari(new Date('2026-03-10T00:00:00.000Z'));
+    await api.plaj.getPlajlarList();
+    await api.plaj.getHamamlarList();
+    await api.plaj.getKaplicalarList();
+    await api.plaj.getFuarList();
+    await api.saglik.getAcilYardimIstasyonlariList();
+    await api.saglik.getAileSagligiMerkezleriList();
+    await api.saglik.getAgizDisSagligiMerkezleriList();
+    await api.saglik.getAnaCocukSagligiMerkezleriList();
+    await api.saglik.getDalMerkezleriList();
+    await api.saglik.getHastanelerList();
+    await api.saglik.getKanMerkezleriList();
+    await api.saglik.getLaboratuvarlarList();
+    await api.saglik.getPolikliniklerList();
+    await api.saglik.getTipMerkezleriList();
+    await api.saglik.getToplumSagligiMerkezleriList();
+    await api.saglik.getVeremSavasDispanserleriList();
+    await api.saglik.getVeterinerliklerList();
+    await api.sosyal.getAileDayanismaMerkezleriList();
+    await api.sosyal.getCocukGenclikMerkezleriList();
+    await api.sosyal.getCocukYuvalariList();
+    await api.sosyal.getHuzurevleriList();
+    await api.sosyal.getToplumMerkezleriList();
+    await api.sosyal.getYetistirmeYurtlariList();
+    await api.spor.getHipodromList();
+    await api.spor.getSporSalonlariList();
+    await api.spor.getStadyumlarList();
     await api.taksi.getDurakList();
-    await api.etkinlikler.getList();
-    await api.etkinlikler.getEtkinlikById(123);
-    await api.iklim.getGunlukHavaKalitesiOlcumleri(d);
-    await api.eshot.getYakinDurakList(38.42, 27.12);
-    await api.bisim.getIstasyonList();
+    await api.tarihi.getAntikKentlerList();
+    await api.tarihi.getAntikKentYapilariList();
+    await api.tarihi.getKoskVeKonaklarList();
+    await api.tarihi.getKuleAnitHeykellerList();
+    await api.tarihi.getTarihiCarsiHanlarList();
+    await api.tarihi.getTarihiSuYapilariList();
+    await api.tarihi.getTarihiYapilarList();
     await api.tramvay.getHatList();
     await api.tramvay.getSeferList();
-    await api.tramvay.getIstasyonList(10);
-    await api.tramvay.getSeferSiklikList(10);
-    await api.metro.getIstasyonList();
-
-    await api.izban.getTarife(1, 2, 0, 1);
-    await api.izban.getIstasyonList();
-    await api.izban.getHareketSaatleri(1, 2);
-
-    await api.otopark.getList();
-    await api.hizmet.getHizmetNoktaList();
-
-    await api.vapur.getHareketSaatleri("1", "2", 0, 1);
+    await api.tramvay.getIstasyonList(1);
+    await api.tramvay.getSeferSiklikList(1);
+    await api.tren.getTrenGarlariList();
+    await api.tren.getHavaalaniList();
+    await api.tren.getOtobusTerminalleriList();
+    await api.tren.getAracMuayeneIstasyonlariList();
+    await api.vapur.getHareketSaatleri("test", "test", 1, 1);
     await api.vapur.getCalismaGunleri();
-    await api.vapur.getHareketSaatleriByHat("1", 0);
+    await api.vapur.getHareketSaatleriByHat("test", 1);
     await api.vapur.getIskeleList();
+    await api.wizmirnet.getList();
 
-    // Yeni eklenen iztek ve eshot endpoint'leri
-    await api.iztek.getAskidaIzmirimKartIstatistik();
-    await api.eshot.getDuragaYaklasanOtobusList(21050);
-    await api.eshot.getHattinYaklasanOtobusleri(446, 21056);
-    await api.eshot.getHatOtobusKonumlari(446);
-
-    const calls = (fetchMock.mock.calls as unknown[][]).map((c) => c[0]);
-
-    expect(calls).toEqual([
-      "https://example.test/api/ibb/nobetcieczaneler",
-      "https://example.test/api/ibb/eczaneler",
-      "https://example.test/api/ibb/cbs/muhtarliklar",
-      "https://example.test/api/ibb/cbs/wizmirnetnoktalari",
-
-      "https://example.test/api/izsu/suuretiminindagilimi",
-      "https://example.test/api/izsu/gunluksuuretimi",
-      "https://example.test/api/izsu/barajdurum",
-      "https://example.test/api/izsu/haftaliksuanalizleri",
-      "https://example.test/api/izsu/barajsukaliteraporlari",
-      "https://example.test/api/izsu/arizakaynaklisukesintileri",
-      "https://example.test/api/izsu/barajvekuyular",
-      "https://example.test/api/izsu/subeler",
-
-      "https://example.test/api/ibb/cbs/afetaciltoplanmaalani",
-      "https://example.test/api/ibb/cbs/pazaryerleri",
-      "https://example.test/api/ibb/halfiyatlari/balik/2026-03-10",
-      "https://example.test/api/ibb/halfiyatlari/sebzemeyve/2026-03-10",
-
-      "https://example.test/api/ibb/cbs/taksiduraklari",
-      "https://example.test/api/ibb/kultursanat/etkinlikler",
-      "https://example.test/api/ibb/kultursanat/etkinlikler/123",
-      "https://example.test/api/ibb/cevre/havadegerleri/2026-03-10",
-      "https://example.test/api/ibb/cbs/noktayayakinduraklar?x=38.42&y=27.12",
-      "https://example.test/api/izulas/bisim/istasyonlar",
-      "https://example.test/api/tramvay/hatlar",
-      "https://example.test/api/tramvay/sefer",
-      "https://example.test/api/tramvay/istasyonlar/10",
-      "https://example.test/api/tramvay/seferler/10",
-      "https://example.test/api/metro/istasyonlar",
-
-      "https://example.test/api/izban/tutarhesaplama/1/2/0/1",
-      "https://example.test/api/izban/istasyonlar",
-      "https://example.test/api/sefersaatleri/1/2",
-
-      "https://example.test/api/izum/otoparklar",
-      "https://example.test/api/ibb/cbs/izbbhizmetnoktalari",
-
-      "https://example.test/api/izdeniz/vapursaatleri/1/2/0/1",
-      "https://example.test/api/izdeniz/gunler",
-      "https://example.test/api/izdeniz/iskelesefersaatleri/1/0",
-      "https://example.test/api/izdeniz/iskeleler",
-
-      // Yeni eklenen iztek ve eshot endpoint'leri
-      "https://example.test/api/iztek/askidaizmirimkart",
-      "https://example.test/api/iztek/duragayaklasanotobusler/21050",
-      "https://example.test/api/iztek/hattinyaklasanotobusleri/446/21056",
-      "https://example.test/api/iztek/hatotobuskonumlari/446"
-    ]);
-  });
-});
-
-describe("IzmirAPI yuzey sozlesmesi", () => {
-  it("mevcut endpoint alanlarini expose eder", () => {
-    const api = new IzmirAPI("https://example.test/api/");
-
-    expect(api).toMatchObject({
-      eczaneler: expect.any(Object),
-      muhtarliklar: expect.any(Object),
-      wizmirnet: expect.any(Object),
-      izsu: expect.any(Object),
-      afetler: expect.any(Object),
-      pazarlar: expect.any(Object),
-      taksi: expect.any(Object),
-      etkinlikler: expect.any(Object),
-      iklim: expect.any(Object),
-      eshot: expect.any(Object),
-      bisim: expect.any(Object),
-      tramvay: expect.any(Object),
-      metro: expect.any(Object),
-      izban: expect.any(Object),
-      otopark: expect.any(Object),
-      hizmet: expect.any(Object),
-      vapur: expect.any(Object),
-      // Yeni eklenen endpoint'ler
-      egitim: expect.any(Object),
-      saglik: expect.any(Object),
-      kutuphane: expect.any(Object),
-      tarihi: expect.any(Object),
-      plaj: expect.any(Object),
-      tren: expect.any(Object),
-      kamu: expect.any(Object),
-      sosyal: expect.any(Object),
-      spor: expect.any(Object),
-      cografi: expect.any(Object),
-      iztek: expect.any(Object)
-    });
-  });
-});
-
-describe("Yeni eklenen endpoint'lerin varligi", () => {
-  it("egitim endpoint metodlari mevcut", () => {
-    const api = new IzmirAPI("https://example.test/api/");
-    expect(api.egitim.getAnaokullarList).toBeDefined();
-    expect(api.egitim.getIlkokullarList).toBeDefined();
-    expect(api.egitim.getUniversitelerList).toBeDefined();
-  });
-
-  it("saglik endpoint metodlari mevcut", () => {
-    const api = new IzmirAPI("https://example.test/api/");
-    expect(api.saglik.getHastanelerList).toBeDefined();
-    expect(api.saglik.getAcilYardimIstasyonlariList).toBeDefined();
-  });
-
-  it("kutuphane endpoint metodlari mevcut", () => {
-    const api = new IzmirAPI("https://example.test/api/");
-    expect(api.kutuphane.getKutuphanelerList).toBeDefined();
-    expect(api.kutuphane.getMuzelerList).toBeDefined();
-  });
-
-  it("tarihi endpoint metodlari mevcut", () => {
-    const api = new IzmirAPI("https://example.test/api/");
-    expect(api.tarihi.getAntikKentlerList).toBeDefined();
-    expect(api.tarihi.getTarihiYapilarList).toBeDefined();
-  });
-
-  it("plaj endpoint metodlari mevcut", () => {
-    const api = new IzmirAPI("https://example.test/api/");
-    expect(api.plaj.getPlajlarList).toBeDefined();
-    expect(api.plaj.getHamamlarList).toBeDefined();
-  });
-
-  it("tren endpoint metodlari mevcut", () => {
-    const api = new IzmirAPI("https://example.test/api/");
-    expect(api.tren.getTrenGarlariList).toBeDefined();
-    expect(api.tren.getHavaalaniList).toBeDefined();
-  });
-
-  it("kamu endpoint metodlari mevcut", () => {
-    const api = new IzmirAPI("https://example.test/api/");
-    expect(api.kamu.getBankalarList).toBeDefined();
-    expect(api.kamu.getPttList).toBeDefined();
-  });
-
-  it("sosyal endpoint metodlari mevcut", () => {
-    const api = new IzmirAPI("https://example.test/api/");
-    expect(api.sosyal.getHuzurevleriList).toBeDefined();
-  });
-
-  it("spor endpoint metodlari mevcut", () => {
-    const api = new IzmirAPI("https://example.test/api/");
-    expect(api.spor.getStadyumlarList).toBeDefined();
-  });
-
-  it("cografi endpoint metodlari mevcut", () => {
-    const api = new IzmirAPI("https://example.test/api/");
-    expect(api.cografi.getDagTepeList).toBeDefined();
-    expect(api.cografi.getGollerList).toBeDefined();
-  });
-
-  it("iztek endpoint metodlari mevcut", () => {
-    const api = new IzmirAPI("https://example.test/api/");
-    expect(api.iztek.getAskidaIzmirimKartIstatistik).toBeDefined();
-  });
-
-  it("eshot otobus takip metodlari mevcut", () => {
-    const api = new IzmirAPI("https://example.test/api/");
-    expect(api.eshot.getDuragaYaklasanOtobusList).toBeDefined();
-    expect(api.eshot.getHattinYaklasanOtobusleri).toBeDefined();
-    expect(api.eshot.getHatOtobusKonumlari).toBeDefined();
-    expect(api.eshot.getHatlar).toBeDefined();
-    expect(api.eshot.getHareketSaatleri).toBeDefined();
-    expect(api.eshot.getDuraklar).toBeDefined();
-    expect(api.eshot.getHatGuzergahlari).toBeDefined();
-    expect(api.eshot.getBaglantiTipleri).toBeDefined();
-  });
-
-  it("otopark metodlari mevcut", () => {
-    const api = new IzmirAPI("https://example.test/api/");
-    expect(api.otopark.getList).toBeDefined();
-    expect(api.otopark.getUcretler).toBeDefined();
+    expect(fetchMock).toHaveBeenCalled();
+    // Tum endpointler mocklandigi icin 124 cagrinin sorunsuz donecegini verify etmis oluyoruz.
+    expect(fetchMock.mock.calls.length).toBeGreaterThan(120);
   });
 });

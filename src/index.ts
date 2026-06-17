@@ -34,40 +34,42 @@ import { izmirimkart } from "./endpoints/izmirimkart";
 export class IzmirAPI {
     private readonly client: IzmirClient;
 
-    eczaneler;
-    muhtarliklar;
-    wizmirnet;
-    izsu;
-    afetler;
-    pazarlar;
-    taksi;
-    etkinlikler;
-    iklim;
-    eshot;
-    bisim;
-    tramvay;
-    metro;
-    izban;
-    otopark;
-    hizmet;
-    vapur;
+    public readonly eczaneler;
+    public readonly muhtarliklar;
+    public readonly wizmirnet;
+    public readonly izsu;
+    public readonly afetler;
+    public readonly pazarlar;
+    public readonly taksi;
+    public readonly etkinlikler;
+    public readonly iklim;
+    public readonly eshot;
+    public readonly bisim;
+    public readonly tramvay;
+    public readonly metro;
+    public readonly izban;
+    public readonly otopark;
+    public readonly hizmet;
+    public readonly vapur;
+    
     // Yeni endpoint'ler
-    egitim;
-    saglik;
-    kutuphane;
-    tarihi;
-    plaj;
-    tren;
-    kamu;
-    sosyal;
-    spor;
-    cografi;
-    iztek;
-    trafik;
-    izmirimkart;
+    public readonly egitim;
+    public readonly saglik;
+    public readonly kutuphane;
+    public readonly tarihi;
+    public readonly plaj;
+    public readonly tren;
+    public readonly kamu;
+    public readonly sosyal;
+    public readonly spor;
+    public readonly cografi;
+    public readonly iztek;
+    public readonly trafik;
+    public readonly izmirimkart;
 
     constructor(baseUrl?: string) {
         this.client = new IzmirClient(baseUrl);
+        
         this.eczaneler = eczaneler(this.client);
         this.muhtarliklar = muhtarliklar(this.client);
         this.wizmirnet = wizmirnet(this.client);
@@ -85,7 +87,7 @@ export class IzmirAPI {
         this.otopark = otopark(this.client);
         this.hizmet = hizmet(this.client);
         this.vapur = vapur(this.client);
-        // Yeni endpoint'ler
+        
         this.egitim = egitim(this.client);
         this.saglik = saglik(this.client);
         this.kutuphane = kutuphane(this.client);

@@ -32,7 +32,7 @@ export function metro(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/metro-istayonlari
          */
         getIstasyonList() {
-            return client.get('metro/istasyonlar') as Promise<MetroIstasyonu[]>;
+            return client.get<MetroIstasyonu[]>('metro/istasyonlar');
         },
 
         /**

@@ -11,7 +11,7 @@ export function tren(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/trengarlari
          */
         getTrenGarlariList() {
-            return client.get("ibb/cbs/trengarlari") as Promise<OnemliYerWrapper<UlasimNoktasi>>;
+            return client.get<OnemliYerWrapper<UlasimNoktasi>>("ibb/cbs/trengarlari");
         },
 
         /**
@@ -19,7 +19,7 @@ export function tren(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/havaalani
          */
         getHavaalaniList() {
-            return client.get("ibb/cbs/havaalani") as Promise<OnemliYerWrapper<UlasimNoktasi>>;
+            return client.get<OnemliYerWrapper<UlasimNoktasi>>("ibb/cbs/havaalani");
         },
 
         /**
@@ -27,7 +27,7 @@ export function tren(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/otobusterminalleri
          */
         getOtobusTerminalleriList() {
-            return client.get("ibb/cbs/otobusterminalleri") as Promise<OnemliYerWrapper<UlasimNoktasi>>;
+            return client.get<OnemliYerWrapper<UlasimNoktasi>>("ibb/cbs/otobusterminalleri");
         },
 
         /**
@@ -35,7 +35,7 @@ export function tren(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/aracmuayeneistasyonlari
          */
         getAracMuayeneIstasyonlariList() {
-            return client.get("ibb/cbs/aracmuayeneistasyonlari") as Promise<OnemliYerWrapper<UlasimNoktasi>>;
+            return client.get<OnemliYerWrapper<UlasimNoktasi>>("ibb/cbs/aracmuayeneistasyonlari");
         }
     };
 }

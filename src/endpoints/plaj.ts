@@ -11,7 +11,7 @@ export function plaj(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/plajlar
          */
         getPlajlarList() {
-            return client.get("ibb/cbs/plajlar") as Promise<OnemliYerWrapper<Plaj>>;
+            return client.get<OnemliYerWrapper<Plaj>>("ibb/cbs/plajlar");
         },
 
         /**
@@ -19,7 +19,7 @@ export function plaj(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/hamamlar
          */
         getHamamlarList() {
-            return client.get("ibb/cbs/hamamlar") as Promise<OnemliYerWrapper<Plaj>>;
+            return client.get<OnemliYerWrapper<Plaj>>("ibb/cbs/hamamlar");
         },
 
         /**
@@ -27,7 +27,7 @@ export function plaj(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/kaplicalar
          */
         getKaplicalarList() {
-            return client.get("ibb/cbs/kaplicalar") as Promise<OnemliYerWrapper<Plaj>>;
+            return client.get<OnemliYerWrapper<Plaj>>("ibb/cbs/kaplicalar");
         },
 
         /**
@@ -35,7 +35,7 @@ export function plaj(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/fuar
          */
         getFuarList() {
-            return client.get("ibb/cbs/fuar") as Promise<OnemliYerWrapper<Plaj>>;
+            return client.get<OnemliYerWrapper<Plaj>>("ibb/cbs/fuar");
         }
     };
 }

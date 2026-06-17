@@ -11,7 +11,7 @@ export function bisim(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/bisim-istasyonlari
          */
         getIstasyonList() {
-            return client.get('izulas/bisim/istasyonlar') as Promise<OnemliYerWrapper<BisimIstasyon>>;
+            return client.get<OnemliYerWrapper<BisimIstasyon>>('izulas/bisim/istasyonlar');
         }
     };
 }

@@ -19,7 +19,7 @@ export function eczaneler(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/nobetci-eczaneler-ve-eczane-listesi
          */
         getNobetciList() {
-            return client.get("ibb/nobetcieczaneler") as Promise<Eczane[]>;
+            return client.get<Eczane[]>("ibb/nobetcieczaneler");
         },
 
         /**
@@ -28,7 +28,7 @@ export function eczaneler(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/nobetci-eczaneler-ve-eczane-listesi
          */
         getList() {
-            return client.get("ibb/eczaneler") as Promise<Eczane[]>;
+            return client.get<Eczane[]>("ibb/eczaneler");
         }
     };
 }

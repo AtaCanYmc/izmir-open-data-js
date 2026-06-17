@@ -11,7 +11,7 @@ export function hizmet(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/izbb-hizmet-noktalari
          */
         getHizmetNoktaList() {
-            return client.get("ibb/cbs/izbbhizmetnoktalari") as Promise<OnemliYerWrapper<HizmetNoktasi>>;
+            return client.get<OnemliYerWrapper<HizmetNoktasi>>("ibb/cbs/izbbhizmetnoktalari");
         }
     };
 }

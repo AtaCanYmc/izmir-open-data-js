@@ -83,7 +83,7 @@ export function tramvay(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/izmir-tramvay-hatlari-ve-istasyonlari
          */
         getHatList() {
-            return client.get('tramvay/hatlar') as Promise<TramvayHatti[]>;
+            return client.get<TramvayHatti[]>('tramvay/hatlar');
         },
 
         /**
@@ -93,7 +93,7 @@ export function tramvay(client: IzmirClient) {
          * @deprecated API'de henüz aktif değil (404 dönüyor)
          */
         getSeferList() {
-            return client.get('tramvay/sefer') as Promise<TramvaySefer[]>;
+            return client.get<TramvaySefer[]>('tramvay/sefer');
         },
 
         /**
@@ -104,7 +104,7 @@ export function tramvay(client: IzmirClient) {
          * @param seferId Sefer numarası
          */
         getIstasyonList(seferId: number) {
-            return client.get(`tramvay/istasyonlar/${seferId}`) as Promise<TramvayIstasyonu[]>;
+            return client.get<TramvayIstasyonu[]>(`tramvay/istasyonlar/${seferId}`);
         },
 
         /**
@@ -115,7 +115,7 @@ export function tramvay(client: IzmirClient) {
          * @param seferId Sefer numarası
          */
         getSeferSiklikList(seferId: number) {
-            return client.get(`tramvay/seferler/${seferId}`) as Promise<TramvaySeferSikligi[]>;
+            return client.get<TramvaySeferSikligi[]>(`tramvay/seferler/${seferId}`);
         },
 
         /**

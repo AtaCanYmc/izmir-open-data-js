@@ -11,7 +11,7 @@ export function kutuphane(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/kutuphaneler
          */
         getKutuphanelerList() {
-            return client.get("ibb/cbs/kutuphaneler") as Promise<OnemliYerWrapper<KulturMekani>>;
+            return client.get<OnemliYerWrapper<KulturMekani>>("ibb/cbs/kutuphaneler");
         },
 
         /**
@@ -19,7 +19,7 @@ export function kutuphane(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/kulturmerkezleri
          */
         getKulturMerkezleriList() {
-            return client.get("ibb/cbs/kulturmerkezleri") as Promise<OnemliYerWrapper<KulturMekani>>;
+            return client.get<OnemliYerWrapper<KulturMekani>>("ibb/cbs/kulturmerkezleri");
         },
 
         /**
@@ -27,7 +27,7 @@ export function kutuphane(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/operavebale
          */
         getOperaVeBaleList() {
-            return client.get("ibb/cbs/operavebale") as Promise<OnemliYerWrapper<KulturMekani>>;
+            return client.get<OnemliYerWrapper<KulturMekani>>("ibb/cbs/operavebale");
         },
 
         /**
@@ -35,7 +35,7 @@ export function kutuphane(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/galerivesalonlar
          */
         getGaleriVeSalonlarList() {
-            return client.get("ibb/cbs/galerivesalonlar") as Promise<OnemliYerWrapper<KulturMekani>>;
+            return client.get<OnemliYerWrapper<KulturMekani>>("ibb/cbs/galerivesalonlar");
         },
 
         /**
@@ -43,7 +43,7 @@ export function kutuphane(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/senfoniorkestrasi
          */
         getSenfoniOrkestrasiList() {
-            return client.get("ibb/cbs/senfoniorkestrasi") as Promise<OnemliYerWrapper<KulturMekani>>;
+            return client.get<OnemliYerWrapper<KulturMekani>>("ibb/cbs/senfoniorkestrasi");
         },
 
         /**
@@ -51,7 +51,7 @@ export function kutuphane(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/sinemalar
          */
         getSinemalarList() {
-            return client.get("ibb/cbs/sinemalar") as Promise<OnemliYerWrapper<KulturMekani>>;
+            return client.get<OnemliYerWrapper<KulturMekani>>("ibb/cbs/sinemalar");
         },
 
         /**
@@ -59,7 +59,7 @@ export function kutuphane(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/tiyatrolar
          */
         getTiyatrolarList() {
-            return client.get("ibb/cbs/tiyatrolar") as Promise<OnemliYerWrapper<KulturMekani>>;
+            return client.get<OnemliYerWrapper<KulturMekani>>("ibb/cbs/tiyatrolar");
         },
 
         /**
@@ -67,7 +67,7 @@ export function kutuphane(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/muzeler
          */
         getMuzelerList() {
-            return client.get("ibb/cbs/muzeler") as Promise<OnemliYerWrapper<KulturMekani>>;
+            return client.get<OnemliYerWrapper<KulturMekani>>("ibb/cbs/muzeler");
         }
     };
 }

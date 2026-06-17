@@ -11,7 +11,7 @@ export function tarihi(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/antikkentler
          */
         getAntikKentlerList() {
-            return client.get("ibb/cbs/antikkentler") as Promise<OnemliYerWrapper<TarihiYapi>>;
+            return client.get<OnemliYerWrapper<TarihiYapi>>("ibb/cbs/antikkentler");
         },
 
         /**
@@ -19,7 +19,7 @@ export function tarihi(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/antikkentyapilari
          */
         getAntikKentYapilariList() {
-            return client.get("ibb/cbs/antikkentyapilari") as Promise<OnemliYerWrapper<TarihiYapi>>;
+            return client.get<OnemliYerWrapper<TarihiYapi>>("ibb/cbs/antikkentyapilari");
         },
 
         /**
@@ -27,7 +27,7 @@ export function tarihi(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/koskvekonaklar
          */
         getKoskVeKonaklarList() {
-            return client.get("ibb/cbs/koskvekonaklar") as Promise<OnemliYerWrapper<TarihiYapi>>;
+            return client.get<OnemliYerWrapper<TarihiYapi>>("ibb/cbs/koskvekonaklar");
         },
 
         /**
@@ -35,7 +35,7 @@ export function tarihi(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/kuleanitveheykeller
          */
         getKuleAnitHeykellerList() {
-            return client.get("ibb/cbs/kuleanitveheykeller") as Promise<OnemliYerWrapper<TarihiYapi>>;
+            return client.get<OnemliYerWrapper<TarihiYapi>>("ibb/cbs/kuleanitveheykeller");
         },
 
         /**
@@ -43,7 +43,7 @@ export function tarihi(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/tarihicarsivehanlar
          */
         getTarihiCarsiHanlarList() {
-            return client.get("ibb/cbs/tarihicarsivehanlar") as Promise<OnemliYerWrapper<TarihiYapi>>;
+            return client.get<OnemliYerWrapper<TarihiYapi>>("ibb/cbs/tarihicarsivehanlar");
         },
 
         /**
@@ -51,7 +51,7 @@ export function tarihi(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/tarihisuyapilari
          */
         getTarihiSuYapilariList() {
-            return client.get("ibb/cbs/tarihisuyapilari") as Promise<OnemliYerWrapper<TarihiYapi>>;
+            return client.get<OnemliYerWrapper<TarihiYapi>>("ibb/cbs/tarihisuyapilari");
         },
 
         /**
@@ -59,7 +59,7 @@ export function tarihi(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/tarihiyapilar
          */
         getTarihiYapilarList() {
-            return client.get("ibb/cbs/tarihiyapilar") as Promise<OnemliYerWrapper<TarihiYapi>>;
+            return client.get<OnemliYerWrapper<TarihiYapi>>("ibb/cbs/tarihiyapilar");
         }
     };
 }

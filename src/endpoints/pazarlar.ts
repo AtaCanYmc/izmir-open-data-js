@@ -32,7 +32,7 @@ export function pazarlar(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/semt-pazar-yerleri
          */
         getList() {
-            return client.get("ibb/cbs/pazaryerleri") as Promise<OnemliYerWrapper<PazarYerleri>>;
+            return client.get<OnemliYerWrapper<PazarYerleri>>("ibb/cbs/pazaryerleri");
         },
 
         /**
@@ -41,7 +41,7 @@ export function pazarlar(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/balik-hal-fiyatlari
          */
         getBalikHalFiyatlari(tarih: Date) {
-            return client.get(`ibb/halfiyatlari/balik/${formatDate(tarih)}`) as Promise<HalFiyatResponse>;
+            return client.get<HalFiyatResponse>(`ibb/halfiyatlari/balik/${formatDate(tarih)}`);
         },
 
         /**
@@ -50,7 +50,7 @@ export function pazarlar(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/sebze-ve-meyve-hal-fiyatlari
          */
         getSebzeMeyveHalFiyatlari(tarih: Date) {
-            return client.get(`ibb/halfiyatlari/sebzemeyve/${formatDate(tarih)}`) as Promise<HalFiyatResponse>;
+            return client.get<HalFiyatResponse>(`ibb/halfiyatlari/sebzemeyve/${formatDate(tarih)}`);
         }
     };
 }

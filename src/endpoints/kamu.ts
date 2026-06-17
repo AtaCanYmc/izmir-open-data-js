@@ -11,7 +11,7 @@ export function kamu(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/bankalar
          */
         getBankalarList() {
-            return client.get("ibb/cbs/bankalar") as Promise<OnemliYerWrapper<KamuKurumu>>;
+            return client.get<OnemliYerWrapper<KamuKurumu>>("ibb/cbs/bankalar");
         },
 
         /**
@@ -19,7 +19,7 @@ export function kamu(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/belediyeler
          */
         getBelediyelerList() {
-            return client.get("ibb/cbs/belediyeler") as Promise<OnemliYerWrapper<KamuKurumu>>;
+            return client.get<OnemliYerWrapper<KamuKurumu>>("ibb/cbs/belediyeler");
         },
 
         /**
@@ -27,7 +27,7 @@ export function kamu(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/bolgemudurlukleri
          */
         getBolgeMudurlukleriList() {
-            return client.get("ibb/cbs/bolgemudurlukleri") as Promise<OnemliYerWrapper<KamuKurumu>>;
+            return client.get<OnemliYerWrapper<KamuKurumu>>("ibb/cbs/bolgemudurlukleri");
         },
 
         /**
@@ -35,7 +35,7 @@ export function kamu(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/defterdarliklar
          */
         getDefterdarliklarList() {
-            return client.get("ibb/cbs/defterdarliklar") as Promise<OnemliYerWrapper<KamuKurumu>>;
+            return client.get<OnemliYerWrapper<KamuKurumu>>("ibb/cbs/defterdarliklar");
         },
 
         /**
@@ -43,7 +43,7 @@ export function kamu(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/dernekler
          */
         getDerneklerList() {
-            return client.get("ibb/cbs/dernekler") as Promise<OnemliYerWrapper<KamuKurumu>>;
+            return client.get<OnemliYerWrapper<KamuKurumu>>("ibb/cbs/dernekler");
         },
 
         /**
@@ -51,7 +51,7 @@ export function kamu(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/evlendirmedaireleri
          */
         getEvlendirmeDaireleriList() {
-            return client.get("ibb/cbs/evlendirmedaireleri") as Promise<OnemliYerWrapper<KamuKurumu>>;
+            return client.get<OnemliYerWrapper<KamuKurumu>>("ibb/cbs/evlendirmedaireleri");
         },
 
         /**
@@ -59,7 +59,7 @@ export function kamu(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/ilveilcemudurlukleri
          */
         getIlIlceMudurlukleriList() {
-            return client.get("ibb/cbs/ilveilcemudurlukleri") as Promise<OnemliYerWrapper<KamuKurumu>>;
+            return client.get<OnemliYerWrapper<KamuKurumu>>("ibb/cbs/ilveilcemudurlukleri");
         },
 
         /**
@@ -67,7 +67,7 @@ export function kamu(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/itfaiyegruplari
          */
         getItfaiyeGruplariList() {
-            return client.get("ibb/cbs/itfaiyegruplari") as Promise<OnemliYerWrapper<KamuKurumu>>;
+            return client.get<OnemliYerWrapper<KamuKurumu>>("ibb/cbs/itfaiyegruplari");
         },
 
         /**
@@ -75,7 +75,7 @@ export function kamu(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/konsolosluklar
          */
         getKonsolosluklarList() {
-            return client.get("ibb/cbs/konsolosluklar") as Promise<OnemliYerWrapper<KamuKurumu>>;
+            return client.get<OnemliYerWrapper<KamuKurumu>>("ibb/cbs/konsolosluklar");
         },
 
         /**
@@ -83,7 +83,7 @@ export function kamu(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/meslekodalari
          */
         getMeslekOdalariList() {
-            return client.get("ibb/cbs/meslekodalari") as Promise<OnemliYerWrapper<KamuKurumu>>;
+            return client.get<OnemliYerWrapper<KamuKurumu>>("ibb/cbs/meslekodalari");
         },
 
         /**
@@ -91,7 +91,7 @@ export function kamu(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/noterler
          */
         getNoterlerList() {
-            return client.get("ibb/cbs/noterler") as Promise<OnemliYerWrapper<KamuKurumu>>;
+            return client.get<OnemliYerWrapper<KamuKurumu>>("ibb/cbs/noterler");
         },
 
         /**
@@ -99,7 +99,7 @@ export function kamu(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/nufusmudurlukleri
          */
         getNufusMudurlukleriList() {
-            return client.get("ibb/cbs/nufusmudurlukleri") as Promise<OnemliYerWrapper<KamuKurumu>>;
+            return client.get<OnemliYerWrapper<KamuKurumu>>("ibb/cbs/nufusmudurlukleri");
         },
 
         /**
@@ -107,7 +107,7 @@ export function kamu(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/ptt
          */
         getPttList() {
-            return client.get("ibb/cbs/ptt") as Promise<OnemliYerWrapper<KamuKurumu>>;
+            return client.get<OnemliYerWrapper<KamuKurumu>>("ibb/cbs/ptt");
         },
 
         /**
@@ -115,7 +115,7 @@ export function kamu(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/turizmdanisma
          */
         getTurizmDanismaList() {
-            return client.get("ibb/cbs/turizmdanisma") as Promise<OnemliYerWrapper<KamuKurumu>>;
+            return client.get<OnemliYerWrapper<KamuKurumu>>("ibb/cbs/turizmdanisma");
         },
 
         /**
@@ -123,7 +123,7 @@ export function kamu(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/vergidaireleri
          */
         getVergiDaireleriList() {
-            return client.get("ibb/cbs/vergidaireleri") as Promise<OnemliYerWrapper<KamuKurumu>>;
+            return client.get<OnemliYerWrapper<KamuKurumu>>("ibb/cbs/vergidaireleri");
         },
 
         /**
@@ -131,7 +131,7 @@ export function kamu(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/maskematiknoktalari
          */
         getMaskematikNoktalariList() {
-            return client.get("ibb/cbs/maskematiknoktalari") as Promise<OnemliYerWrapper<KamuKurumu>>;
+            return client.get<OnemliYerWrapper<KamuKurumu>>("ibb/cbs/maskematiknoktalari");
         }
     };
 }

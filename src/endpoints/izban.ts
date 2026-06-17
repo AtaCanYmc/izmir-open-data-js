@@ -51,7 +51,7 @@ export function izban(client: IzmirClient) {
          * @param httMi Halk taşıt tarifesi saatleri içerisinde mi?
          */
         getTarife(BinisIstasyonuId: number, InisIstasyonuId: number, Aktarma: number, httMi: number) {
-            return client.get(`izban/tutarhesaplama/${BinisIstasyonuId}/${InisIstasyonuId}/${Aktarma}/${httMi}`) as Promise<IzbanUcretDetay>;
+            return client.get<IzbanUcretDetay>(`izban/tutarhesaplama/${BinisIstasyonuId}/${InisIstasyonuId}/${Aktarma}/${httMi}`);
         },
 
         /**

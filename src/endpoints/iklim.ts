@@ -34,7 +34,7 @@ export function iklim(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/hava-kalitesi-olcum-degerleri
          */
         getGunlukHavaKalitesiOlcumleri(tarih: Date) {
-            return client.get(`ibb/cevre/havadegerleri/${formatDate(tarih)}`) as Promise<HavaKalitesiOlcum[]>;
+            return client.get<HavaKalitesiOlcum[]>(`ibb/cevre/havadegerleri/${formatDate(tarih)}`);
         },
 
         /**

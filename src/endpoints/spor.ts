@@ -39,7 +39,7 @@ export function spor(client: IzmirClient) {
          * @deprecated API'de henüz aktif değil
          */
         getHipodromList() {
-            return client.get("ibb/cbs/hipodrom") as Promise<OnemliYerWrapper<SporTesisi>>;
+            return client.get<OnemliYerWrapper<SporTesisi>>("ibb/cbs/hipodrom");
         },
 
         /**
@@ -48,7 +48,7 @@ export function spor(client: IzmirClient) {
          * @deprecated API'de henüz aktif değil
          */
         getSporSalonlariList() {
-            return client.get("ibb/cbs/sporsalonlari") as Promise<OnemliYerWrapper<SporTesisi>>;
+            return client.get<OnemliYerWrapper<SporTesisi>>("ibb/cbs/sporsalonlari");
         },
 
         /**
@@ -57,7 +57,7 @@ export function spor(client: IzmirClient) {
          * @deprecated API'de henüz aktif değil
          */
         getStadyumlarList() {
-            return client.get("ibb/cbs/stadyumlar") as Promise<OnemliYerWrapper<SporTesisi>>;
+            return client.get<OnemliYerWrapper<SporTesisi>>("ibb/cbs/stadyumlar");
         },
 
         /**

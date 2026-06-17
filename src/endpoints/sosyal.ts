@@ -11,7 +11,7 @@ export function sosyal(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/ailedayanismamerkezleri
          */
         getAileDayanismaMerkezleriList() {
-            return client.get("ibb/cbs/ailedayanismamerkezleri") as Promise<OnemliYerWrapper<SosyalHizmetMerkezi>>;
+            return client.get<OnemliYerWrapper<SosyalHizmetMerkezi>>("ibb/cbs/ailedayanismamerkezleri");
         },
 
         /**
@@ -19,7 +19,7 @@ export function sosyal(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/cocukvegenclikmerkezleri
          */
         getCocukGenclikMerkezleriList() {
-            return client.get("ibb/cbs/cocukvegenclikmerkezleri") as Promise<OnemliYerWrapper<SosyalHizmetMerkezi>>;
+            return client.get<OnemliYerWrapper<SosyalHizmetMerkezi>>("ibb/cbs/cocukvegenclikmerkezleri");
         },
 
         /**
@@ -27,7 +27,7 @@ export function sosyal(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/cocukyuvalari
          */
         getCocukYuvalariList() {
-            return client.get("ibb/cbs/cocukyuvalari") as Promise<OnemliYerWrapper<SosyalHizmetMerkezi>>;
+            return client.get<OnemliYerWrapper<SosyalHizmetMerkezi>>("ibb/cbs/cocukyuvalari");
         },
 
         /**
@@ -35,7 +35,7 @@ export function sosyal(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/huzurevleri
          */
         getHuzurevleriList() {
-            return client.get("ibb/cbs/huzurevleri") as Promise<OnemliYerWrapper<SosyalHizmetMerkezi>>;
+            return client.get<OnemliYerWrapper<SosyalHizmetMerkezi>>("ibb/cbs/huzurevleri");
         },
 
         /**
@@ -43,7 +43,7 @@ export function sosyal(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/toplummerkezleri
          */
         getToplumMerkezleriList() {
-            return client.get("ibb/cbs/toplummerkezleri") as Promise<OnemliYerWrapper<SosyalHizmetMerkezi>>;
+            return client.get<OnemliYerWrapper<SosyalHizmetMerkezi>>("ibb/cbs/toplummerkezleri");
         },
 
         /**
@@ -51,7 +51,7 @@ export function sosyal(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/yetistirmeyurtlari
          */
         getYetistirmeYurtlariList() {
-            return client.get("ibb/cbs/yetistirmeyurtlari") as Promise<OnemliYerWrapper<SosyalHizmetMerkezi>>;
+            return client.get<OnemliYerWrapper<SosyalHizmetMerkezi>>("ibb/cbs/yetistirmeyurtlari");
         }
     };
 }

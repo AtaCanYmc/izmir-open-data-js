@@ -11,7 +11,7 @@ export function saglik(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/acilyardimistasyonu
          */
         getAcilYardimIstasyonlariList() {
-            return client.get("ibb/cbs/acilyardimistasyonu") as Promise<OnemliYerWrapper<SaglikKurumu>>;
+            return client.get<OnemliYerWrapper<SaglikKurumu>>("ibb/cbs/acilyardimistasyonu");
         },
 
         /**
@@ -19,7 +19,7 @@ export function saglik(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/ailesagligimerkezleri
          */
         getAileSagligiMerkezleriList() {
-            return client.get("ibb/cbs/ailesagligimerkezleri") as Promise<OnemliYerWrapper<SaglikKurumu>>;
+            return client.get<OnemliYerWrapper<SaglikKurumu>>("ibb/cbs/ailesagligimerkezleri");
         },
 
         /**
@@ -27,7 +27,7 @@ export function saglik(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/agizvedissagligimerkezleri
          */
         getAgizDisSagligiMerkezleriList() {
-            return client.get("ibb/cbs/agizvedissagligimerkezleri") as Promise<OnemliYerWrapper<SaglikKurumu>>;
+            return client.get<OnemliYerWrapper<SaglikKurumu>>("ibb/cbs/agizvedissagligimerkezleri");
         },
 
         /**
@@ -35,7 +35,7 @@ export function saglik(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/anacocuksagligimerkezleri
          */
         getAnaCocukSagligiMerkezleriList() {
-            return client.get("ibb/cbs/anacocuksagligimerkezleri") as Promise<OnemliYerWrapper<SaglikKurumu>>;
+            return client.get<OnemliYerWrapper<SaglikKurumu>>("ibb/cbs/anacocuksagligimerkezleri");
         },
 
         /**
@@ -43,7 +43,7 @@ export function saglik(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/dalmerkezleri
          */
         getDalMerkezleriList() {
-            return client.get("ibb/cbs/dalmerkezleri") as Promise<OnemliYerWrapper<SaglikKurumu>>;
+            return client.get<OnemliYerWrapper<SaglikKurumu>>("ibb/cbs/dalmerkezleri");
         },
 
         /**
@@ -51,7 +51,7 @@ export function saglik(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/hastaneler
          */
         getHastanelerList() {
-            return client.get("ibb/cbs/hastaneler") as Promise<OnemliYerWrapper<SaglikKurumu>>;
+            return client.get<OnemliYerWrapper<SaglikKurumu>>("ibb/cbs/hastaneler");
         },
 
         /**
@@ -59,7 +59,7 @@ export function saglik(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/kanmerkezleri
          */
         getKanMerkezleriList() {
-            return client.get("ibb/cbs/kanmerkezleri") as Promise<OnemliYerWrapper<SaglikKurumu>>;
+            return client.get<OnemliYerWrapper<SaglikKurumu>>("ibb/cbs/kanmerkezleri");
         },
 
         /**
@@ -67,7 +67,7 @@ export function saglik(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/laboratuvarlar
          */
         getLaboratuvarlarList() {
-            return client.get("ibb/cbs/laboratuvarlar") as Promise<OnemliYerWrapper<SaglikKurumu>>;
+            return client.get<OnemliYerWrapper<SaglikKurumu>>("ibb/cbs/laboratuvarlar");
         },
 
         /**
@@ -75,7 +75,7 @@ export function saglik(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/poliklinikler
          */
         getPolikliniklerList() {
-            return client.get("ibb/cbs/poliklinikler") as Promise<OnemliYerWrapper<SaglikKurumu>>;
+            return client.get<OnemliYerWrapper<SaglikKurumu>>("ibb/cbs/poliklinikler");
         },
 
         /**
@@ -83,7 +83,7 @@ export function saglik(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/tipmerkezleri
          */
         getTipMerkezleriList() {
-            return client.get("ibb/cbs/tipmerkezleri") as Promise<OnemliYerWrapper<SaglikKurumu>>;
+            return client.get<OnemliYerWrapper<SaglikKurumu>>("ibb/cbs/tipmerkezleri");
         },
 
         /**
@@ -91,7 +91,7 @@ export function saglik(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/toplumsakligimerkezleri
          */
         getToplumSagligiMerkezleriList() {
-            return client.get("ibb/cbs/toplumsagligimerkezleri") as Promise<OnemliYerWrapper<SaglikKurumu>>;
+            return client.get<OnemliYerWrapper<SaglikKurumu>>("ibb/cbs/toplumsagligimerkezleri");
         },
 
         /**
@@ -99,7 +99,7 @@ export function saglik(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/veremsavasdispanserleri
          */
         getVeremSavasDispanserleriList() {
-            return client.get("ibb/cbs/veremsavasdispanserleri") as Promise<OnemliYerWrapper<SaglikKurumu>>;
+            return client.get<OnemliYerWrapper<SaglikKurumu>>("ibb/cbs/veremsavasdispanserleri");
         },
 
         /**
@@ -107,7 +107,7 @@ export function saglik(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/veterinerlikler
          */
         getVeterinerliklerList() {
-            return client.get("ibb/cbs/veterinerlikler") as Promise<OnemliYerWrapper<SaglikKurumu>>;
+            return client.get<OnemliYerWrapper<SaglikKurumu>>("ibb/cbs/veterinerlikler");
         }
     };
 }

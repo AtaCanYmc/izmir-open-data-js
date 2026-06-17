@@ -11,7 +11,7 @@ export function egitim(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/engelliokullari
          */
         getEngelliOkullariList() {
-            return client.get("ibb/cbs/engelliokullari") as Promise<OnemliYerWrapper<EgitimKurumu>>;
+            return client.get<OnemliYerWrapper<EgitimKurumu>>("ibb/cbs/engelliokullari");
         },
 
         /**
@@ -19,7 +19,7 @@ export function egitim(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/anaokullari
          */
         getAnaokullarList() {
-            return client.get("ibb/cbs/anaokullari") as Promise<OnemliYerWrapper<EgitimKurumu>>;
+            return client.get<OnemliYerWrapper<EgitimKurumu>>("ibb/cbs/anaokullari");
         },
 
         /**
@@ -27,7 +27,7 @@ export function egitim(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/etutmerkezleri
          */
         getEtutMerkezleriList() {
-            return client.get("ibb/cbs/etutmerkezleri") as Promise<OnemliYerWrapper<EgitimKurumu>>;
+            return client.get<OnemliYerWrapper<EgitimKurumu>>("ibb/cbs/etutmerkezleri");
         },
 
         /**
@@ -35,7 +35,7 @@ export function egitim(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/halkegitim
          */
         getHalkEgitimList() {
-            return client.get("ibb/cbs/halkegitim") as Promise<OnemliYerWrapper<EgitimKurumu>>;
+            return client.get<OnemliYerWrapper<EgitimKurumu>>("ibb/cbs/halkegitim");
         },
 
         /**
@@ -43,7 +43,7 @@ export function egitim(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/ilkokullar
          */
         getIlkokullarList() {
-            return client.get("ibb/cbs/ilkokullar") as Promise<OnemliYerWrapper<EgitimKurumu>>;
+            return client.get<OnemliYerWrapper<EgitimKurumu>>("ibb/cbs/ilkokullar");
         },
 
         /**
@@ -51,7 +51,7 @@ export function egitim(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/kolejler
          */
         getKolejlerList() {
-            return client.get("ibb/cbs/kolejler") as Promise<OnemliYerWrapper<EgitimKurumu>>;
+            return client.get<OnemliYerWrapper<EgitimKurumu>>("ibb/cbs/kolejler");
         },
 
         /**
@@ -59,7 +59,7 @@ export function egitim(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/liseler
          */
         getLiselerList() {
-            return client.get("ibb/cbs/liseler") as Promise<OnemliYerWrapper<EgitimKurumu>>;
+            return client.get<OnemliYerWrapper<EgitimKurumu>>("ibb/cbs/liseler");
         },
 
         /**
@@ -67,7 +67,7 @@ export function egitim(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/meslekliseleri
          */
         getMeslekLiseleriList() {
-            return client.get("ibb/cbs/meslekliseleri") as Promise<OnemliYerWrapper<EgitimKurumu>>;
+            return client.get<OnemliYerWrapper<EgitimKurumu>>("ibb/cbs/meslekliseleri");
         },
 
         /**
@@ -75,7 +75,7 @@ export function egitim(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/ortaokullar
          */
         getOrtaokullarList() {
-            return client.get("ibb/cbs/ortaokullar") as Promise<OnemliYerWrapper<EgitimKurumu>>;
+            return client.get<OnemliYerWrapper<EgitimKurumu>>("ibb/cbs/ortaokullar");
         },
 
         /**
@@ -83,7 +83,7 @@ export function egitim(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/sanatokullari
          */
         getSanatOkullariList() {
-            return client.get("ibb/cbs/sanatokullari") as Promise<OnemliYerWrapper<EgitimKurumu>>;
+            return client.get<OnemliYerWrapper<EgitimKurumu>>("ibb/cbs/sanatokullari");
         },
 
         /**
@@ -91,7 +91,7 @@ export function egitim(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/universiteler
          */
         getUniversitelerList() {
-            return client.get("ibb/cbs/universiteler") as Promise<OnemliYerWrapper<EgitimKurumu>>;
+            return client.get<OnemliYerWrapper<EgitimKurumu>>("ibb/cbs/universiteler");
         },
 
         /**
@@ -99,7 +99,7 @@ export function egitim(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/milliegitim
          */
         getMilliEgitimList() {
-            return client.get("ibb/cbs/milliegitim") as Promise<OnemliYerWrapper<EgitimKurumu>>;
+            return client.get<OnemliYerWrapper<EgitimKurumu>>("ibb/cbs/milliegitim");
         }
     };
 }

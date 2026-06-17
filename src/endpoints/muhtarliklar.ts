@@ -11,7 +11,7 @@ export function muhtarliklar(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/muhtarliklar
          */
         getList() {
-            return client.get("ibb/cbs/muhtarliklar") as Promise<OnemliYerWrapper<Muhtarlik>>;
+            return client.get<OnemliYerWrapper<Muhtarlik>>("ibb/cbs/muhtarliklar");
         }
     };
 }

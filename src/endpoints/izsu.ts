@@ -133,7 +133,7 @@ export function izsu(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/su-uretiminin-aylara-ve-kaynaklara-gore-dagilimi
          */
         getSuUretimiDagilimi() {
-            return client.get("izsu/suuretiminindagilimi") as Promise<SuUretimi[]>;
+            return client.get<SuUretimi[]>("izsu/suuretiminindagilimi");
         },
 
         /**
@@ -142,7 +142,7 @@ export function izsu(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/gunluk-su-uretimi-miktarlari
          */
         getGunlukSuUretimi() {
-            return client.get("izsu/gunluksuuretimi") as Promise<GunlukUretimResponse>;
+            return client.get<GunlukUretimResponse>("izsu/gunluksuuretimi");
         },
 
         /**
@@ -151,7 +151,7 @@ export function izsu(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/barajlarin-doluluk-oranlari
          */
         getBarajDolulukOranlari() {
-            return client.get("izsu/barajdurum") as Promise<BarajSuDurumu[]>;
+            return client.get<BarajSuDurumu[]>("izsu/barajdurum");
         },
 
         /**
@@ -160,7 +160,7 @@ export function izsu(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/haftalik-analiz-sonuclari
          */
         getHaftalikSuAnalizi() {
-            return client.get("izsu/haftaliksuanalizleri") as Promise<SuAnalizResponse>;
+            return client.get<SuAnalizResponse>("izsu/haftaliksuanalizleri");
         },
 
         /**
@@ -169,7 +169,7 @@ export function izsu(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/baraj-su-kalite-raporlari
          */
         getBarajSuKaliteRaporlari() {
-            return client.get("izsu/barajsukaliteraporlari") as Promise<BarajAnalizResponse>;
+            return client.get<BarajAnalizResponse>("izsu/barajsukaliteraporlari");
         },
 
         /**
@@ -178,7 +178,7 @@ export function izsu(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/ariza-kaynakli-duzensiz-su-kesintileri
          */
         getArizaKaynakliKesintiList() {
-            return client.get("izsu/arizakaynaklisukesintileri") as Promise<KesintiBilgisi[]>;
+            return client.get<KesintiBilgisi[]>("izsu/arizakaynaklisukesintileri");
         },
 
         /**
@@ -187,7 +187,7 @@ export function izsu(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/baraj-ve-kuyular
          */
         getBarajVeKuyuList() {
-            return client.get("izsu/barajvekuyular") as Promise<SuKaynagi[]>;
+            return client.get<SuKaynagi[]>("izsu/barajvekuyular");
         },
 
         /**
@@ -196,7 +196,7 @@ export function izsu(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/izsu-sube-ve-vezne-bilgileri
          */
         getIzsuSubeList() {
-            return client.get("izsu/subeler") as Promise<IzsuSubeBilgisi[]>;
+            return client.get<IzsuSubeBilgisi[]>("izsu/subeler");
         },
 
         /**
@@ -205,7 +205,7 @@ export function izsu(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/izsu-sube-ve-vezne-bilgileri
          */
         getIzsuVezneList() {
-            return client.get("izsu/vezneler") as Promise<IzsuVezneBilgisi[]>;
+            return client.get<IzsuVezneBilgisi[]>("izsu/vezneler");
         }
     };
 }

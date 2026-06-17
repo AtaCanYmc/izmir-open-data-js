@@ -217,7 +217,7 @@ export function eshot(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-duraklari
          */
         getYakinDurakList(enlem: number, boylam: number) {
-            return client.get(`ibb/cbs/noktayayakinduraklar?x=${enlem}&y=${boylam}`) as Promise<OnemliYerWrapper<EshotDurak>>;
+            return client.get<OnemliYerWrapper<EshotDurak>>(`ibb/cbs/noktayayakinduraklar?x=${enlem}&y=${boylam}`);
         },
 
         /**
@@ -227,7 +227,7 @@ export function eshot(client: IzmirClient) {
          * @param durakId Durak numarası (ESHOT durak listesinden alınabilir)
          */
         getDuragaYaklasanOtobusList(durakId: number) {
-            return client.get(`iztek/duragayaklasanotobusler/${durakId}`) as Promise<YaklasanOtobus[]>;
+            return client.get<YaklasanOtobus[]>(`iztek/duragayaklasanotobusler/${durakId}`);
         },
 
         /**
@@ -238,7 +238,7 @@ export function eshot(client: IzmirClient) {
          * @param durakId Durak numarası
          */
         getHattinYaklasanOtobusleri(hatId: number, durakId: number) {
-            return client.get(`iztek/hattinyaklasanotobusleri/${hatId}/${durakId}`) as Promise<YaklasanOtobus[]>;
+            return client.get<YaklasanOtobus[]>(`iztek/hattinyaklasanotobusleri/${hatId}/${durakId}`);
         },
 
         /**
@@ -248,7 +248,7 @@ export function eshot(client: IzmirClient) {
          * @param hatId Hat numarası
          */
         getHatOtobusKonumlari(hatId: number) {
-            return client.get(`iztek/hatotobuskonumlari/${hatId}`) as Promise<HatOtobusKonumlariResponse>;
+            return client.get<HatOtobusKonumlariResponse>(`iztek/hatotobuskonumlari/${hatId}`);
         },
 
         /**

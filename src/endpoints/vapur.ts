@@ -102,7 +102,7 @@ export function vapur(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/vapur-hareket-saatleri
          */
         getCalismaGunleri() {
-            return client.get("izdeniz/gunler") as Promise<GunReferansi>;
+            return client.get<GunReferansi>("izdeniz/gunler");
         },
 
         /**
@@ -113,7 +113,7 @@ export function vapur(client: IzmirClient) {
          * @param gunId (0: pazartesi, 1: salı, 2: çarşamba, 3: perşembe, 4: cuma, 5: cumartesi, 6: pazar)
          */
         getHareketSaatleriByHat(iskeleId: string, gunId: number) {
-            return client.get(`izdeniz/iskelesefersaatleri/${iskeleId}/${gunId}`) as Promise<VapurHatti[]>;
+            return client.get<VapurHatti[]>(`izdeniz/iskelesefersaatleri/${iskeleId}/${gunId}`);
         },
 
         /**
@@ -122,7 +122,7 @@ export function vapur(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/izdeniz-vapur-iskeleleri
          */
         getIskeleList() {
-            return client.get("izdeniz/iskeleler") as Promise<VapurIskele[]>;
+            return client.get<VapurIskele[]>("izdeniz/iskeleler");
         },
 
         /**

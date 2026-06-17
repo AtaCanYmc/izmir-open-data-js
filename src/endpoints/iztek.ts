@@ -18,7 +18,7 @@ export function iztek(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/iztek/askidaizmirimkart
          */
         getAskidaIzmirimKartIstatistik() {
-            return client.get("iztek/askidaizmirimkart") as Promise<AskidaIzmirimKartIstatistik>;
+            return client.get<AskidaIzmirimKartIstatistik>("iztek/askidaizmirimkart");
         }
     };
 }

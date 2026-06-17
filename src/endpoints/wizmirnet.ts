@@ -11,7 +11,7 @@ export function wizmirnet(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/kablosuz-internet-baglanti-noktalari
          */
         getList() {
-            return client.get("ibb/cbs/wizmirnetnoktalari") as Promise<OnemliYerWrapper<WizmirNetKonum>>;
+            return client.get<OnemliYerWrapper<WizmirNetKonum>>("ibb/cbs/wizmirnetnoktalari");
         }
     };
 }

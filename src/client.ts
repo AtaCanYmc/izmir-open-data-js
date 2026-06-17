@@ -19,14 +19,14 @@ export class IzmirClient {
         this.ckanDumpBaseUrl = ckanDumpBaseUrl;
     }
 
-    async get(path: string) {
+    async get<T = any>(path: string): Promise<T> {
         const res = await fetch(this.baseUrl + path);
 
         if (!res.ok) {
             throw new Error(`API response error: ${res.status}`);
         }
 
-        return res.json();
+        return res.json() as Promise<T>;
     }
 
     /**

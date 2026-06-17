@@ -23,7 +23,7 @@ export function etkinlikler(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/kultur-sanat-etkinlikleri
          */
         getList() {
-            return client.get("ibb/kultursanat/etkinlikler") as Promise<IzmirEtkinlik[]>;
+            return client.get<IzmirEtkinlik[]>("ibb/kultursanat/etkinlikler");
         },
 
         /**
@@ -32,7 +32,7 @@ export function etkinlikler(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/kultur-sanat-etkinlikleri
          */
         getEtkinlikById(etkinlikId: number) {
-            return client.get(`ibb/kultursanat/etkinlikler/${etkinlikId}`) as Promise<IzmirEtkinlik>;
+            return client.get<IzmirEtkinlik>(`ibb/kultursanat/etkinlikler/${etkinlikId}`);
         }
 
     };

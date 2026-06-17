@@ -11,7 +11,7 @@ export function taksi(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/taksi-durak-bilgileri
          */
         getDurakList() {
-            return client.get("ibb/cbs/taksiduraklari") as Promise<OnemliYerWrapper<TaksiDurak>>;
+            return client.get<OnemliYerWrapper<TaksiDurak>>("ibb/cbs/taksiduraklari");
         }
     };
 }

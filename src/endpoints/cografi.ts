@@ -11,7 +11,7 @@ export function cografi(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/adayarimada
          */
         getAdaYarimadaList() {
-            return client.get("ibb/cbs/adayarimada") as Promise<OnemliYerWrapper<CografiYer>>;
+            return client.get<OnemliYerWrapper<CografiYer>>("ibb/cbs/adayarimada");
         },
 
         /**
@@ -19,7 +19,7 @@ export function cografi(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/burunlar
          */
         getBurunlarList() {
-            return client.get("ibb/cbs/burunlar") as Promise<OnemliYerWrapper<CografiYer>>;
+            return client.get<OnemliYerWrapper<CografiYer>>("ibb/cbs/burunlar");
         },
 
         /**
@@ -27,7 +27,7 @@ export function cografi(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/dagtepe
          */
         getDagTepeList() {
-            return client.get("ibb/cbs/dagtepe") as Promise<OnemliYerWrapper<CografiYer>>;
+            return client.get<OnemliYerWrapper<CografiYer>>("ibb/cbs/dagtepe");
         },
 
         /**
@@ -35,7 +35,7 @@ export function cografi(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/goller
          */
         getGollerList() {
-            return client.get("ibb/cbs/goller") as Promise<OnemliYerWrapper<CografiYer>>;
+            return client.get<OnemliYerWrapper<CografiYer>>("ibb/cbs/goller");
         },
 
         /**
@@ -43,7 +43,7 @@ export function cografi(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/korfezvekoylar
          */
         getKorfezKoylarList() {
-            return client.get("ibb/cbs/korfezvekoylar") as Promise<OnemliYerWrapper<CografiYer>>;
+            return client.get<OnemliYerWrapper<CografiYer>>("ibb/cbs/korfezvekoylar");
         },
 
         /**
@@ -51,7 +51,7 @@ export function cografi(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/nehirvecaylar
          */
         getNehirCaylarList() {
-            return client.get("ibb/cbs/nehirvecaylar") as Promise<OnemliYerWrapper<CografiYer>>;
+            return client.get<OnemliYerWrapper<CografiYer>>("ibb/cbs/nehirvecaylar");
         },
 
         /**
@@ -59,7 +59,7 @@ export function cografi(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/ormanlar
          */
         getOrmanlarList() {
-            return client.get("ibb/cbs/ormanlar") as Promise<OnemliYerWrapper<CografiYer>>;
+            return client.get<OnemliYerWrapper<CografiYer>>("ibb/cbs/ormanlar");
         },
 
         /**
@@ -67,7 +67,7 @@ export function cografi(client: IzmirClient) {
          * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/meydanlar
          */
         getMeydanlarList() {
-            return client.get("ibb/cbs/meydanlar") as Promise<OnemliYerWrapper<CografiYer>>;
+            return client.get<OnemliYerWrapper<CografiYer>>("ibb/cbs/meydanlar");
         }
     };
 }
