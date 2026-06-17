@@ -21,7 +21,8 @@
   "license": "MIT",
   "type": "module",
   "bin": {
-    "izmir-mcp": "./dist/mcp/index.js"
+    "izmir-mcp": "./dist/mcp/index.js",
+    "izmir-cli": "./dist/cli/index.js"
   },
   "repository": {
     "type": "git",
@@ -64,6 +65,9 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
     "cheerio": "^1.2.0",
-    "fetch-jsonp": "^1.4.0"
+    "cli-table3": "^0.6.5",
+    "commander": "^15.0.0",
+    "fetch-jsonp": "^1.4.0",
+    "picocolors": "^1.1.1"
   }
 }
