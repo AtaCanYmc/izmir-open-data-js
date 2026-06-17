@@ -1,4 +1,4 @@
-import { IzmirClient } from "../client";
+import { IzmirClient } from "../client.js";
 
 /**
  * Askıda İzmirim Kart istatistik bilgileri

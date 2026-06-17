@@ -1,5 +1,5 @@
-import { IzmirClient } from "../client";
-import { CKANDatastoreResponse } from "./eshot";
+import { IzmirClient } from "../client.js";
+import { CKANDatastoreResponse } from "./eshot.js";
 
 export interface OtoparkBilgisi {
     ufid: string;

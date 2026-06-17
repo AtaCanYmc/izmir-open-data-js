@@ -15,6 +15,9 @@
 * 🔄 **Modern Yapı:** `async/await` desteği ile temiz ve okunabilir kod.
 * 🏗️ **Esnek:** Hem Node.js hem de modern tarayıcı ortamlarında kullanılabilir.
 * 📦 **CKAN Desteği:** Açık veri portalının CKAN API'si üzerinden detaylı veri setlerine erişim.
+* 🤖 **MCP Sunucusu:** LLM'lerin (Örn: Claude Desktop) kullanabilmesi için gömülü **Model Context Protocol** modülü (`izmir-mcp`).
+* 💻 **CLI Aracı:** Terminal üzerinden komut satırı aracılığıyla verilere anında ulaşıp tablo çizebilme (`izmir-cli`).
+* 💡 **TypeScript:** `%100` Typescript desteği, Generic typelar ile güvenli veri yapıları.
 
 ---
 
@@ -81,6 +84,33 @@ async function eshotVerileri() {
 
 eshotVerileri();
 ```
+
+### 💻 CLI Aracı Kullanımı
+
+Projeyi global olarak yüklediyseniz (veya `npx` üzerinden) verileri harika terminal tablolarıyla hızlıca çekebilirsiniz.
+
+```bash
+# ESHOT hatlarını ve duraklarını komut satırından görüntüleyin
+npx izmir-cli get cbs/hastaneler
+
+# BİSİM istasyonlarındaki bisiklet doluluk oranlarını hızlıca görün
+npx izmir-cli get cbs/bisimistasyon
+```
+Daha fazla detay için: [CLI Dokümantasyonu](docs/CLI.md)
+
+### 🤖 MCP (Model Context Protocol) Entegrasyonu
+
+Claude Desktop gibi LLM ajanlarınızın İzmir verilerini yerel olarak keşfedip sorgulayabilmesi için sisteme gömülü bir **MCP Sunucusu** eklenmiştir. Claude konfigürasyonunuza şu satırları ekleyerek paketi bir yapay zeka aracı olarak kullanabilirsiniz:
+
+```json
+"mcpServers": {
+  "izmir-open-data": {
+    "command": "npx",
+    "args": ["-y", "izmir-open-data-js"]
+  }
+}
+```
+Daha fazla detay için: [MCP Dokümantasyonu](docs/MCP.md)
 
 ---
 

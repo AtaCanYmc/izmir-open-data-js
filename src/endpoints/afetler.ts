@@ -1,5 +1,5 @@
-import { IzmirClient } from "../client";
-import { OnemliYerWrapper, DefaultOnemliYer } from "../common/types/onemliYer";
+import { IzmirClient } from "../client.js";
+import { OnemliYerWrapper, DefaultOnemliYer } from "../common/types/onemliYer.js";
 
 export interface AfetToplanmaAlanlari extends DefaultOnemliYer {}
 

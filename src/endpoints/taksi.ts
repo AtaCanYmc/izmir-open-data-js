@@ -1,5 +1,5 @@
-import { DefaultOnemliYer, OnemliYerWrapper } from "../common/types/onemliYer";
-import { IzmirClient } from "../client";
+import { DefaultOnemliYer, OnemliYerWrapper } from "../common/types/onemliYer.js";
+import { IzmirClient } from "../client.js";
 
 export interface TaksiDurak extends DefaultOnemliYer {}
 

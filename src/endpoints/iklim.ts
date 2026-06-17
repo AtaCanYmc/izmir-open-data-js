@@ -1,4 +1,4 @@
-import { IzmirClient } from "../client";
+import { IzmirClient } from "../client.js";
 import { formatDate } from "../common/utils/dateUtils";
 
 export interface HavaKalitesiOlcum {

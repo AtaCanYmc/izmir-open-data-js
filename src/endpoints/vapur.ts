@@ -1,5 +1,5 @@
-import { IzmirClient } from "../client";
-import { GunReferansi } from "../common/types/gun";
+import { IzmirClient } from "../client.js";
+import { GunReferansi } from "../common/types/gun.js";
 
 export interface VapurSeferSaati {
     KalkisSaati: string | null;

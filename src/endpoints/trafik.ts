@@ -1,4 +1,4 @@
-import { IzmirClient } from "../client";
+import { IzmirClient } from "../client.js";
 
 /**
  * Trafik kamerası bilgisi (CSV datasından)
