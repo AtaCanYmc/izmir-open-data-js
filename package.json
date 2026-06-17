@@ -20,6 +20,9 @@
   "author": "Ata",
   "license": "MIT",
   "type": "module",
+  "bin": {
+    "izmir-mcp": "./dist/mcp/index.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/AtaCanYmc/izmir-open-data-js"
@@ -59,6 +62,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "cheerio": "^1.2.0",
     "fetch-jsonp": "^1.4.0"
   }
