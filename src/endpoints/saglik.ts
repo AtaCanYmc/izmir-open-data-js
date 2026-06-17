@@ -108,7 +108,6 @@ export function saglik(client: IzmirClient) {
          */
         getVeterinerliklerList() {
             return client.get<OnemliYerWrapper<SaglikKurumu>>("ibb/cbs/veterinerlikler");
-        }
+        },
     };
 }
-

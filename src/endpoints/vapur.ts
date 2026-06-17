@@ -1,5 +1,5 @@
-import {IzmirClient} from "../client";
-import {GunReferansi} from "../common/types/gun";
+import { IzmirClient } from "../client";
+import { GunReferansi } from "../common/types/gun";
 
 export interface VapurSeferSaati {
     KalkisSaati: string | null;
@@ -133,8 +133,8 @@ export function vapur(client: IzmirClient) {
          */
         getDetayList(): Promise<VapurDetay[]> {
             return client.getCSV<VapurDetay>(
-                'https://acikveri.bizizmir.com/dataset/87b38b23-4f73-4650-9d96-c72ad6ee73e3/resource/e6d7425a-694c-4f39-b452-4aade132635c/download/vapurdetay.csv'
+                "https://acikveri.bizizmir.com/dataset/87b38b23-4f73-4650-9d96-c72ad6ee73e3/resource/e6d7425a-694c-4f39-b452-4aade132635c/download/vapurdetay.csv",
             );
-        }
+        },
     };
 }

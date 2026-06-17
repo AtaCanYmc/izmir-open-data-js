@@ -1,5 +1,5 @@
-import {IzmirClient} from "../client";
-import {DefaultOnemliYer, OnemliYerWrapper} from "../common/types/onemliYer";
+import { IzmirClient } from "../client";
+import { DefaultOnemliYer, OnemliYerWrapper } from "../common/types/onemliYer";
 
 export interface HizmetNoktasi extends DefaultOnemliYer {}
 
@@ -12,6 +12,6 @@ export function hizmet(client: IzmirClient) {
          */
         getHizmetNoktaList() {
             return client.get<OnemliYerWrapper<HizmetNoktasi>>("ibb/cbs/izbbhizmetnoktalari");
-        }
+        },
     };
 }

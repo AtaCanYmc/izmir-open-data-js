@@ -51,7 +51,7 @@ export class IzmirAPI {
     public readonly otopark;
     public readonly hizmet;
     public readonly vapur;
-    
+
     // Yeni endpoint'ler
     public readonly egitim;
     public readonly saglik;
@@ -69,7 +69,7 @@ export class IzmirAPI {
 
     constructor(baseUrl?: string) {
         this.client = new IzmirClient(baseUrl);
-        
+
         this.eczaneler = eczaneler(this.client);
         this.muhtarliklar = muhtarliklar(this.client);
         this.wizmirnet = wizmirnet(this.client);
@@ -87,7 +87,7 @@ export class IzmirAPI {
         this.otopark = otopark(this.client);
         this.hizmet = hizmet(this.client);
         this.vapur = vapur(this.client);
-        
+
         this.egitim = egitim(this.client);
         this.saglik = saglik(this.client);
         this.kutuphane = kutuphane(this.client);

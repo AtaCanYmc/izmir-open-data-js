@@ -1,5 +1,5 @@
-import {IzmirClient} from "../client";
-import {CKANDatastoreResponse} from "./eshot";
+import { IzmirClient } from "../client";
+import { CKANDatastoreResponse } from "./eshot";
 
 export interface OtoparkBilgisi {
     ufid: string;
@@ -114,11 +114,11 @@ export function otopark(client: IzmirClient) {
          * @param offset Atlanacak kayıt sayısı (sayfalama için)
          */
         getUcretler(limit = 100, offset = 0) {
-            return client.getCKAN<CKANDatastoreResponse<OtoparkUcreti>>('datastore_search', {
-                resource_id: 'b45d2e9f-f258-476e-a12d-d0ff62471ee0',
+            return client.getCKAN<CKANDatastoreResponse<OtoparkUcreti>>("datastore_search", {
+                resource_id: "b45d2e9f-f258-476e-a12d-d0ff62471ee0",
                 limit,
-                offset
+                offset,
             });
-        }
+        },
     };
 }

@@ -36,7 +36,6 @@ export function plaj(client: IzmirClient) {
          */
         getFuarList() {
             return client.get<OnemliYerWrapper<Plaj>>("ibb/cbs/fuar");
-        }
+        },
     };
 }
-

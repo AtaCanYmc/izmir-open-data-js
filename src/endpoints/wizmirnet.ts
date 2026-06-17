@@ -1,5 +1,5 @@
-import {IzmirClient} from "../client";
-import {OnemliYerWrapper, DefaultOnemliYer} from "../common/types/onemliYer";
+import { IzmirClient } from "../client";
+import { OnemliYerWrapper, DefaultOnemliYer } from "../common/types/onemliYer";
 
 export interface WizmirNetKonum extends DefaultOnemliYer {}
 
@@ -12,6 +12,6 @@ export function wizmirnet(client: IzmirClient) {
          */
         getList() {
             return client.get<OnemliYerWrapper<WizmirNetKonum>>("ibb/cbs/wizmirnetnoktalari");
-        }
+        },
     };
 }

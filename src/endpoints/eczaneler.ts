@@ -1,4 +1,4 @@
-import {IzmirClient} from "../client";
+import { IzmirClient } from "../client";
 
 export interface Eczane {
     Adi: string;
@@ -29,6 +29,6 @@ export function eczaneler(client: IzmirClient) {
          */
         getList() {
             return client.get<Eczane[]>("ibb/eczaneler");
-        }
+        },
     };
 }

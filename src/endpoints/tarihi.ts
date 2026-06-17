@@ -60,7 +60,6 @@ export function tarihi(client: IzmirClient) {
          */
         getTarihiYapilarList() {
             return client.get<OnemliYerWrapper<TarihiYapi>>("ibb/cbs/tarihiyapilar");
-        }
+        },
     };
 }
-

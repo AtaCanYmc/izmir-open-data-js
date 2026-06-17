@@ -1,5 +1,5 @@
-import {IzmirClient} from "../client";
-import {OnemliYerWrapper, DefaultOnemliYer} from "../common/types/onemliYer";
+import { IzmirClient } from "../client";
+import { OnemliYerWrapper, DefaultOnemliYer } from "../common/types/onemliYer";
 
 export interface AfetToplanmaAlanlari extends DefaultOnemliYer {}
 
@@ -12,6 +12,6 @@ export function afetler(client: IzmirClient) {
          */
         getAcilDurumToplanmaAlanlari() {
             return client.get<OnemliYerWrapper<AfetToplanmaAlanlari>>("ibb/cbs/afetaciltoplanmaalani");
-        }
+        },
     };
 }

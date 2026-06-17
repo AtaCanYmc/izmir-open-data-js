@@ -132,7 +132,6 @@ export function kamu(client: IzmirClient) {
          */
         getMaskematikNoktalariList() {
             return client.get<OnemliYerWrapper<KamuKurumu>>("ibb/cbs/maskematiknoktalari");
-        }
+        },
     };
 }
-

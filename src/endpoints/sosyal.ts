@@ -52,7 +52,6 @@ export function sosyal(client: IzmirClient) {
          */
         getYetistirmeYurtlariList() {
             return client.get<OnemliYerWrapper<SosyalHizmetMerkezi>>("ibb/cbs/yetistirmeyurtlari");
-        }
+        },
     };
 }
-

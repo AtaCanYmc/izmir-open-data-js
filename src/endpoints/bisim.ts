@@ -1,5 +1,5 @@
-import {IzmirClient} from "../client";
-import {DefaultOnemliYer, OnemliYerWrapper} from "../common/types/onemliYer";
+import { IzmirClient } from "../client";
+import { DefaultOnemliYer, OnemliYerWrapper } from "../common/types/onemliYer";
 
 export interface BisimIstasyon extends DefaultOnemliYer {}
 
@@ -11,7 +11,7 @@ export function bisim(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/bisim-istasyonlari
          */
         getIstasyonList() {
-            return client.get<OnemliYerWrapper<BisimIstasyon>>('izulas/bisim/istasyonlar');
-        }
+            return client.get<OnemliYerWrapper<BisimIstasyon>>("izulas/bisim/istasyonlar");
+        },
     };
 }

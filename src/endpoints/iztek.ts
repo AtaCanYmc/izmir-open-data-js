@@ -19,7 +19,6 @@ export function iztek(client: IzmirClient) {
          */
         getAskidaIzmirimKartIstatistik() {
             return client.get<AskidaIzmirimKartIstatistik>("iztek/askidaizmirimkart");
-        }
+        },
     };
 }
-

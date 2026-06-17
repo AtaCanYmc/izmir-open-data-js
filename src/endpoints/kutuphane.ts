@@ -68,7 +68,6 @@ export function kutuphane(client: IzmirClient) {
          */
         getMuzelerList() {
             return client.get<OnemliYerWrapper<KulturMekani>>("ibb/cbs/muzeler");
-        }
+        },
     };
 }
-

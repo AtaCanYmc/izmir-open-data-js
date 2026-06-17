@@ -36,7 +36,6 @@ export function tren(client: IzmirClient) {
          */
         getAracMuayeneIstasyonlariList() {
             return client.get<OnemliYerWrapper<UlasimNoktasi>>("ibb/cbs/aracmuayeneistasyonlari");
-        }
+        },
     };
 }
-

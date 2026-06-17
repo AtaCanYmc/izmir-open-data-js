@@ -4,7 +4,7 @@ import { IzmirClient } from "../src/client";
 
 // Global fetch'i mock'la
 const mockFetch = vi.fn();
-vi.stubGlobal('fetch', mockFetch);
+vi.stubGlobal("fetch", mockFetch);
 
 afterEach(() => {
     vi.clearAllMocks();
@@ -15,22 +15,22 @@ describe("CKAN API testleri", () => {
         it("doğru URL ve parametrelerle fetch çağrısı yapar", async () => {
             const mockResult = {
                 records: [{ HAT_NO: 100, HAT_ADI: "Test Hat" }],
-                total: 1
+                total: 1,
             };
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                json: async () => ({ success: true, result: mockResult })
+                json: async () => ({ success: true, result: mockResult }),
             });
 
             const client = new IzmirClient();
-            const result = await client.getCKAN('datastore_search', {
-                resource_id: 'test-resource',
-                limit: 50
+            const result = await client.getCKAN("datastore_search", {
+                resource_id: "test-resource",
+                limit: 50,
             });
 
             expect(mockFetch).toHaveBeenCalledWith(
-                'https://acikveri.bizizmir.com/api/3/action/datastore_search?resource_id=test-resource&limit=50'
+                "https://acikveri.bizizmir.com/api/3/action/datastore_search?resource_id=test-resource&limit=50",
             );
             expect(result).toEqual(mockResult);
         });
@@ -38,25 +38,27 @@ describe("CKAN API testleri", () => {
         it("API başarısız olduğunda hata fırlatır", async () => {
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                json: async () => ({ success: false, error: { message: "Resource not found" } })
+                json: async () => ({ success: false, error: { message: "Resource not found" } }),
             });
 
             const client = new IzmirClient();
 
-            await expect(client.getCKAN('datastore_search', { resource_id: 'invalid' }))
-                .rejects.toThrow("Resource not found");
+            await expect(client.getCKAN("datastore_search", { resource_id: "invalid" })).rejects.toThrow(
+                "Resource not found",
+            );
         });
 
         it("HTTP hatası olduğunda CKAN hatası fırlatır", async () => {
             mockFetch.mockResolvedValueOnce({
                 ok: false,
-                status: 500
+                status: 500,
             });
 
             const client = new IzmirClient();
 
-            await expect(client.getCKAN('datastore_search', { resource_id: 'test' }))
-                .rejects.toThrow("CKAN API response error: 500");
+            await expect(client.getCKAN("datastore_search", { resource_id: "test" })).rejects.toThrow(
+                "CKAN API response error: 500",
+            );
         });
 
         it("ağ hatası olduğunda CKAN hatası fırlatır", async () => {
@@ -64,8 +66,9 @@ describe("CKAN API testleri", () => {
 
             const client = new IzmirClient();
 
-            await expect(client.getCKAN('datastore_search', { resource_id: 'test' }))
-                .rejects.toThrow("CKAN Hatası: Network error");
+            await expect(client.getCKAN("datastore_search", { resource_id: "test" })).rejects.toThrow(
+                "CKAN Hatası: Network error",
+            );
         });
     });
 
@@ -77,25 +80,39 @@ describe("CKAN API testleri", () => {
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                text: async () => mockCSV
+                text: async () => mockCSV,
             });
 
             const api = new IzmirAPI();
             const result = await api.eshot.getHatlar();
 
             expect(mockFetch).toHaveBeenCalledWith(
-                'https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hatlari.csv'
+                "https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hatlari.csv",
             );
             expect(result).toEqual([
-                { HAT_NO: 5, HAT_ADI: "NARLIDERE - KUYULAR İSKELE", GUZERGAH_ACIKLAMA: "MİTHAT PAŞA CAD.", ACIKLAMA: "", HAT_BASLANGIC: "NARLIDERE", HAT_BITIS: "KUYULAR İSKELE" },
-                { HAT_NO: 6, HAT_ADI: "ARIKENT - KUYULAR İSK.", GUZERGAH_ACIKLAMA: "MİTHAT PAŞA CAD.", ACIKLAMA: "", HAT_BASLANGIC: "ARIKENT", HAT_BITIS: "KUYULAR İSKELE" }
+                {
+                    HAT_NO: 5,
+                    HAT_ADI: "NARLIDERE - KUYULAR İSKELE",
+                    GUZERGAH_ACIKLAMA: "MİTHAT PAŞA CAD.",
+                    ACIKLAMA: "",
+                    HAT_BASLANGIC: "NARLIDERE",
+                    HAT_BITIS: "KUYULAR İSKELE",
+                },
+                {
+                    HAT_NO: 6,
+                    HAT_ADI: "ARIKENT - KUYULAR İSK.",
+                    GUZERGAH_ACIKLAMA: "MİTHAT PAŞA CAD.",
+                    ACIKLAMA: "",
+                    HAT_BASLANGIC: "ARIKENT",
+                    HAT_BITIS: "KUYULAR İSKELE",
+                },
             ]);
         });
 
         it("getHatlar metodu mevcut", () => {
             const api = new IzmirAPI();
             expect(api.eshot.getHatlar).toBeDefined();
-            expect(typeof api.eshot.getHatlar).toBe('function');
+            expect(typeof api.eshot.getHatlar).toBe("function");
         });
     });
 
@@ -107,14 +124,14 @@ describe("CKAN API testleri", () => {
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                text: async () => mockCSV
+                text: async () => mockCSV,
             });
 
             const api = new IzmirAPI();
             const result = await api.eshot.getHareketSaatleri();
 
             expect(mockFetch).toHaveBeenCalledWith(
-                'https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hareketsaatleri.csv'
+                "https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hareketsaatleri.csv",
             );
             expect(result.length).toBe(2);
             expect(result[0].HAT_NO).toBe(5);
@@ -125,7 +142,7 @@ describe("CKAN API testleri", () => {
         it("getHareketSaatleri metodu mevcut", () => {
             const api = new IzmirAPI();
             expect(api.eshot.getHareketSaatleri).toBeDefined();
-            expect(typeof api.eshot.getHareketSaatleri).toBe('function');
+            expect(typeof api.eshot.getHareketSaatleri).toBe("function");
         });
     });
 
@@ -137,14 +154,14 @@ describe("CKAN API testleri", () => {
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                text: async () => mockCSV
+                text: async () => mockCSV,
             });
 
             const api = new IzmirAPI();
             const result = await api.eshot.getDuraklar();
 
             expect(mockFetch).toHaveBeenCalledWith(
-                'https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-duraklari.csv'
+                "https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-duraklari.csv",
             );
             expect(result.length).toBe(2);
             expect(result[0].DURAK_ID).toBe(10005);
@@ -155,7 +172,7 @@ describe("CKAN API testleri", () => {
         it("getDuraklar metodu mevcut", () => {
             const api = new IzmirAPI();
             expect(api.eshot.getDuraklar).toBeDefined();
-            expect(typeof api.eshot.getDuraklar).toBe('function');
+            expect(typeof api.eshot.getDuraklar).toBe("function");
         });
     });
 
@@ -167,25 +184,25 @@ describe("CKAN API testleri", () => {
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                text: async () => mockCSV
+                text: async () => mockCSV,
             });
 
             const api = new IzmirAPI();
             const result = await api.eshot.getHatGuzergahlari();
 
             expect(mockFetch).toHaveBeenCalledWith(
-                'https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hat-guzergahlari.csv'
+                "https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hat-guzergahlari.csv",
             );
             expect(result).toEqual([
                 { HAT_NO: 5, YON: 1, BOYLAM: 26.9899, ENLEM: 38.3926 },
-                { HAT_NO: 5, YON: 1, BOYLAM: 26.9899, ENLEM: 38.3927 }
+                { HAT_NO: 5, YON: 1, BOYLAM: 26.9899, ENLEM: 38.3927 },
             ]);
         });
 
         it("getHatGuzergahlari metodu mevcut", () => {
             const api = new IzmirAPI();
             expect(api.eshot.getHatGuzergahlari).toBeDefined();
-            expect(typeof api.eshot.getHatGuzergahlari).toBe('function');
+            expect(typeof api.eshot.getHatGuzergahlari).toBe("function");
         });
     });
 
@@ -198,14 +215,14 @@ describe("CKAN API testleri", () => {
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                text: async () => mockCSV
+                text: async () => mockCSV,
             });
 
             const api = new IzmirAPI();
             const result = await api.eshot.getBaglantiTipleri();
 
             expect(mockFetch).toHaveBeenCalledWith(
-                'https://acikveri.bizizmir.com/dataset/f0964595-53e0-4b94-bf11-9423f8bb595e/resource/c228da75-adfd-422a-a480-2a4c7ffa7586/download/eshot-otobus-baglanti-tipleri.csv'
+                "https://acikveri.bizizmir.com/dataset/f0964595-53e0-4b94-bf11-9423f8bb595e/resource/c228da75-adfd-422a-a480-2a4c7ffa7586/download/eshot-otobus-baglanti-tipleri.csv",
             );
             expect(result.length).toBe(3);
             expect(result[0].BAGLANTI_TIP_ID).toBe(1);
@@ -216,7 +233,7 @@ describe("CKAN API testleri", () => {
         it("getBaglantiTipleri metodu mevcut", () => {
             const api = new IzmirAPI();
             expect(api.eshot.getBaglantiTipleri).toBeDefined();
-            expect(typeof api.eshot.getBaglantiTipleri).toBe('function');
+            expect(typeof api.eshot.getBaglantiTipleri).toBe("function");
         });
     });
 
@@ -228,14 +245,14 @@ describe("CKAN API testleri", () => {
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                text: async () => mockCSV
+                text: async () => mockCSV,
             });
 
             const api = new IzmirAPI();
             const result = await api.eshot.getBaglantiHatlari();
 
             expect(mockFetch).toHaveBeenCalledWith(
-                'https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-baglantili-hatlar.csv'
+                "https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-baglantili-hatlar.csv",
             );
             expect(result.length).toBe(2);
             expect(result[0].BAGLANTI_TIP_ID).toBe(1);
@@ -247,34 +264,34 @@ describe("CKAN API testleri", () => {
         it("getBaglantiHatlari metodu mevcut", () => {
             const api = new IzmirAPI();
             expect(api.eshot.getBaglantiHatlari).toBeDefined();
-            expect(typeof api.eshot.getBaglantiHatlari).toBe('function');
+            expect(typeof api.eshot.getBaglantiHatlari).toBe("function");
         });
     });
 
     describe("otopark.getUcretler", () => {
         it("otopark ücretlerini doğru parametrelerle çeker", async () => {
             const mockRecords = [
-                { _id: 1, "Otopark / Fiyat": "Alsancak Punta Katlı Otoparkı", "0-2 saat": 150, "2-4 saat": 180 }
+                { _id: 1, "Otopark / Fiyat": "Alsancak Punta Katlı Otoparkı", "0-2 saat": 150, "2-4 saat": 180 },
             ];
 
             const mockResult = {
                 include_total: true,
-                resource_id: 'b45d2e9f-f258-476e-a12d-d0ff62471ee0',
+                resource_id: "b45d2e9f-f258-476e-a12d-d0ff62471ee0",
                 records: mockRecords,
                 limit: 100,
-                total: 10
+                total: 10,
             };
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                json: async () => ({ success: true, result: mockResult })
+                json: async () => ({ success: true, result: mockResult }),
             });
 
             const api = new IzmirAPI();
             const result = await api.otopark.getUcretler();
 
             expect(mockFetch).toHaveBeenCalledWith(
-                'https://acikveri.bizizmir.com/api/3/action/datastore_search?resource_id=b45d2e9f-f258-476e-a12d-d0ff62471ee0&limit=100&offset=0'
+                "https://acikveri.bizizmir.com/api/3/action/datastore_search?resource_id=b45d2e9f-f258-476e-a12d-d0ff62471ee0&limit=100&offset=0",
             );
             expect(result.records).toEqual(mockRecords);
             expect(result.total).toBe(10);
@@ -283,7 +300,7 @@ describe("CKAN API testleri", () => {
         it("getUcretler metodu mevcut", () => {
             const api = new IzmirAPI();
             expect(api.otopark.getUcretler).toBeDefined();
-            expect(typeof api.otopark.getUcretler).toBe('function');
+            expect(typeof api.otopark.getUcretler).toBe("function");
         });
     });
 
@@ -295,14 +312,14 @@ describe("CKAN API testleri", () => {
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                text: async () => mockCSV
+                text: async () => mockCSV,
             });
 
             const api = new IzmirAPI();
             const result = await api.tramvay.getPlanlananiSeferSayilari();
 
             expect(mockFetch).toHaveBeenCalledWith(
-                'https://acikveri.bizizmir.com/dataset/ace45290-413e-4786-82e4-d23fd56591b1/resource/2fc4d0cf-9628-43b7-95d3-df5742a95f02/download/planlanan_sefer_sayilari.csv'
+                "https://acikveri.bizizmir.com/dataset/ace45290-413e-4786-82e4-d23fd56591b1/resource/2fc4d0cf-9628-43b7-95d3-df5742a95f02/download/planlanan_sefer_sayilari.csv",
             );
             expect(result.length).toBe(2);
             expect(result[0].YIL).toBe(2020);
@@ -313,7 +330,7 @@ describe("CKAN API testleri", () => {
         it("getPlanlananiSeferSayilari metodu mevcut", () => {
             const api = new IzmirAPI();
             expect(api.tramvay.getPlanlananiSeferSayilari).toBeDefined();
-            expect(typeof api.tramvay.getPlanlananiSeferSayilari).toBe('function');
+            expect(typeof api.tramvay.getPlanlananiSeferSayilari).toBe("function");
         });
     });
 
@@ -325,14 +342,14 @@ ESREFPASA HAST. KAVSAGI;38.42319238;27.16143187`;
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                text: async () => mockCSV
+                text: async () => mockCSV,
             });
 
             const api = new IzmirAPI();
             const result = await api.trafik.getKameraList();
 
             expect(mockFetch).toHaveBeenCalledWith(
-                'https://acikveri.bizizmir.com/dataset/a5cda2f2-ccbd-4fac-a4bb-c691abff28f1/resource/b91cb15d-05c6-45b7-8a75-48e030aad368/download/trafikkameralari.csv'
+                "https://acikveri.bizizmir.com/dataset/a5cda2f2-ccbd-4fac-a4bb-c691abff28f1/resource/b91cb15d-05c6-45b7-8a75-48e030aad368/download/trafikkameralari.csv",
             );
             expect(result.length).toBe(2);
             expect(result[0].ADI).toBe("TEPECIK KAVSAGI");
@@ -343,7 +360,7 @@ ESREFPASA HAST. KAVSAGI;38.42319238;27.16143187`;
         it("getKameraList metodu mevcut", () => {
             const api = new IzmirAPI();
             expect(api.trafik.getKameraList).toBeDefined();
-            expect(typeof api.trafik.getKameraList).toBe('function');
+            expect(typeof api.trafik.getKameraList).toBe("function");
         });
     });
 
@@ -355,14 +372,14 @@ DOKUZEYLÜL;Yolcu Gemisi;426;-;13;Var;-;1;1;1;1;Var;3;Var`;
 
             mockFetch.mockResolvedValueOnce({
                 ok: true,
-                text: async () => mockCSV
+                text: async () => mockCSV,
             });
 
             const api = new IzmirAPI();
             const result = await api.vapur.getDetayList();
 
             expect(mockFetch).toHaveBeenCalledWith(
-                'https://acikveri.bizizmir.com/dataset/87b38b23-4f73-4650-9d96-c72ad6ee73e3/resource/e6d7425a-694c-4f39-b452-4aade132635c/download/vapurdetay.csv'
+                "https://acikveri.bizizmir.com/dataset/87b38b23-4f73-4650-9d96-c72ad6ee73e3/resource/e6d7425a-694c-4f39-b452-4aade132635c/download/vapurdetay.csv",
             );
             expect(result.length).toBe(2);
             expect(result[0].GEMI_ADI).toBe("AKABEY");
@@ -373,8 +390,7 @@ DOKUZEYLÜL;Yolcu Gemisi;426;-;13;Var;-;1;1;1;1;Var;3;Var`;
         it("getDetayList metodu mevcut", () => {
             const api = new IzmirAPI();
             expect(api.vapur.getDetayList).toBeDefined();
-            expect(typeof api.vapur.getDetayList).toBe('function');
+            expect(typeof api.vapur.getDetayList).toBe("function");
         });
     });
 });
-

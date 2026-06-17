@@ -11,5 +11,5 @@ export enum Gunler {
     Persembe = 4,
     Cuma = 5,
     Cumartesi = 6,
-    Pazar = 7
+    Pazar = 7,
 }

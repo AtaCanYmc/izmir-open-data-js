@@ -1,4 +1,4 @@
-import {IzmirClient} from "../client";
+import { IzmirClient } from "../client";
 
 export interface IzbanUcretDetay {
     BinisIstasyonu: string;
@@ -51,7 +51,9 @@ export function izban(client: IzmirClient) {
          * @param httMi Halk taşıt tarifesi saatleri içerisinde mi?
          */
         getTarife(BinisIstasyonuId: number, InisIstasyonuId: number, Aktarma: number, httMi: number) {
-            return client.get<IzbanUcretDetay>(`izban/tutarhesaplama/${BinisIstasyonuId}/${InisIstasyonuId}/${Aktarma}/${httMi}`);
+            return client.get<IzbanUcretDetay>(
+                `izban/tutarhesaplama/${BinisIstasyonuId}/${InisIstasyonuId}/${Aktarma}/${httMi}`,
+            );
         },
 
         /**
@@ -82,8 +84,8 @@ export function izban(client: IzmirClient) {
          */
         getDurakMesafeleri(): Promise<IzbanDurakMesafesi[]> {
             return client.getCSV<IzbanDurakMesafesi>(
-                'https://acikveri.bizizmir.com/dataset/c40b5759-9394-41b0-a479-0e7c53e18072/resource/53ff5f4b-c514-43aa-a4cd-4a12e03976e1/download/izban-duraklar-arasi-mesafe.csv'
+                "https://acikveri.bizizmir.com/dataset/c40b5759-9394-41b0-a479-0e7c53e18072/resource/53ff5f4b-c514-43aa-a4cd-4a12e03976e1/download/izban-duraklar-arasi-mesafe.csv",
             );
-        }
+        },
     };
 }

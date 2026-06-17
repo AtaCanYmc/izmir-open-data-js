@@ -1,7 +1,10 @@
 // Node.js ortamında window yoktur, tarayıcıda JSONP kullanılır
-const isBrowser = typeof window !== 'undefined';
+const isBrowser = typeof window !== "undefined";
 
-type FetchJsonpFunction = (url: string, options?: { jsonpCallback?: string; timeout?: number }) => Promise<{ json: () => Promise<any> }>;
+type FetchJsonpFunction = (
+    url: string,
+    options?: { jsonpCallback?: string; timeout?: number },
+) => Promise<{ json: () => Promise<any> }>;
 
 export class IzmirClient {
     private readonly baseUrl: string;
@@ -12,7 +15,7 @@ export class IzmirClient {
     constructor(
         baseUrl = "https://openapi.izmir.bel.tr/api/",
         ckanBaseUrl = "https://acikveri.bizizmir.com/api/3/action/",
-        ckanDumpBaseUrl = "https://acikveri.bizizmir.com/datastore/dump/"
+        ckanDumpBaseUrl = "https://acikveri.bizizmir.com/datastore/dump/",
     ) {
         this.baseUrl = baseUrl;
         this.ckanBaseUrl = ckanBaseUrl;
@@ -35,7 +38,7 @@ export class IzmirClient {
      */
     async getCKAN<T = any>(action: string, params: Record<string, string | number> = {}): Promise<T> {
         const queryParams = new URLSearchParams();
-        
+
         for (const [key, value] of Object.entries(params)) {
             queryParams.append(key, String(value));
         }
@@ -56,12 +59,12 @@ export class IzmirClient {
         try {
             // Lazy load fetch-jsonp
             if (!this.fetchJsonp) {
-                const module = await import('fetch-jsonp');
+                const module = await import("fetch-jsonp");
                 this.fetchJsonp = module.default;
             }
 
             const response = await this.fetchJsonp(url, {
-                jsonpCallback: 'callback',
+                jsonpCallback: "callback",
                 timeout: 10000,
             });
 
@@ -127,12 +130,12 @@ export class IzmirClient {
     private async getCKANDumpWithJsonp<T>(url: string): Promise<T> {
         try {
             if (!this.fetchJsonp) {
-                const module = await import('fetch-jsonp');
+                const module = await import("fetch-jsonp");
                 this.fetchJsonp = module.default;
             }
 
             const response = await this.fetchJsonp(url, {
-                jsonpCallback: 'callback',
+                jsonpCallback: "callback",
                 timeout: 30000, // Dump daha büyük olabilir
             });
 
@@ -172,7 +175,7 @@ export class IzmirClient {
      * @param url CSV dosyasının URL'i
      * @param delimiter Ayırıcı karakter (varsayılan: ;)
      */
-    async getCSV<T = Record<string, string>>(url: string, delimiter = ';'): Promise<T[]> {
+    async getCSV<T = Record<string, string>>(url: string, delimiter = ";"): Promise<T[]> {
         try {
             const res = await fetch(url);
 
@@ -196,7 +199,7 @@ export class IzmirClient {
      * @param delimiter Ayırıcı karakter
      */
     private parseCSV<T>(csv: string, delimiter: string): T[] {
-        const lines = csv.trim().split('\n');
+        const lines = csv.trim().split("\n");
         if (lines.length < 2) return [];
 
         // Tırnak işaretlerini temizle
@@ -208,7 +211,7 @@ export class IzmirClient {
             return cleaned;
         };
 
-        const headers = lines[0].split(delimiter).map(h => cleanValue(h));
+        const headers = lines[0].split(delimiter).map((h) => cleanValue(h));
         const results: T[] = [];
 
         for (let i = 1; i < lines.length; i++) {
@@ -216,12 +219,17 @@ export class IzmirClient {
             const obj: Record<string, string | number> = {};
 
             for (let j = 0; j < headers.length; j++) {
-                const rawValue = values[j]?.trim() || '';
+                const rawValue = values[j]?.trim() || "";
                 const value = cleanValue(rawValue);
                 // Sayısal değerleri number'a çevir, ancak özel karakterler içeriyorsa string bırak
                 // Örn: "06:00" (saat), "29-30" (hat numaraları), "True/False" string kalmalı
-                if (value === '' || value.includes(':') || value.includes('-') || 
-                    value.toLowerCase() === 'true' || value.toLowerCase() === 'false') {
+                if (
+                    value === "" ||
+                    value.includes(":") ||
+                    value.includes("-") ||
+                    value.toLowerCase() === "true" ||
+                    value.toLowerCase() === "false"
+                ) {
                     obj[headers[j]] = value;
                 } else {
                     const numValue = parseFloat(value);

@@ -1,4 +1,4 @@
-import {IzmirClient} from "../client";
+import { IzmirClient } from "../client";
 
 export interface SuUretimi {
     UretimKaynagi: string;
@@ -69,7 +69,7 @@ export interface BarajKaliteAnalizi {
     ParametreAdi: string;
     Standart: string;
     Birim: string;
-    IslenmisSu: string;    // Veriler string formatında (örn: "7,7" veya "<0,04")
+    IslenmisSu: string; // Veriler string formatında (örn: "7,7" veya "<0,04")
     IslenmemisSu: string;
     Regulasyon: string | null;
 }
@@ -109,7 +109,7 @@ export interface KesintiBilgisi {
 export interface IzsuSubeBilgisi {
     AktifMi: boolean;
     SubeAdresi: string;
-    ENLEM: string;  // API'den string (örn: "38.419687") olarak dönüyor
+    ENLEM: string; // API'den string (örn: "38.419687") olarak dönüyor
     BOYLAM: string;
     IletisimDurumu: boolean;
     SubeAdi: string;
@@ -119,7 +119,7 @@ export interface IzsuSubeBilgisi {
 export interface IzsuVezneBilgisi {
     VezneAdi: string;
     VezneAdresi: string | null; // Mobil vezneler için null olabilir
-    ENLEM: string | null;       // Koordinat verisi gelmeyebilir
+    ENLEM: string | null; // Koordinat verisi gelmeyebilir
     BOYLAM: string | null;
     AktifMi: boolean;
     Bolge: string;
@@ -206,6 +206,6 @@ export function izsu(client: IzmirClient) {
          */
         getIzsuVezneList() {
             return client.get<IzsuVezneBilgisi[]>("izsu/vezneler");
-        }
+        },
     };
 }

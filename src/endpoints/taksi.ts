@@ -1,5 +1,5 @@
-import {DefaultOnemliYer, OnemliYerWrapper} from "../common/types/onemliYer";
-import {IzmirClient} from "../client";
+import { DefaultOnemliYer, OnemliYerWrapper } from "../common/types/onemliYer";
+import { IzmirClient } from "../client";
 
 export interface TaksiDurak extends DefaultOnemliYer {}
 
@@ -12,6 +12,6 @@ export function taksi(client: IzmirClient) {
          */
         getDurakList() {
             return client.get<OnemliYerWrapper<TaksiDurak>>("ibb/cbs/taksiduraklari");
-        }
+        },
     };
 }

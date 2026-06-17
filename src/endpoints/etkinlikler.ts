@@ -1,4 +1,4 @@
-import {IzmirClient} from "../client";
+import { IzmirClient } from "../client";
 
 export interface IzmirEtkinlik {
     Tur: string;
@@ -33,7 +33,6 @@ export function etkinlikler(client: IzmirClient) {
          */
         getEtkinlikById(etkinlikId: number) {
             return client.get<IzmirEtkinlik>(`ibb/kultursanat/etkinlikler/${etkinlikId}`);
-        }
-
+        },
     };
 }

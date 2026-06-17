@@ -68,7 +68,6 @@ export function cografi(client: IzmirClient) {
          */
         getMeydanlarList() {
             return client.get<OnemliYerWrapper<CografiYer>>("ibb/cbs/meydanlar");
-        }
+        },
     };
 }
-

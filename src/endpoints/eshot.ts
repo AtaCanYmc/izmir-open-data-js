@@ -1,6 +1,6 @@
-import {IzmirClient} from "../client";
-import {DefaultOnemliYer, OnemliYerWrapper} from "../common/types/onemliYer";
-import * as cheerio from 'cheerio';
+import { IzmirClient } from "../client";
+import { DefaultOnemliYer, OnemliYerWrapper } from "../common/types/onemliYer";
+import * as cheerio from "cheerio";
 
 export interface EshotDurak extends DefaultOnemliYer {}
 
@@ -145,9 +145,7 @@ export function eshot(client: IzmirClient) {
          * Kaynak: https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hatlari.csv
          */
         getHatlar(): Promise<EshotHat[]> {
-            return client.getCSV<EshotHat>(
-                'https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hatlari.csv'
-            );
+            return client.getCSV<EshotHat>("https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hatlari.csv");
         },
 
         /**
@@ -158,7 +156,7 @@ export function eshot(client: IzmirClient) {
          */
         getHareketSaatleri(): Promise<EshotHareketSaati[]> {
             return client.getCSV<EshotHareketSaati>(
-                'https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hareketsaatleri.csv'
+                "https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hareketsaatleri.csv",
             );
         },
 
@@ -170,7 +168,7 @@ export function eshot(client: IzmirClient) {
          */
         getDuraklar(): Promise<EshotDurakCSV[]> {
             return client.getCSV<EshotDurakCSV>(
-                'https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-duraklari.csv'
+                "https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-duraklari.csv",
             );
         },
 
@@ -183,7 +181,7 @@ export function eshot(client: IzmirClient) {
          */
         getHatGuzergahlari(): Promise<EshotHatGuzergah[]> {
             return client.getCSV<EshotHatGuzergah>(
-                'https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hat-guzergahlari.csv'
+                "https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-hat-guzergahlari.csv",
             );
         },
 
@@ -195,7 +193,7 @@ export function eshot(client: IzmirClient) {
          */
         getBaglantiTipleri(): Promise<EshotBaglantiTipi[]> {
             return client.getCSV<EshotBaglantiTipi>(
-                'https://acikveri.bizizmir.com/dataset/f0964595-53e0-4b94-bf11-9423f8bb595e/resource/c228da75-adfd-422a-a480-2a4c7ffa7586/download/eshot-otobus-baglanti-tipleri.csv'
+                "https://acikveri.bizizmir.com/dataset/f0964595-53e0-4b94-bf11-9423f8bb595e/resource/c228da75-adfd-422a-a480-2a4c7ffa7586/download/eshot-otobus-baglanti-tipleri.csv",
             );
         },
 
@@ -207,7 +205,7 @@ export function eshot(client: IzmirClient) {
          */
         getBaglantiHatlari(): Promise<EshotBaglantiHat[]> {
             return client.getCSV<EshotBaglantiHat>(
-                'https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-baglantili-hatlar.csv'
+                "https://openfiles.izmir.bel.tr/211488/docs/eshot-otobus-baglantili-hatlar.csv",
             );
         },
 
@@ -266,12 +264,13 @@ export function eshot(client: IzmirClient) {
             const url = `https://www.eshot.gov.tr/tr/UlasimSaatleri/${hatNo}/288`;
             try {
                 const response = await fetch(url, {
-                    method: 'POST',
+                    method: "POST",
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "User-Agent":
+                            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
                     },
-                    body: new URLSearchParams({ 'hatYon': yon.toString() })
+                    body: new URLSearchParams({ hatYon: yon.toString() }),
                 });
                 if (!response.ok) {
                     throw new Error(`HTTP hata kodu: ${response.status}`);
@@ -279,10 +278,11 @@ export function eshot(client: IzmirClient) {
                 const html = await response.text();
                 const $ = cheerio.load(html);
                 let stops: string[] = [];
-                $('.block-transfer').each((_, block) => {
-                    const ul = $(block).find('ul.transfer');
+                $(".block-transfer").each((_, block) => {
+                    const ul = $(block).find("ul.transfer");
                     if (ul.length > 0) {
-                        stops = ul.find('li.ring')
+                        stops = ul
+                            .find("li.ring")
                             .map((_, li) => $(li).text().trim())
                             .get();
                         if (stops.length > 0) return false;
@@ -291,14 +291,14 @@ export function eshot(client: IzmirClient) {
                 return stops.map((durak, idx) => ({
                     hatNo,
                     yon,
-                    durakAdi: durak.split(' - ')[0] ?? "-",
-                    durakId: durak.split(' - ')[1] ?? "-",
-                    sira: idx + 1
+                    durakAdi: durak.split(" - ")[0] ?? "-",
+                    durakId: durak.split(" - ")[1] ?? "-",
+                    sira: idx + 1,
                 }));
             } catch (error) {
                 console.error(`ESHOT durakları çekilirken hata oluştu:`, error);
                 return [];
             }
-        }
+        },
     };
 }

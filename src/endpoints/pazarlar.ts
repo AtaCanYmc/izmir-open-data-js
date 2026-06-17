@@ -1,6 +1,6 @@
-import {IzmirClient} from "../client";
-import {DefaultOnemliYer, OnemliYerWrapper} from "../common/types/onemliYer";
-import {formatDate} from "../common/utils/dateUtils";
+import { IzmirClient } from "../client";
+import { DefaultOnemliYer, OnemliYerWrapper } from "../common/types/onemliYer";
+import { formatDate } from "../common/utils/dateUtils";
 
 export interface PazarYerleri extends DefaultOnemliYer {}
 
@@ -22,7 +22,6 @@ export interface HalFiyatResponse {
     BultenTarihi: string; // ISO date
     HalFiyatListesi: HalFiyat[];
 }
-
 
 export function pazarlar(client: IzmirClient) {
     return {
@@ -51,6 +50,6 @@ export function pazarlar(client: IzmirClient) {
          */
         getSebzeMeyveHalFiyatlari(tarih: Date) {
             return client.get<HalFiyatResponse>(`ibb/halfiyatlari/sebzemeyve/${formatDate(tarih)}`);
-        }
+        },
     };
 }

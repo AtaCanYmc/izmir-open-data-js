@@ -1,5 +1,5 @@
-import {IzmirClient} from "../client";
-import {DefaultOnemliYer, OnemliYerWrapper} from "../common/types/onemliYer";
+import { IzmirClient } from "../client";
+import { DefaultOnemliYer, OnemliYerWrapper } from "../common/types/onemliYer";
 
 export interface Muhtarlik extends DefaultOnemliYer {}
 
@@ -12,6 +12,6 @@ export function muhtarliklar(client: IzmirClient) {
          */
         getList() {
             return client.get<OnemliYerWrapper<Muhtarlik>>("ibb/cbs/muhtarliklar");
-        }
+        },
     };
 }

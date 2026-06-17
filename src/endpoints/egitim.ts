@@ -100,7 +100,6 @@ export function egitim(client: IzmirClient) {
          */
         getMilliEgitimList() {
             return client.get<OnemliYerWrapper<EgitimKurumu>>("ibb/cbs/milliegitim");
-        }
+        },
     };
 }
-

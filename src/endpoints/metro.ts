@@ -1,4 +1,4 @@
-import {IzmirClient} from "../client";
+import { IzmirClient } from "../client";
 
 export interface MetroIstasyonu {
     IstasyonId: number;
@@ -32,7 +32,7 @@ export function metro(client: IzmirClient) {
          * Kaynak: https://acikveri.bizizmir.com/dataset/metro-istayonlari
          */
         getIstasyonList() {
-            return client.get<MetroIstasyonu[]>('metro/istasyonlar');
+            return client.get<MetroIstasyonu[]>("metro/istasyonlar");
         },
 
         /**
@@ -43,9 +43,9 @@ export function metro(client: IzmirClient) {
          */
         getDurakMesafeleri(): Promise<MetroDurakMesafesi[]> {
             return client.getCSV<MetroDurakMesafesi>(
-                'https://acikveri.bizizmir.com/dataset/b43d973e-8b98-4572-a944-dc39373ab7cb/resource/9a503344-25d5-4f34-8811-65e3108303ca/download/metro-durak-mesafeleri.csv',
-                ','
+                "https://acikveri.bizizmir.com/dataset/b43d973e-8b98-4572-a944-dc39373ab7cb/resource/9a503344-25d5-4f34-8811-65e3108303ca/download/metro-durak-mesafeleri.csv",
+                ",",
             );
-        }
+        },
     };
 }

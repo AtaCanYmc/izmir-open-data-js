@@ -1,13 +1,13 @@
-import {IzmirClient} from "../client";
-import {formatDate} from "../common/utils/dateUtils";
+import { IzmirClient } from "../client";
+import { formatDate } from "../common/utils/dateUtils";
 
 export interface HavaKalitesiOlcum {
-    OlcumTarihi: string;   // ISO date
+    OlcumTarihi: string; // ISO date
     BolgeId: number;
     BolgeAdi: string;
     GazId: number;
     GazAdi: string;
-    OlcumDegeri: string;   // API kirli veri döndürüyor
+    OlcumDegeri: string; // API kirli veri döndürüyor
 }
 
 /**
@@ -44,8 +44,8 @@ export function iklim(client: IzmirClient) {
          */
         getHavaKalitesiIstasyonlari(): Promise<HavaKalitesiIstasyonu[]> {
             return client.getCSV<HavaKalitesiIstasyonu>(
-                'https://acikveri.bizizmir.com/dataset/3712094a-ded4-40cf-ac94-2102eeb73cbc/resource/7b0edbda-350a-4240-b2c5-a4deb1b4bdfc/download/hava-kalitesi-olcum-istasyonlari.csv'
+                "https://acikveri.bizizmir.com/dataset/3712094a-ded4-40cf-ac94-2102eeb73cbc/resource/7b0edbda-350a-4240-b2c5-a4deb1b4bdfc/download/hava-kalitesi-olcum-istasyonlari.csv",
             );
-        }
+        },
     };
 }
