@@ -23,9 +23,7 @@ async function main() {
       version: "1.0.0",
     },
     {
-      capabilities: {
-        tools: {}
-      },
+      capabilities: {}
     }
   );
 

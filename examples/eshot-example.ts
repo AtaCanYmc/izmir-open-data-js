@@ -1,4 +1,4 @@
-import { IzmirAPI } from "../src/index.js";
+import { IzmirAPI } from "../src";
 
 const api = new IzmirAPI();
 
@@ -14,8 +14,8 @@ async function main() {
         console.log(`Konum: ${enlem}, ${boylam} için en yakın duraklar aranıyor...`);
         const yakinDuraklar = await api.eshot.getYakinDurakList(enlem, boylam);
         
-        if (yakinDuraklar && yakinDuraklar.length > 0) {
-            console.log(`Bulunan en yakın durak: ${yakinDuraklar[0].durakAdi} (Mesafe: ${yakinDuraklar[0].mesafe}m)\n`);
+        if (yakinDuraklar && yakinDuraklar.onemliyer && yakinDuraklar.onemliyer.length > 0) {
+            console.log(`Bulunan en yakın durak: ${yakinDuraklar.onemliyer[0].ADI}\n`);
         }
 
         // Tüm hatları çek ve ilk 5 tanesini göster

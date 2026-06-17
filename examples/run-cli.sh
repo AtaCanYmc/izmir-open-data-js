@@ -7,9 +7,9 @@ npm run build
 
 echo -e "\n----------------------------------------\n"
 
-# Örnek 1: BİSİM istasyonlarını komut satırından çekmek
-echo "Örnek 1: BİSİM İstasyonları (izmir-cli get cbs/bisimistasyon)"
-node ../dist/cli/index.js get cbs/bisimistasyon
+# Örnek 1: Nöbetçi Eczaneleri komut satırından çekmek
+echo "Örnek 1: Nöbetçi Eczaneler (izmir-cli get nobetcieczaneler)"
+node ../dist/cli/index.js get nobetcieczaneler
 
 echo -e "\n----------------------------------------\n"
 

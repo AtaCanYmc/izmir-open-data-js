@@ -93,8 +93,8 @@ Projeyi global olarak yüklediyseniz (veya `npx` üzerinden) verileri harika ter
 # ESHOT hatlarını ve duraklarını komut satırından görüntüleyin
 npx izmir-cli get cbs/hastaneler
 
-# BİSİM istasyonlarındaki bisiklet doluluk oranlarını hızlıca görün
-npx izmir-cli get cbs/bisimistasyon
+# Nöbetçi Eczaneleri hızlıca listeleyin
+npx izmir-cli get nobetcieczaneler
 ```
 Daha fazla detay için: [CLI Dokümantasyonu](docs/CLI.md)
 

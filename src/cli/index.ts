@@ -55,8 +55,22 @@ program
         },
       });
 
+      const formatValue = (val: any) => {
+        if (typeof val === "object" && val !== null) {
+          val = JSON.stringify(val);
+        }
+        let str = String(val ?? "");
+        // Satır sonlarını boşlukla değiştir, tablo yapısını bozmasını engelle
+        str = str.replace(/[\r\n\t]+/g, " ");
+        // Çok uzun metinleri terminale sığması için kırp
+        if (str.length > 40) {
+          str = str.slice(0, 37) + "...";
+        }
+        return str;
+      };
+
       for (const item of items) {
-        const row = keysToShow.map((k) => String(item[k] ?? ""));
+        const row = keysToShow.map((k) => formatValue(item[k]));
         table.push(row);
       }
 
