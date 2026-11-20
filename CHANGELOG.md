@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [2.2.0](https://github.com/AtaCanYmc/izmir-open-data-js/compare/v2.1.0...v2.2.0) (2026-11-20)
+
+
+### Features
+
+* **docs:** generate ENDPOINTS, CLI, MCP, and specs HTML pages ([964f344](https://github.com/AtaCanYmc/izmir-open-data-js/commit/964f3446cff002067e15b55891ced3edcad4a383))
+* **dx:** add docs-serve and serve targets to Makefile and package.json ([640a517](https://github.com/AtaCanYmc/izmir-open-data-js/commit/640a517c39d670cfe79d5d324bdfaadd0b536169))
+* **pages:** add Awwwards-style GitHub Pages showcase with interactive playground and deploy workflow ([18607d1](https://github.com/AtaCanYmc/izmir-open-data-js/commit/18607d15a01cc2c53357aedca3b381152572d69b))
+* **seo:** complete technical SEO audit & implementation (sitemap, robots, llms.txt, JSON-LD, OG, canonicals) ([3788b34](https://github.com/AtaCanYmc/izmir-open-data-js/commit/3788b34d8f9695759a061d41d9f462e2b003ae86))
+* **showcase:** enrich site with illustrations, category cards, and detailed API/CLI/MCP docs ([146e7b1](https://github.com/AtaCanYmc/izmir-open-data-js/commit/146e7b1a2ee47bc7b0c5e6d9157eccd71db4b1b7))
+
+
+### Bug Fixes
+
+* **ci:** split pages workflow into build and deploy jobs ([464af43](https://github.com/AtaCanYmc/izmir-open-data-js/commit/464af43c59f2d49b3816f296b73ac3d256a5c28c))
+* **nav:** standardize top bar menu items and active states across all pages ([d1fb7fe](https://github.com/AtaCanYmc/izmir-open-data-js/commit/d1fb7fef0a80f8d5adc1c41474679b4593ddcde2))
+* **site:** resolve light mode illustration contrast with dedicated blueprint canvas and robust theme sync ([fbdeba3](https://github.com/AtaCanYmc/izmir-open-data-js/commit/fbdeba39310de2fbc57f1555e49b16890da04923))
+* **site:** standardize navbar across all pages with unified links and labels ([1c5951f](https://github.com/AtaCanYmc/izmir-open-data-js/commit/1c5951f2779f312ff15ab462f0a783d77ab41fde))
+* use supported npm version for trusted publishing ([e003e82](https://github.com/AtaCanYmc/izmir-open-data-js/commit/e003e82d5e261f05886d291f2ff5b670d7ae91c4))
+
 ## [2.1.0](https://github.com/AtaCanYmc/izmir-open-data-js/compare/v2.0.0...v2.1.0) (2026-11-20)
 
 
