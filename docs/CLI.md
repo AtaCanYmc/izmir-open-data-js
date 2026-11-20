@@ -25,6 +25,8 @@ npx izmir-cli get <dataset_id>
 | Komut | Parametre | Açıklama |
 | --- | --- | --- |
 | `get` | `<dataset_id>` | Belirtilen veri seti kimliğine ait kayıtları çeker ve terminal tablosunda listeler. |
+| `search` | `<query> [-l limit]` | Portaldaki 260+ veri setini arar ve kaynak sayılarıyla birlikte listeler. |
+| `datastore` | `<resource_id> [-l limit] [-q query]` | Herhangi bir CKAN Datastore UUID'sinden canlı kayıtları çeker ve tablolar. |
 | `--help` | - | Komut satırı kullanım kılavuzunu ve mevcut seçenekleri gösterir. |
 | `--version` | - | Yüklü paket sürümünü görüntüler. |
 
@@ -54,6 +56,23 @@ Hastanelerin adres ve koordinat verilerini listelemek için:
 
 ```bash
 npx izmir-cli get cbs/hastaneler
+```
+
+### 4. Veri Seti Arama (CKAN Package Search)
+
+Portaldaki veri setleri arasında anahtar kelime ile arama yapmak için:
+
+```bash
+npx izmir-cli search tuvalet
+npx izmir-cli search itfaiye -l 5
+```
+
+### 5. Datastore Kayıt Sorgulama
+
+Belirli bir CKAN Resource UUID'sinden doğrudan kayıtları listelemek için:
+
+```bash
+npx izmir-cli datastore d87de3c1-9bc0-4a8c-842a-90cd2a30d03a -l 5
 ```
 
 ---

@@ -233,7 +233,50 @@
 ## Trafik (`client.trafik`)
 | Metod Adı | Açıklama |
 |---|---|
-| `getKameraList()` | İzmir'deki trafik kameralarının listesini içeren web servisi (CSV). |
+| `getKameraList()` | İzmir'deki trafik izleme kameralarının listesini içeren web servisi (CSV). |
+| `getAnaArterHizVeSure()` | Ana arterler günlük ortalama hız ve seyahat süresi verilerini sorgular. |
+| `getIsikliYonlendirmePanolari()` | Işıklı Şehir Yönlendirme Panoları (VMS) verilerini sorgular. |
+| `getAracSayimVerileri()` | Ana arterler araç sayım verilerini sorgular. |
+
+## CKAN & Açık Veri Portalı (`client.ckan`)
+| Metod Adı | Açıklama |
+|---|---|
+| `searchPackages(query, options)` | Portaldaki 260+ veri setini metin, etiket, organizasyon veya formata göre arar ve filtreler. |
+| `getPackage(idOrName)` | Belirli bir veri setinin tüm detay ve kaynak meta verilerini döndürür. |
+| `listPackages(options)` | Tüm veri setlerinin slug listesini döndürür. |
+| `searchDatastore(resourceId, options)` | Herhangi bir Datastore kaynağında SQL benzeri filtreleme (`filters`), arama (`q`), sıralama (`sort`) ve sayfalama yapar. |
+| `dumpDatastore(resourceId)` | Bir kaynağın tüm kayıtlarını tek seferde dump JSON olarak çeker. |
+| `listOrganizations()` | Veri sağlayan kurum ve daire başkanlıklarını listeler. |
+| `listGroups()` | Veri kategorilerini (ulaşım, çevre vb.) listeler. |
+| `listTags(options)` | Veri etiketlerini listeler. |
+
+## Tuvaletler (`client.tuvalet`)
+| Metod Adı | Açıklama |
+|---|---|
+| `getAkilliTuvaletler(options)` | İzmir genelindeki Akıllı Tuvaletlerin konum ve adres bilgilerini sorgular. |
+| `getModulerTuvaletler(options)` | Modüler tuvalet ve bebek bakım alanlarının konum, kabin adedi ve erişilebilirlik verilerini sorgular. |
+| `dumpAkilliTuvaletler()` | Tüm akıllı tuvalet verilerini tek seferde indirir. |
+| `dumpModulerTuvaletler()` | Tüm modüler tuvalet verilerini tek seferde indirir. |
+
+## İtfaiye (`client.itfaiye`)
+| Metod Adı | Açıklama |
+|---|---|
+| `getGruplar()` | İzmir genelindeki itfaiye istasyonları ve gruplarının konumlarını listeler (CBS). |
+| `getAcilMudahaleIstatistigi(options)` | İtfaiyenin yangın, arama-kurtarma vb. olaylara müdahale istatistiklerini sorgular. |
+| `getEgitimHizmetleri(options)` | İtfaiye eğitim hizmetleri istatistiklerini sorgular. |
+| `dumpAcilMudahale()` | Acil müdahale istatistiklerini toplu olarak indirir. |
+| `dumpEgitimHizmetleri()` | İtfaiye eğitim istatistiklerini toplu olarak indirir. |
+
+## İZUM & Ulaşım Merkezi (`client.izum`)
+| Metod Adı | Açıklama |
+|---|---|
+| `getAnaArterHizVeSure(options)` | İZUM ana arterler günlük hız ve seyahat süresi verilerini sorgular. |
+| `getVmsPanolari(options)` | Işıklı Şehir Yönlendirme Panoları (VMS) konum ve boyut bilgilerini sorgular. |
+| `getAracSayimVerileri(options)` | Ana arterler araç sayım istatistiklerini sorgular. |
+| `getOtoparklar()` | İZUM otopark konum ve doluluk verilerini döndürür. |
+| `getKameralar()` | İZUM trafik kameralarını döndürür. |
+| `dumpAnaArterHizVeSure()` | Hız ve süre verilerini toplu dump formatında çeker. |
+| `dumpAracSayimVerileri()` | Araç sayım verilerini toplu dump formatında çeker. |
 
 ## Tramvay (`client.tramvay`)
 | Metod Adı | Açıklama |
