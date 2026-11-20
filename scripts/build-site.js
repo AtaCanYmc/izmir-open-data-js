@@ -8,7 +8,47 @@ const rootDir = path.resolve(__dirname, "..");
 const docsDir = path.join(rootDir, "docs");
 const siteDir = path.join(rootDir, "site");
 
-function getCommonHead(title, description, relativeRoot = "", activePage = "") {
+function getCommonHead(title, description, relativeRoot = "", activePage = "", canonicalPath = "", breadcrumbName = "") {
+  const canonicalUrl = `https://atacanymc.github.io/izmir-open-data-js/${canonicalPath}`;
+  const ogImage = "https://atacanymc.github.io/izmir-open-data-js/assets/logo.svg";
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": canonicalUrl,
+        "url": canonicalUrl,
+        "name": `${title} — izmir-open-data-js`,
+        "description": description,
+        "inLanguage": "tr",
+        "isPartOf": {
+          "@type": "WebSite",
+          "@id": "https://atacanymc.github.io/izmir-open-data-js/#website",
+          "url": "https://atacanymc.github.io/izmir-open-data-js/",
+          "name": "İzmir Open Data JS"
+        }
+      },
+      breadcrumbName ? {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Ana Sayfa",
+            "item": "https://atacanymc.github.io/izmir-open-data-js/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": breadcrumbName,
+            "item": canonicalUrl
+          }
+        ]
+      } : null
+    ].filter(Boolean)
+  };
+
   return `<!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -28,6 +68,29 @@ function getCommonHead(title, description, relativeRoot = "", activePage = "") {
   
   <title>${title} — izmir-open-data-js</title>
   <meta name="description" content="${description}">
+  <link rel="canonical" href="${canonicalUrl}">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="İzmir Open Data JS">
+  <meta property="og:url" content="${canonicalUrl}">
+  <meta property="og:title" content="${title} — izmir-open-data-js">
+  <meta property="og:description" content="${description}">
+  <meta property="og:image" content="${ogImage}">
+  <meta property="og:locale" content="tr_TR">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="${canonicalUrl}">
+  <meta name="twitter:title" content="${title} — izmir-open-data-js">
+  <meta name="twitter:description" content="${description}">
+  <meta name="twitter:image" content="${ogImage}">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+${JSON.stringify(jsonLd, null, 2)}
+  </script>
   
   <link rel="icon" type="image/svg+xml" href="${relativeRoot}assets/logo.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -256,7 +319,7 @@ function buildEndpointsHtml() {
             <div class="category-icon-wrap" style="width: 32px; height: 32px;">
               <img src="assets/categories/${s.icon}" alt="${s.categoryLabel}" class="category-icon" width="18" height="18">
             </div>
-            <span>${s.title}</span>
+            <h2 class="doc-card-heading">${s.title}</h2>
             ${s.namespace ? `<span class="doc-card-badge">${s.namespace}</span>` : ""}
           </div>
           <div style="display: flex; align-items: center; gap: 0.75rem;">
@@ -456,7 +519,9 @@ function buildEndpointsHtml() {
     "Uç Nokta Kataloğu (API Reference)",
     "İzmir Büyükşehir Belediyesi Açık Veri Portalı tüm API uç noktaları, ESHOT, İZSU, BİSİM, CKAN ve coğrafi servis metotları referansı.",
     "",
-    "endpoints"
+    "endpoints",
+    "ENDPOINTS.html",
+    "Uç Noktalar"
   )}\n${bodyContent}\n${getCommonFooter()}`;
 
   fs.writeFileSync(path.join(siteDir, "ENDPOINTS.html"), finalHtml, "utf8");
@@ -665,9 +730,11 @@ izmir get nobetcieczaneler | grep -i "Konak"
 
   const finalHtml = `${getCommonHead(
     "CLI Kullanım Kılavuzu",
-    "İzmir Açık Veri terminal aracı izmir-cli ve Homebrew tap kurulum ve komut kılavuzu.",
+    "İzmir Açık Veri terminal aracı (izmir-cli) ve Homebrew tap kurulum kılavuzu. Canlı ESHOT, İZSU, BİSİM ve CKAN sorgulama komutları.",
     "",
-    "cli"
+    "cli",
+    "CLI.html",
+    "CLI Kılavuzu"
   )}\n${bodyContent}\n${getCommonFooter()}`;
 
   fs.writeFileSync(path.join(siteDir, "CLI.html"), finalHtml, "utf8");
@@ -866,9 +933,11 @@ izmir-mcp</div>
 
   const finalHtml = `${getCommonHead(
     "Model Context Protocol (MCP) Sunucusu",
-    "İzmir Açık Veri Portalı için Claude Desktop, Cursor ve yerel yapay zeka ajanları uyumlu MCP sunucu dokümantasyonu.",
+    "İzmir Açık Veri Portalı için Claude Desktop, Cursor ve yapay zeka ajanları uyumlu Model Context Protocol (MCP) sunucusu entegrasyon kılavuzu.",
     "",
-    "mcp"
+    "mcp",
+    "MCP.html",
+    "MCP Sunucusu"
   )}\n${bodyContent}\n${getCommonFooter()}`;
 
   fs.writeFileSync(path.join(siteDir, "MCP.html"), finalHtml, "utf8");
@@ -971,9 +1040,11 @@ function buildSpecsHtml() {
 
   const finalHtml = `${getCommonHead(
     "Resmi Şartnameler (Specs)",
-    "İzmir Büyükşehir Belediyesi resmi web servis kullanım şartnameleri arşivi.",
+    "İzmir Büyükşehir Belediyesi ve bağlı iştirakleri (İZBAN, İZSU, Metro) resmi web servis şartnameleri, veri modelleri ve entegrasyon kuralları.",
     "../",
-    "specs"
+    "specs",
+    "specs/index.html",
+    "Resmi Şartnameler"
   )}\n${bodyContent}\n${getCommonFooter("../")}`;
 
   fs.writeFileSync(path.join(specsSiteDir, "index.html"), finalHtml, "utf8");

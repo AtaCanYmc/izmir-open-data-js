@@ -1198,6 +1198,14 @@ code, pre {
   color: var(--text-primary);
 }
 
+.doc-card-heading {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  margin: 0;
+  color: inherit;
+  line-height: inherit;
+}
+
 .doc-card-badge {
   font-family: var(--font-mono);
   font-size: 0.75rem;

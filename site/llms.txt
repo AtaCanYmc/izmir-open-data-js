@@ -1,0 +1,65 @@
+# İzmir Open Data JS (izmir-open-data-js)
+
+> İzmir Büyükşehir Belediyesi Açık Veri Portalı için modern, tip güvenli TypeScript SDK, terminal CLI aracı ve Model Context Protocol (MCP) sunucusu.
+
+## Genel Bakış
+- Paket: `izmir-open-data-js` (npm & Homebrew)
+- Lisans: Apache-2.0
+- GitHub: https://github.com/AtaCanYmc/izmir-open-data-js
+- Web Sitesi: https://atacanymc.github.io/izmir-open-data-js/
+- API Uç Noktaları: https://atacanymc.github.io/izmir-open-data-js/ENDPOINTS.html
+- CLI Kılavuzu: https://atacanymc.github.io/izmir-open-data-js/CLI.html
+- MCP Sunucusu: https://atacanymc.github.io/izmir-open-data-js/MCP.html
+- Resmi Şartnameler: https://atacanymc.github.io/izmir-open-data-js/specs/index.html
+
+## Kurulum
+```bash
+# npm ile SDK
+npm install izmir-open-data-js
+
+# Homebrew ile CLI (macOS / Linux)
+brew tap AtaCanYmc/tap
+brew install izmir-cli
+```
+
+## Temel Kullanım (TypeScript)
+```typescript
+import { IzmirClient } from "izmir-open-data-js";
+
+const client = new IzmirClient({
+  cache: { ttlMs: 60_000 },
+  retry: { maxAttempts: 3, baseDelayMs: 500 }
+});
+
+// Canlı ESHOT otobüs konumları
+const buses = await client.eshot.getLiveBusLocations("249");
+
+// Nöbetçi eczaneler
+const pharmacies = await client.health.getOnDutyPharmacies();
+
+// BİSİM bisiklet istasyonları
+const bisim = await client.transport.getBisimStations();
+
+// CKAN Veri Seti Arama
+const datasets = await client.ckan.searchDatasets({ q: "ulaşım" });
+```
+
+## CLI Komutları
+- `izmir eshot buses <hatKodu>`: Hat üzerindeki canlı otobüsler
+- `izmir health pharmacies`: Güncel nöbetçi eczaneler
+- `izmir transport bisim`: Canlı bisiklet istasyonu dolulukları
+- `izmir ckan search <query>`: CKAN açık veri katalog araması
+
+## Model Context Protocol (MCP)
+LLM ajanları (Claude Desktop, Cursor, vb.) için MCP sunucusu:
+```json
+{
+  "mcpServers": {
+    "izmir-open-data": {
+      "command": "npx",
+      "args": ["-y", "izmir-open-data-js@latest", "--mcp"]
+    }
+  }
+}
+```
+Sağlanan araçlar: `get_live_bus_locations`, `get_on_duty_pharmacies`, `get_bisim_stations`, `get_dam_occupancy`, `search_ckan_datasets`, `query_ckan_datastore`.
