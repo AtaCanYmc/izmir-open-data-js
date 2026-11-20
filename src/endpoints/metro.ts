@@ -9,6 +9,15 @@ export interface MetroIstasyonu {
     Sira: number; // Hattaki durak sırası (1'den 24'e kadar)
 }
 
+export interface MetroSeferSaati {
+    SeferId: number;
+    Aralik: number; // Sefer aralığı (dakika)
+    BaslangicSaati: string;
+    BitisSaati: string;
+    Sira: number;
+    TarifeId: number; // 1: Hafta içi, 2: Cumartesi, 3: Pazar
+}
+
 /**
  * Metro durak mesafeleri bilgisi (CSV datasından)
  * İstasyonlar arası mesafe bilgilerini içerir
@@ -29,10 +38,19 @@ export function metro(client: IzmirClient) {
         /**
          * Metro istasyonları sıra ve konum verisi bilgileri içeren web servis.
          *
-         * Kaynak: https://acikveri.bizizmir.com/dataset/metro-istayonlari
+         * Kaynak: İZMİR METRO A.Ş. Web Servis Kullanım Dokümanı V.1.0 (Bölüm 4.1)
          */
         getIstasyonList() {
             return client.get<MetroIstasyonu[]>("metro/istasyonlar");
+        },
+
+        /**
+         * Metro sefer saatleri ve sefer sıklığı bilgilerini içeren web servisi.
+         *
+         * Kaynak: İZMİR METRO A.Ş. Web Servis Kullanım Dokümanı V.1.0 (Bölüm 4.2)
+         */
+        getSeferSaatleri() {
+            return client.get<MetroSeferSaati[]>("metro/sefersaatleri");
         },
 
         /**

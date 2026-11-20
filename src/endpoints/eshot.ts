@@ -1,8 +1,16 @@
 import { IzmirClient } from "../client.js";
-import { DefaultOnemliYer, OnemliYerWrapper } from "../common/types/onemliYer.js";
+import { DefaultOnemliYer } from "../common/types/onemliYer.js";
 import * as cheerio from "cheerio";
 
 export interface EshotDurak extends DefaultOnemliYer {}
+
+export interface EshotYakinDurak {
+    durakId: string;
+    adi: string;
+    enlem: number;
+    boylam: number;
+    mesafe: number;
+}
 
 /**
  * ESHOT hat bilgisi (CSV datasından)
@@ -210,12 +218,16 @@ export function eshot(client: IzmirClient) {
         },
 
         /**
-         * ESHOT duraklarının konum, isim ve diğer bilgilerini içeren web servisi.
+         * Verilen koordinata en yakın ESHOT otobüs duraklarını listeler.
          *
-         * Kaynak: https://acikveri.bizizmir.com/dataset/eshot-duraklari
+         * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cbs/noktayayakinduraklar
+         * @param enlem Enlem (latitude / y koordinatı)
+         * @param boylam Boylam (longitude / x koordinatı)
          */
         getYakinDurakList(enlem: number, boylam: number) {
-            return client.get<OnemliYerWrapper<EshotDurak>>(`ibb/cbs/noktayayakinduraklar?x=${enlem}&y=${boylam}`);
+            return client.get<EshotYakinDurak[]>(
+                `ibb/cbs/noktayayakinduraklar?x=${boylam}&y=${enlem}&inCoordSys=EPSG:4326&outCoordSys=EPSG:4326`,
+            );
         },
 
         /**

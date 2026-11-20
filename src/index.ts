@@ -16,7 +16,6 @@ import { izban } from "./endpoints/izban.js";
 import { otopark } from "./endpoints/otopark.js";
 import { hizmet } from "./endpoints/hizmet.js";
 import { vapur } from "./endpoints/vapur.js";
-// Yeni endpoint'ler
 import { egitim } from "./endpoints/egitim.js";
 import { saglik } from "./endpoints/saglik.js";
 import { kutuphane } from "./endpoints/kutuphane.js";
@@ -30,6 +29,10 @@ import { cografi } from "./endpoints/cografi.js";
 import { iztek } from "./endpoints/iztek.js";
 import { trafik } from "./endpoints/trafik.js";
 import { izmirimkart } from "./endpoints/izmirimkart.js";
+import { ckan } from "./endpoints/ckan.js";
+import { tuvalet } from "./endpoints/tuvalet.js";
+import { itfaiye } from "./endpoints/itfaiye.js";
+import { izum } from "./endpoints/izum.js";
 
 export class IzmirAPI {
     private readonly client: IzmirClient;
@@ -52,7 +55,6 @@ export class IzmirAPI {
     public readonly hizmet;
     public readonly vapur;
 
-    // Yeni endpoint'ler
     public readonly egitim;
     public readonly saglik;
     public readonly kutuphane;
@@ -66,6 +68,12 @@ export class IzmirAPI {
     public readonly iztek;
     public readonly trafik;
     public readonly izmirimkart;
+
+    // CKAN ve yeni veri seti modülleri
+    public readonly ckan;
+    public readonly tuvalet;
+    public readonly itfaiye;
+    public readonly izum;
 
     constructor(baseUrl?: string) {
         this.client = new IzmirClient(baseUrl);
@@ -101,5 +109,17 @@ export class IzmirAPI {
         this.iztek = iztek(this.client);
         this.trafik = trafik(this.client);
         this.izmirimkart = izmirimkart(this.client);
+
+        // Yeni modül başlatıcıları
+        this.ckan = ckan(this.client);
+        this.tuvalet = tuvalet(this.client);
+        this.itfaiye = itfaiye(this.client);
+        this.izum = izum(this.client);
     }
 }
+
+export { IzmirClient } from "./client.js";
+export * from "./endpoints/ckan.js";
+export * from "./endpoints/tuvalet.js";
+export * from "./endpoints/itfaiye.js";
+export * from "./endpoints/izum.js";

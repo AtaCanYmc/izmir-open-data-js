@@ -36,14 +36,21 @@ export class IzmirClient {
      * CKAN API'den veri çeker.
      * Tarayıcıda JSONP, Node.js'de normal fetch kullanır.
      */
-    async getCKAN<T = any>(action: string, params: Record<string, string | number> = {}): Promise<T> {
+    async getCKAN<T = any>(action: string, params: Record<string, any> = {}): Promise<T> {
         const queryParams = new URLSearchParams();
 
         for (const [key, value] of Object.entries(params)) {
-            queryParams.append(key, String(value));
+            if (value !== undefined && value !== null) {
+                if (typeof value === "object") {
+                    queryParams.append(key, JSON.stringify(value));
+                } else {
+                    queryParams.append(key, String(value));
+                }
+            }
         }
 
-        const url = `${this.ckanBaseUrl}${action}?${queryParams.toString()}`;
+        const qs = queryParams.toString();
+        const url = qs ? `${this.ckanBaseUrl}${action}?${qs}` : `${this.ckanBaseUrl}${action}`;
 
         if (isBrowser) {
             return this.getCKANWithJsonp<T>(url);

@@ -1,5 +1,22 @@
 import { IzmirClient } from "../client.js";
 
+export interface IzbanIstasyon {
+    IstasyonId: number;
+    IstasyonAdi: string;
+    IstasyonSirasi: number;
+    Boylam: number;
+    Enlem: number;
+}
+
+export interface IzbanSeferSaati {
+    HareketIstasyonId: number;
+    HareketIstasyonAdi: string;
+    VarisIstasyonId: number;
+    VarisIstasyonAdi: string;
+    HareketSaati: string;
+    VarisSaati: string;
+}
+
 export interface IzbanUcretDetay {
     BinisIstasyonu: string;
     InisIstasyonu: string;
@@ -42,38 +59,38 @@ export interface IzbanDurakMesafesi {
 export function izban(client: IzmirClient) {
     return {
         /**
-         * Banliyö fiyat tarifesi bilgisini içeren web servisi.
+         * Banliyö fiyat tarifesi ve "Gittiğin Kadar Öde" hesaplama web servisi.
          *
-         * Kaynak: https://acikveri.bizizmir.com/dataset/izban-banliyo-fiyat-tarifesi-servisi
+         * Kaynak: İZBAN Web Servis Kullanım Dokümanı V.1.0 (Bölüm 4.3)
          * @param BinisIstasyonuId Binilecek istasyonun id’si
          * @param InisIstasyonuId İnilecek istasyonun id’si
-         * @param Aktarma Kaç kez aktarma yapıldı (0, 1 kez, 2 kez, 3 kez)
-         * @param httMi Halk taşıt tarifesi saatleri içerisinde mi?
+         * @param Aktarma Kaç kez aktarma yapıldı (0, 1, 2, 3)
+         * @param httMi Halk taşıt tarifesi saatleri içerisinde mi? (boolean)
          */
-        getTarife(BinisIstasyonuId: number, InisIstasyonuId: number, Aktarma: number, httMi: number) {
+        getTarife(BinisIstasyonuId: number, InisIstasyonuId: number, Aktarma: number, httMi: boolean | number) {
             return client.get<IzbanUcretDetay>(
                 `izban/tutarhesaplama/${BinisIstasyonuId}/${InisIstasyonuId}/${Aktarma}/${httMi}`,
             );
         },
 
         /**
-         * Banliyö İstasyonlarının konum bilgileri içeren web servisi.
+         * Banliyö İstasyonlarının konum ve sıra bilgilerini içeren web servisi.
          *
-         * Kaynak: https://acikveri.bizizmir.com/dataset/izban-istasyonlari
+         * Kaynak: İZBAN Web Servis Kullanım Dokümanı V.1.0 (Bölüm 4.1)
          */
-        getIstasyonList() {
-            return client.get("izban/istasyonlar");
+        getIstasyonList(): Promise<IzbanIstasyon[]> {
+            return client.get<IzbanIstasyon[]>("izban/istasyonlar");
         },
 
         /**
-         * Banliyö hareket saatlerini içeren web servisi.
+         * Kalkış ve varış istasyonlarına göre banliyö sefer saatlerini içeren web servisi.
          *
-         * Kaynak: https://acikveri.bizizmir.com/dataset/izban-banliyo-hareket-saatleri
+         * Kaynak: İZBAN Web Servis Kullanım Dokümanı V.1.0 (Bölüm 4.2)
          * @param kalkisIstasyonId Kalkış istasyonu ID'si
          * @param varisIstasyonId Varış istasyonu ID'si
          */
-        getHareketSaatleri(kalkisIstasyonId: number, varisIstasyonId: number) {
-            return client.get(`sefersaatleri/${kalkisIstasyonId}/${varisIstasyonId}`);
+        getHareketSaatleri(kalkisIstasyonId: number, varisIstasyonId: number): Promise<IzbanSeferSaati[]> {
+            return client.get<IzbanSeferSaati[]>(`izban/sefersaatleri/${kalkisIstasyonId}/${varisIstasyonId}`);
         },
 
         /**

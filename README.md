@@ -162,11 +162,12 @@ Kütüphane, İzmir Açık Veri Portalı üzerindeki servisleri modüler ad alan
 | **Mikro Hareketlilik** | `api.bisim`, `api.taksi` | BİSİM akıllı bisiklet istasyonları, bisiklet dolulukları ve taksi durakları. |
 | **Sağlık & Eczane** | `api.eczaneler`, `api.saglik` | Nöbetçi eczaneler, tüm eczaneler, hastaneler ve acil yardım istasyonları. |
 | **Su & Altyapı** | `api.izsu`, `api.otopark`, `api.afetler` | Baraj doluluk oranları, su üretimi, otopark dolulukları ve toplanma alanları. |
+| **Kent & Güvenlik** | `api.tuvalet`, `api.itfaiye`, `api.izum`, `api.trafik` | Akıllı tuvaletler, itfaiye acil müdahaleleri, İZUM arter hızları ve VMS yönlendirme panoları. |
 | **Kültür & Sosyal** | `api.kultur`, `api.etkinlikler`, `api.egitim` | Kütüphaneler, müzeler, sinemalar, okullar ve belediye etkinlik takvimi. |
 | **Kamu & Coğrafya** | `api.kamu`, `api.cografi`, `api.muhtarliklar` | Noterler, muhtarlıklar, PTT, göller, dağlar ve kıyı şeridi bilgileri. |
-| **Açık Veri CKAN** | `client.getCKAN()`, `client.getCKANDump()` | CKAN portalındaki herhangi bir `resource_id` için datastore sorguları. |
+| **Açık Veri CKAN** | `api.ckan`, `client.getCKAN()`, `client.getCKANDump()` | 260+ veri setinde arama (`packageSearch`), filtreleme, `searchDatastore` ve dump indirme. |
 
-Uç noktaların tam parametre listesi için [Uç Nokta Referansı](docs/ENDPOINTS.md) sayfasına bakabilirsiniz.
+Uç noktaların tam parametre listesi için [Uç Nokta Referansı](docs/ENDPOINTS.md), belediye birimlerinin resmi şartnameleri için [Resmi Şartnameler (Specs)](docs/specs/README.md) sayfasına bakabilirsiniz.
 
 ---
 

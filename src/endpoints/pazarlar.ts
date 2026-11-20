@@ -1,6 +1,6 @@
 import { IzmirClient } from "../client.js";
 import { DefaultOnemliYer, OnemliYerWrapper } from "../common/types/onemliYer.js";
-import { formatDate } from "../common/utils/dateUtils";
+import { formatDate } from "../common/utils/dateUtils.js";
 
 export interface PazarYerleri extends DefaultOnemliYer {}
 
