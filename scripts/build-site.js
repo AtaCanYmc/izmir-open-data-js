@@ -48,12 +48,13 @@ function getCommonHead(title, description, relativeRoot = "", activePage = "") {
       </a>
 
       <nav class="nav-menu" aria-label="Ana Gezinti">
-        <a href="${relativeRoot}index.html" class="nav-link${activePage === 'home' ? ' active' : ''}"${activePage === 'home' ? ' aria-current="page"' : ''}>Ana Sayfa</a>
         <a href="${relativeRoot}index.html#playground" class="nav-link">Canlı Demo</a>
-        <a href="${relativeRoot}ENDPOINTS.html" class="nav-link${activePage === 'endpoints' ? ' active' : ''}"${activePage === 'endpoints' ? ' aria-current="page"' : ''}>Uç Noktalar</a>
-        <a href="${relativeRoot}CLI.html" class="nav-link${activePage === 'cli' ? ' active' : ''}"${activePage === 'cli' ? ' aria-current="page"' : ''}>CLI Kılavuzu</a>
-        <a href="${relativeRoot}MCP.html" class="nav-link${activePage === 'mcp' ? ' active' : ''}"${activePage === 'mcp' ? ' aria-current="page"' : ''}>MCP Sunucusu</a>
-        <a href="${relativeRoot}specs/index.html" class="nav-link${activePage === 'specs' ? ' active' : ''}"${activePage === 'specs' ? ' aria-current="page"' : ''}>Şartnameler</a>
+        <a href="${relativeRoot}index.html#features" class="nav-link">Özellikler</a>
+        <a href="${relativeRoot}index.html#categories" class="nav-link">Kategoriler</a>
+        <a href="${relativeRoot}ENDPOINTS.html" class="nav-link ${activePage === 'endpoints' ? 'active' : ''}" ${activePage === 'endpoints' ? 'aria-current="page"' : ''}>Uç Noktalar</a>
+        <a href="${relativeRoot}CLI.html" class="nav-link ${activePage === 'cli' ? 'active' : ''}" ${activePage === 'cli' ? 'aria-current="page"' : ''}>CLI</a>
+        <a href="${relativeRoot}MCP.html" class="nav-link ${activePage === 'mcp' ? 'active' : ''}" ${activePage === 'mcp' ? 'aria-current="page"' : ''}>MCP</a>
+        <a href="${relativeRoot}specs/index.html" class="nav-link ${activePage === 'specs' ? 'active' : ''}" ${activePage === 'specs' ? 'aria-current="page"' : ''}>Şartnameler</a>
       </nav>
 
       <div class="header-actions">
