@@ -364,27 +364,36 @@ function initCopyButtons() {
 function initThemeToggle() {
   const toggleBtn = document.getElementById("theme-toggle");
   const meta = document.querySelector('meta[name="color-scheme"]');
-  if (!toggleBtn || !meta) return;
+  if (!toggleBtn) return;
 
-  toggleBtn.addEventListener("click", () => {
-    const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const currentScheme = meta.content;
-
-    let target = "dark";
-    if (currentScheme === "dark") {
-      target = "light";
-    } else if (currentScheme === "light") {
-      target = "dark";
-    } else {
-      target = isDark ? "light" : "dark";
-    }
-
-    meta.content = target;
+  function applyTheme(target) {
+    if (meta) meta.content = target;
+    document.documentElement.setAttribute("data-theme", target);
+    document.documentElement.style.colorScheme = target;
     try {
       localStorage.setItem("color-scheme", target);
     } catch {
       // Ignore private mode storage failure
     }
+  }
+
+  // Sync initial state if stored
+  try {
+    const stored = localStorage.getItem("color-scheme");
+    if (stored) {
+      applyTheme(stored);
+    }
+  } catch {}
+
+  toggleBtn.addEventListener("click", () => {
+    const isSystemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const currentTheme =
+      document.documentElement.getAttribute("data-theme") ||
+      (meta && (meta.content === "dark" || meta.content === "light") ? meta.content : "") ||
+      (isSystemDark ? "dark" : "light");
+
+    const target = currentTheme === "dark" ? "light" : "dark";
+    applyTheme(target);
   });
 }
 

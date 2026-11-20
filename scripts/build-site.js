@@ -20,6 +20,8 @@ function getCommonHead(title, description, relativeRoot = "", activePage = "") {
       const stored = localStorage.getItem("color-scheme");
       if (stored) {
         document.querySelector('meta[name="color-scheme"]').content = stored;
+        document.documentElement.setAttribute("data-theme", stored);
+        document.documentElement.style.colorScheme = stored;
       }
     } catch (e) {}
   </script>
