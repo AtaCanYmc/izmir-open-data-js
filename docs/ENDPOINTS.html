@@ -1,0 +1,1928 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <script>
+    try {
+      const stored = localStorage.getItem("color-scheme");
+      if (stored) {
+        document.querySelector('meta[name="color-scheme"]').content = stored;
+      }
+    } catch (e) {}
+  </script>
+  
+  <title>Uç Nokta Kataloğu (API Reference) — izmir-open-data-js</title>
+  <meta name="description" content="İzmir Büyükşehir Belediyesi Açık Veri Portalı tüm API uç noktaları, ESHOT, İZSU, BİSİM, CKAN ve coğrafi servis metotları referansı.">
+  
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container nav-wrapper">
+      <a href="index.html" class="brand-link" aria-label="İzmir Open Data JS Ana Sayfa">
+        <img src="assets/logo.svg" alt="Logo" class="brand-logo" width="32" height="32">
+        <span>izmir-open-data-js</span>
+        <span class="version-pill">v2.1.0</span>
+      </a>
+
+      <nav class="nav-menu" aria-label="Ana Gezinti">
+        <a href="index.html" class="nav-link">Ana Sayfa</a>
+        <a href="index.html#playground" class="nav-link">Canlı Demo</a>
+        <a href="ENDPOINTS.html" class="nav-link">Uç Noktalar</a>
+        <a href="CLI.html" class="nav-link">CLI</a>
+        <a href="MCP.html" class="nav-link">MCP</a>
+        <a href="specs/index.html" class="nav-link">Şartnameler</a>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Theme Toggle Button -->
+        <button type="button" id="theme-toggle" class="theme-toggle-btn" aria-label="Temayı değiştir">
+          <svg class="theme-icon-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <svg class="theme-icon-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+
+        <a href="https://github.com/AtaCanYmc/izmir-open-data-js" class="btn-github" target="_blank" rel="noopener noreferrer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+          </svg>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc-page">
+    <div class="container">
+      <nav class="breadcrumb-nav" aria-label="Ekmek kırıntısı">
+        <a href="index.html" class="breadcrumb-link">Ana Sayfa</a>
+        <span>/</span>
+        <span class="text-secondary">Dokümantasyon</span>
+        <span>/</span>
+        <span aria-current="page">Uç Noktalar</span>
+      </nav>
+
+      <div class="doc-hero">
+        <h1 class="doc-title">İzmir Open Data Uç Nokta Kataloğu</h1>
+        <p class="doc-lead">
+          İzmir Büyükşehir Belediyesi Açık Veri Portalı ve REST web servislerinin <code>izmir-open-data-js</code> istemcisi içindeki modül, metod ve normalleştirici referansı.
+        </p>
+
+        <div class="doc-search-wrapper">
+          <div class="doc-search-box">
+            <svg class="doc-search-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input 
+              type="search" 
+              id="endpoint-search-input" 
+              class="doc-search-input" 
+              placeholder="Uç nokta veya metot ara (örn: eshot, nobetci, su kesinti, ckan)..." 
+              aria-label="Uç noktalarda ara"
+              autocomplete="off"
+            >
+          </div>
+          <div class="doc-search-stats" id="endpoint-search-stats" aria-live="polite">
+            Toplam 36 servis grubu ve 178 metot listeleniyor.
+          </div>
+        </div>
+      </div>
+
+      <div id="endpoint-modules-container">
+        
+      <section class="doc-card endpoint-module-card" data-title="afetler" data-namespace="client.afetler">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Afetler</span>
+            <span class="doc-card-badge">client.afetler</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">1 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getacildurumtoplanmaalanlari() afet ve acil durum toplanma alanlarına ait ilçe, mahalle ve konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getAcilDurumToplanmaAlanlari()</code></td>
+                  <td>Afet ve acil durum toplanma alanlarına ait ilçe, mahalle ve konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="bisim" data-namespace="client.bisim">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Bisim</span>
+            <span class="doc-card-badge">client.bisim</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">1 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getistasyonlist() i̇stasyonların konum, kapasite ve bisiklet sayılarını içeren web servisi.">
+                  <td><code class="method-chip">getIstasyonList()</code></td>
+                  <td>İstasyonların konum, kapasite ve bisiklet sayılarını içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="cografi" data-namespace="client.cografi">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Cografi</span>
+            <span class="doc-card-badge">client.cografi</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">8 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getadayarimadalist() ada ve yarımada konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getAdaYarimadaList()</code></td>
+                  <td>Ada ve yarımada konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getburunlarlist() burun konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getBurunlarList()</code></td>
+                  <td>Burun konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getdagtepelist() dağ ve tepelerin konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getDagTepeList()</code></td>
+                  <td>Dağ ve tepelerin konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getgollerlist() göl konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getGollerList()</code></td>
+                  <td>Göl konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getkorfezkoylarlist() körfez ve koyların konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getKorfezKoylarList()</code></td>
+                  <td>Körfez ve koyların konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getmeydanlarlist() meydanların konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getMeydanlarList()</code></td>
+                  <td>Meydanların konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getnehircaylarlist() nehir ve çayların konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getNehirCaylarList()</code></td>
+                  <td>Nehir ve çayların konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getormanlarlist() ormanların konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getOrmanlarList()</code></td>
+                  <td>Ormanların konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="eczaneler" data-namespace="client.eczaneler">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Eczaneler</span>
+            <span class="doc-card-badge">client.eczaneler</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">2 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getlist() eczanelerin bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getList()</code></td>
+                  <td>Eczanelerin bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getnobetcilist() nöbetçi eczanelerin bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getNobetciList()</code></td>
+                  <td>Nöbetçi eczanelerin bilgilerini içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="egitim" data-namespace="client.egitim">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Egitim</span>
+            <span class="doc-card-badge">client.egitim</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">12 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getanaokullarlist() anaokulu konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getAnaokullarList()</code></td>
+                  <td>Anaokulu konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getengelliokullarilist() engelliler okulu konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getEngelliOkullariList()</code></td>
+                  <td>Engelliler okulu konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getetutmerkezlerilist() etüt eğitim merkezleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getEtutMerkezleriList()</code></td>
+                  <td>Etüt eğitim merkezleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gethalkegitimlist() halk eğitim merkezleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getHalkEgitimList()</code></td>
+                  <td>Halk eğitim merkezleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getilkokullarlist() i̇lkokullar konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getIlkokullarList()</code></td>
+                  <td>İlkokullar konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getkolejlerlist() kolejler konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getKolejlerList()</code></td>
+                  <td>Kolejler konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getliselerlist() liseler konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getLiselerList()</code></td>
+                  <td>Liseler konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getmeslekliselerilist() meslek liseleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getMeslekLiseleriList()</code></td>
+                  <td>Meslek liseleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getmilliegitimlist() milli eğitim müdürlükleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getMilliEgitimList()</code></td>
+                  <td>Milli eğitim müdürlükleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getortaokullarlist() ortaokullar konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getOrtaokullarList()</code></td>
+                  <td>Ortaokullar konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getsanatokullarilist() sanat okulları konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getSanatOkullariList()</code></td>
+                  <td>Sanat okulları konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getuniversitelerlist() üniversiteler konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getUniversitelerList()</code></td>
+                  <td>Üniversiteler konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="eshot" data-namespace="client.eshot">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Eshot</span>
+            <span class="doc-card-badge">client.eshot</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">10 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getbaglantihatlari() diğer ulaşım araçları ile bağlantılı otobüs hatlarının listesini içeren web servisi (csv).">
+                  <td><code class="method-chip">getBaglantiHatlari()</code></td>
+                  <td>Diğer ulaşım araçları ile bağlantılı otobüs hatlarının listesini içeren web servisi (CSV).</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getbaglantitipleri() otobüs hatlarının diğer ulaşım araçları ile bağlantı tiplerini içeren web servisi (csv).">
+                  <td><code class="method-chip">getBaglantiTipleri()</code></td>
+                  <td>Otobüs hatlarının diğer ulaşım araçları ile bağlantı tiplerini içeren web servisi (CSV).</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getduragayaklasanotobuslist() bir durağa yaklaşan otobüslerin listesi, konumu ve diğer bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getDuragaYaklasanOtobusList()</code></td>
+                  <td>Bir durağa yaklaşan otobüslerin listesi, konumu ve diğer bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getduraklar() eshot otobüs duraklarının listesini içeren web servisi (csv).">
+                  <td><code class="method-chip">getDuraklar()</code></td>
+                  <td>ESHOT otobüs duraklarının listesini içeren web servisi (CSV).</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gethareketsaatleri() eshot otobüs hareket saatlerini içeren web servisi (csv).">
+                  <td><code class="method-chip">getHareketSaatleri()</code></td>
+                  <td>ESHOT otobüs hareket saatlerini içeren web servisi (CSV).</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gethatguzergahlari() eshot hat güzergahlarını içeren web servisi (csv).">
+                  <td><code class="method-chip">getHatGuzergahlari()</code></td>
+                  <td>ESHOT hat güzergahlarını içeren web servisi (CSV).</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gethatotobuskonumlari() numarası girilen hatta ait otobüslerin anlık konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getHatOtobusKonumlari()</code></td>
+                  <td>Numarası girilen hatta ait otobüslerin anlık konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gethatlar() eshot hatlarının listesini içeren web servisi (csv).">
+                  <td><code class="method-chip">getHatlar()</code></td>
+                  <td>ESHOT hatlarının listesini içeren web servisi (CSV).</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gethattinyaklasanotobusleri() bir hattın belirli bir durağa yaklaşan otobüslerinin konum ve diğer bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getHattinYaklasanOtobusleri()</code></td>
+                  <td>Bir hattın belirli bir durağa yaklaşan otobüslerinin konum ve diğer bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getyakinduraklist() koordinat (enlem, boylam) değerlerine göre en yakın durakları listeler.">
+                  <td><code class="method-chip">getYakinDurakList()</code></td>
+                  <td>Koordinat (enlem, boylam) değerlerine göre en yakın durakları listeler.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="etkinlikler" data-namespace="client.etkinlikler">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Etkinlikler</span>
+            <span class="doc-card-badge">client.etkinlikler</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">2 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getetkinlikbyid() belirli bir etkinliğin detay bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getEtkinlikById()</code></td>
+                  <td>Belirli bir etkinliğin detay bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getlist() güncel kültür sanat etkinlikler listesini içeren web servisi.">
+                  <td><code class="method-chip">getList()</code></td>
+                  <td>Güncel kültür sanat etkinlikler listesini içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="hizmet" data-namespace="client.hizmet">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Hizmet</span>
+            <span class="doc-card-badge">client.hizmet</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">1 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="gethizmetnoktalist() i̇zbb bünyesindeki hizmet noktalarını içeren web servisi.">
+                  <td><code class="method-chip">getHizmetNoktaList()</code></td>
+                  <td>İzBB bünyesindeki hizmet noktalarını içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="iklim" data-namespace="client.iklim">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Iklim</span>
+            <span class="doc-card-badge">client.iklim</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">3 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getgununhavakalitesi() günün en son alınan güncel hava kalitesi ölçüm değerlerini listeler.">
+                  <td><code class="method-chip">getGununHavaKalitesi()</code></td>
+                  <td>Günün en son alınan güncel hava kalitesi ölçüm değerlerini listeler.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getgunlukhavakalitesiolcumleri(tarih) belirtilen tarihe göre hava kalitesi ölçüm değerlerini içeren web servisi.">
+                  <td><code class="method-chip">getGunlukHavaKalitesiOlcumleri(tarih)</code></td>
+                  <td>Belirtilen tarihe göre hava kalitesi ölçüm değerlerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gethavakalitesiistasyonlari() hava kalitesi ölçüm istasyonlarının konum bilgilerini içeren web servisi (csv).">
+                  <td><code class="method-chip">getHavaKalitesiIstasyonlari()</code></td>
+                  <td>Hava kalitesi ölçüm istasyonlarının konum bilgilerini içeren web servisi (CSV).</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="izban" data-namespace="client.izban">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Izban</span>
+            <span class="doc-card-badge">client.izban</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">4 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getdurakmesafeleri() i̇zban istasyonları arasındaki mesafe bilgilerini içeren web servisi (csv).">
+                  <td><code class="method-chip">getDurakMesafeleri()</code></td>
+                  <td>İZBAN istasyonları arasındaki mesafe bilgilerini içeren web servisi (CSV).</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gethareketsaatleri() banliyö hareket saatlerini içeren web servisi.">
+                  <td><code class="method-chip">getHareketSaatleri()</code></td>
+                  <td>Banliyö hareket saatlerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getistasyonlist() banliyö i̇stasyonlarının konum bilgileri içeren web servisi.">
+                  <td><code class="method-chip">getIstasyonList()</code></td>
+                  <td>Banliyö İstasyonlarının konum bilgileri içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gettarife() banliyö fiyat tarifesi bilgisini içeren web servisi.">
+                  <td><code class="method-chip">getTarife()</code></td>
+                  <td>Banliyö fiyat tarifesi bilgisini içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="izmirimkart" data-namespace="client.izmirimkart">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Izmirimkart</span>
+            <span class="doc-card-badge">client.izmirimkart</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">1 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getdolumnoktalari() i̇zmirimkart dolum noktalarının adres ve konum bilgilerini içeren web servisi (csv).">
+                  <td><code class="method-chip">getDolumNoktalari()</code></td>
+                  <td>İzmirimKart dolum noktalarının adres ve konum bilgilerini içeren web servisi (CSV).</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="izsu" data-namespace="client.izsu">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Izsu</span>
+            <span class="doc-card-badge">client.izsu</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">10 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getarizakaynaklikesintilist() arıza kaynaklı düzensiz su kesintilerinin ilçe, mahalle, kesinti süresi, sebebi ve açıklama verilerini içeren web servisi.">
+                  <td><code class="method-chip">getArizaKaynakliKesintiList()</code></td>
+                  <td>Arıza kaynaklı düzensiz su kesintilerinin ilçe, mahalle, kesinti süresi, sebebi ve açıklama verilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getbarajdolulukoranlari() barajların doluluk oranlarını içeren web servisi.">
+                  <td><code class="method-chip">getBarajDolulukOranlari()</code></td>
+                  <td>Barajların doluluk oranlarını içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getbarajsukaliteraporlari() baraj su kalite raporlarını içeren web servisi.">
+                  <td><code class="method-chip">getBarajSuKaliteRaporlari()</code></td>
+                  <td>Baraj su kalite raporlarını içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getbarajvekuyulist() baraj ve kuyuların listesi ve konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getBarajVeKuyuList()</code></td>
+                  <td>Baraj ve kuyuların listesi ve konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getgunluksuuretimi() günlük su üretimi miktarlarını içeren web servisi.">
+                  <td><code class="method-chip">getGunlukSuUretimi()</code></td>
+                  <td>Günlük su üretimi miktarlarını içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gethaftaliksuanalizi() güncel haftalık analiz sonuçlarını içeren web servisi.">
+                  <td><code class="method-chip">getHaftalikSuAnalizi()</code></td>
+                  <td>Güncel haftalık analiz sonuçlarını içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getizsusubelist() şube adresleri, telefonları ve konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getIzsuSubeList()</code></td>
+                  <td>Şube adresleri, telefonları ve konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getizsuveznelist() vezne adresleri, telefonları ve konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getIzsuVezneList()</code></td>
+                  <td>Vezne adresleri, telefonları ve konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getcevreilcesuanalizi() çevre ilçe merkezlerinde bulunan analiz noktalarının analiz sonuçlarını içeren web servisi.">
+                  <td><code class="method-chip">getCevreIlceSuAnalizi()</code></td>
+                  <td>Çevre ilçe merkezlerinde bulunan analiz noktalarının analiz sonuçlarını içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getsuuretimidagilimi(yil?) su üretiminin aylara ve kaynaklara göre dağılımını içeren web servisi.">
+                  <td><code class="method-chip">getSuUretimiDagilimi(yil?)</code></td>
+                  <td>Su üretiminin aylara ve kaynaklara göre dağılımını içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="iztek" data-namespace="client.iztek">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Iztek</span>
+            <span class="doc-card-badge">client.iztek</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">1 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getaskidaizmirimkartistatistik() askıda i̇zmirim kart istatistiklerini içeren web servisi.">
+                  <td><code class="method-chip">getAskidaIzmirimKartIstatistik()</code></td>
+                  <td>Askıda İzmirim Kart istatistiklerini içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="kamu" data-namespace="client.kamu">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Kamu</span>
+            <span class="doc-card-badge">client.kamu</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">16 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getbankalarlist() bankalar konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getBankalarList()</code></td>
+                  <td>Bankalar konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getbelediyelerlist() belediye ve birimler konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getBelediyelerList()</code></td>
+                  <td>Belediye ve birimler konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getbolgemudurluklerilist() bölge müdürlükleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getBolgeMudurlukleriList()</code></td>
+                  <td>Bölge müdürlükleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getdefterdarliklarlist() defterdarlık konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getDefterdarliklarList()</code></td>
+                  <td>Defterdarlık konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getderneklerlist() dernekler konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getDerneklerList()</code></td>
+                  <td>Dernekler konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getevlendirmedairelerilist() evlendirme daireleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getEvlendirmeDaireleriList()</code></td>
+                  <td>Evlendirme daireleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getililcemudurluklerilist() i̇l ve ilçe müdürlükleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getIlIlceMudurlukleriList()</code></td>
+                  <td>İl ve ilçe müdürlükleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getitfaiyegruplarilist() i̇tfaiye grupları konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getItfaiyeGruplariList()</code></td>
+                  <td>İtfaiye grupları konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getkonsolosluklarlist() konsolosluklar konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getKonsolosluklarList()</code></td>
+                  <td>Konsolosluklar konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getmaskematiknoktalarilist() maskematik istasyon noktaları konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getMaskematikNoktalariList()</code></td>
+                  <td>Maskematik istasyon noktaları konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getmeslekodalarilist() meslek odaları konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getMeslekOdalariList()</code></td>
+                  <td>Meslek odaları konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getnoterlerlist() noterler konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getNoterlerList()</code></td>
+                  <td>Noterler konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getnufusmudurluklerilist() nüfus müdürlükleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getNufusMudurlukleriList()</code></td>
+                  <td>Nüfus müdürlükleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getpttlist() ptt (posta ve telgraf teşkilatı) konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getPttList()</code></td>
+                  <td>PTT (Posta ve Telgraf Teşkilatı) konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getturizmdanismalist() turizm danışma müdürlükleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getTurizmDanismaList()</code></td>
+                  <td>Turizm danışma müdürlükleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getvergidairelerilist() vergi daireleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getVergiDaireleriList()</code></td>
+                  <td>Vergi daireleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="kutuphane" data-namespace="client.kutuphane">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Kutuphane</span>
+            <span class="doc-card-badge">client.kutuphane</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">8 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getgalerivesalonlarlist() sanat galerisi ve sergi salonları konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getGaleriVeSalonlarList()</code></td>
+                  <td>Sanat galerisi ve sergi salonları konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getkulturmerkezlerilist() kültür merkezleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getKulturMerkezleriList()</code></td>
+                  <td>Kültür merkezleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getkutuphanelerlist() kütüphaneler konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getKutuphanelerList()</code></td>
+                  <td>Kütüphaneler konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getmuzelerlist() müzeler konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getMuzelerList()</code></td>
+                  <td>Müzeler konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getoperavebalelist() opera ve bale konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getOperaVeBaleList()</code></td>
+                  <td>Opera ve bale konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getsenfoniorkestrasilist() senfoni orkestrası konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getSenfoniOrkestrasiList()</code></td>
+                  <td>Senfoni orkestrası konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getsinemalarlist() sinemalar konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getSinemalarList()</code></td>
+                  <td>Sinemalar konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gettiyatrolarlist() tiyatrolar konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getTiyatrolarList()</code></td>
+                  <td>Tiyatrolar konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="metro" data-namespace="client.metro">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Metro</span>
+            <span class="doc-card-badge">client.metro</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">3 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getdurakmesafeleri() metro istasyonları arasındaki mesafe bilgilerini içeren web servisi (csv).">
+                  <td><code class="method-chip">getDurakMesafeleri()</code></td>
+                  <td>Metro istasyonları arasındaki mesafe bilgilerini içeren web servisi (CSV).</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getistasyonlist() metro istasyonları sıra ve konum verisi bilgileri içeren web servis.">
+                  <td><code class="method-chip">getIstasyonList()</code></td>
+                  <td>Metro istasyonları sıra ve konum verisi bilgileri içeren web servis.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getsefersaatleri() metro sefer saatleri ve sefer aralığı bilgilerini içeren web servis.">
+                  <td><code class="method-chip">getSeferSaatleri()</code></td>
+                  <td>Metro sefer saatleri ve sefer aralığı bilgilerini içeren web servis.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="muhtarliklar" data-namespace="client.muhtarliklar">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Muhtarliklar</span>
+            <span class="doc-card-badge">client.muhtarliklar</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">1 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getlist() muhtarlıklar hakkında bilgi ve coğrafi konumlarını içeren web servisi.">
+                  <td><code class="method-chip">getList()</code></td>
+                  <td>Muhtarlıklar hakkında bilgi ve coğrafi konumlarını içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="otopark" data-namespace="client.otopark">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Otopark</span>
+            <span class="doc-card-badge">client.otopark</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">2 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getlist() otoparkların konumu, dolu-boş adetleri, çalışma saatleri bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getList()</code></td>
+                  <td>Otoparkların konumu, dolu-boş adetleri, çalışma saatleri bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getucretler() i̇zelman otopark ücretlerini içeren web servisi (ckan).">
+                  <td><code class="method-chip">getUcretler()</code></td>
+                  <td>İzelman otopark ücretlerini içeren web servisi (CKAN).</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="pazarlar" data-namespace="client.pazarlar">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Pazarlar</span>
+            <span class="doc-card-badge">client.pazarlar</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">3 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getbalikhalfiyatlari() balık hal fiyatlarını içeren web servisi.">
+                  <td><code class="method-chip">getBalikHalFiyatlari()</code></td>
+                  <td>Balık hal fiyatlarını içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getlist() semt pazar yerlerinin listesi, günleri ve konum bilgileri içeren web servisi.">
+                  <td><code class="method-chip">getList()</code></td>
+                  <td>Semt pazar yerlerinin listesi, günleri ve konum bilgileri içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getsebzemeyvehalfiyatlari() sebze ve meyve hal fiyatlarını içeren web servisi.">
+                  <td><code class="method-chip">getSebzeMeyveHalFiyatlari()</code></td>
+                  <td>Sebze ve meyve hal fiyatlarını içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="plaj" data-namespace="client.plaj">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Plaj</span>
+            <span class="doc-card-badge">client.plaj</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">4 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getfuarlist() fuar alanları konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getFuarList()</code></td>
+                  <td>Fuar alanları konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gethamamlarlist() hamamlar konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getHamamlarList()</code></td>
+                  <td>Hamamlar konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getkaplicalarlist() kaplıcalar konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getKaplicalarList()</code></td>
+                  <td>Kaplıcalar konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getplajlarlist() plajlar konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getPlajlarList()</code></td>
+                  <td>Plajlar konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="saglik" data-namespace="client.saglik">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Saglik</span>
+            <span class="doc-card-badge">client.saglik</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">13 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getacilyardimistasyonlarilist() acil yardım istasyonları konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getAcilYardimIstasyonlariList()</code></td>
+                  <td>Acil yardım istasyonları konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getagizdissagligimerkezlerilist() ağız ve diş sağlığı merkezleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getAgizDisSagligiMerkezleriList()</code></td>
+                  <td>Ağız ve diş sağlığı merkezleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getailesagligimerkezlerilist() aile sağlığı merkezleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getAileSagligiMerkezleriList()</code></td>
+                  <td>Aile sağlığı merkezleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getanacocuksagligimerkezlerilist() ana çocuk sağlığı merkezleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getAnaCocukSagligiMerkezleriList()</code></td>
+                  <td>Ana çocuk sağlığı merkezleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getdalmerkezlerilist() dal merkezleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getDalMerkezleriList()</code></td>
+                  <td>Dal merkezleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gethastanelerlist() hastaneler konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getHastanelerList()</code></td>
+                  <td>Hastaneler konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getkanmerkezlerilist() kan merkezleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getKanMerkezleriList()</code></td>
+                  <td>Kan merkezleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getlaboratuvarlarlist() laboratuvarlar konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getLaboratuvarlarList()</code></td>
+                  <td>Laboratuvarlar konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getpolikliniklerlist() poliklinikler konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getPolikliniklerList()</code></td>
+                  <td>Poliklinikler konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gettipmerkezlerilist() tıp merkezleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getTipMerkezleriList()</code></td>
+                  <td>Tıp merkezleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gettoplumsagligimerkezlerilist() toplum sağlığı merkezleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getToplumSagligiMerkezleriList()</code></td>
+                  <td>Toplum sağlığı merkezleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getveremsavasdispanserlerilist() verem savaş dispanserleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getVeremSavasDispanserleriList()</code></td>
+                  <td>Verem savaş dispanserleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getveterinerliklerlist() veterinerlikler konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getVeterinerliklerList()</code></td>
+                  <td>Veterinerlikler konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="sosyal" data-namespace="client.sosyal">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Sosyal</span>
+            <span class="doc-card-badge">client.sosyal</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">6 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getailedayanismamerkezlerilist() aile dayanışma merkezleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getAileDayanismaMerkezleriList()</code></td>
+                  <td>Aile dayanışma merkezleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getcocukgenclikmerkezlerilist() çocuk ve gençlik merkezleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getCocukGenclikMerkezleriList()</code></td>
+                  <td>Çocuk ve gençlik merkezleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getcocukyuvalarilist() çocuk yuvaları konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getCocukYuvalariList()</code></td>
+                  <td>Çocuk yuvaları konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gethuzurevlerilist() huzurevleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getHuzurevleriList()</code></td>
+                  <td>Huzurevleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gettoplummerkezlerilist() toplum merkezleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getToplumMerkezleriList()</code></td>
+                  <td>Toplum merkezleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getyetistirmeyurtlarilist() yetiştirme yurtları konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getYetistirmeYurtlariList()</code></td>
+                  <td>Yetiştirme yurtları konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="spor" data-namespace="client.spor">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Spor</span>
+            <span class="doc-card-badge">client.spor</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">4 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="gethipodromlist() hipodrom konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getHipodromList()</code></td>
+                  <td>Hipodrom konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getsporsalonlarilist() spor salonları ve sahaları konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getSporSalonlariList()</code></td>
+                  <td>Spor salonları ve sahaları konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getstadyumlarlist() stadyumlar konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getStadyumlarList()</code></td>
+                  <td>Stadyumlar konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getyuruyusyollari() yürüyüş ve bisiklet parkurlarının bilgilerini içeren web servisi (csv).">
+                  <td><code class="method-chip">getYuruyusYollari()</code></td>
+                  <td>Yürüyüş ve bisiklet parkurlarının bilgilerini içeren web servisi (CSV).</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="taksi" data-namespace="client.taksi">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Taksi</span>
+            <span class="doc-card-badge">client.taksi</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">1 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getduraklist() taksi durak bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getDurakList()</code></td>
+                  <td>Taksi durak bilgilerini içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="tarihi" data-namespace="client.tarihi">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Tarihi</span>
+            <span class="doc-card-badge">client.tarihi</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">7 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getantikkentyapilarilist() antik kent yapıları konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getAntikKentYapilariList()</code></td>
+                  <td>Antik kent yapıları konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getantikkentlerlist() antik kentler konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getAntikKentlerList()</code></td>
+                  <td>Antik kentler konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getkoskvekonaklarlist() köşk ve konaklar konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getKoskVeKonaklarList()</code></td>
+                  <td>Köşk ve konaklar konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getkuleanitheykellerlist() kule, anıt ve heykeller konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getKuleAnitHeykellerList()</code></td>
+                  <td>Kule, anıt ve heykeller konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gettarihicarsihanlarlist() tarihi çarşı ve hanlar konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getTarihiCarsiHanlarList()</code></td>
+                  <td>Tarihi çarşı ve hanlar konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gettarihisuyapilarilist() tarihi su yapıları konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getTarihiSuYapilariList()</code></td>
+                  <td>Tarihi su yapıları konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gettarihiyapilarlist() tarihi yapılar konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getTarihiYapilarList()</code></td>
+                  <td>Tarihi yapılar konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="trafik" data-namespace="client.trafik">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Trafik</span>
+            <span class="doc-card-badge">client.trafik</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">4 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getkameralist() i̇zmir'deki trafik izleme kameralarının listesini içeren web servisi (csv).">
+                  <td><code class="method-chip">getKameraList()</code></td>
+                  <td>İzmir'deki trafik izleme kameralarının listesini içeren web servisi (CSV).</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getanaarterhizvesure() ana arterler günlük ortalama hız ve seyahat süresi verilerini sorgular.">
+                  <td><code class="method-chip">getAnaArterHizVeSure()</code></td>
+                  <td>Ana arterler günlük ortalama hız ve seyahat süresi verilerini sorgular.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getisikliyonlendirmepanolari() işıklı şehir yönlendirme panoları (vms) verilerini sorgular.">
+                  <td><code class="method-chip">getIsikliYonlendirmePanolari()</code></td>
+                  <td>Işıklı Şehir Yönlendirme Panoları (VMS) verilerini sorgular.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getaracsayimverileri() ana arterler araç sayım verilerini sorgular.">
+                  <td><code class="method-chip">getAracSayimVerileri()</code></td>
+                  <td>Ana arterler araç sayım verilerini sorgular.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="ckan & açık veri portalı" data-namespace="client.ckan">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>CKAN & Açık Veri Portalı</span>
+            <span class="doc-card-badge">client.ckan</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">9 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="query(resourceid) belirli bir datastore kaynağı için akıcı (fluent) `ckanquerybuilder` sorgu oluşturucu başlatır (`where`, `search`, `page`, `sort`, `execute`, `fetchall`).">
+                  <td><code class="method-chip">query(resourceId)</code></td>
+                  <td>Belirli bir Datastore kaynağı için akıcı (fluent) `CKANQueryBuilder` sorgu oluşturucu başlatır (`where`, `search`, `page`, `sort`, `execute`, `fetchAll`).</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="searchpackages(query, options) portaldaki 260+ veri setini metin, etiket, organizasyon veya formata göre arar ve filtreler.">
+                  <td><code class="method-chip">searchPackages(query, options)</code></td>
+                  <td>Portaldaki 260+ veri setini metin, etiket, organizasyon veya formata göre arar ve filtreler.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getpackage(idorname) belirli bir veri setinin tüm detay ve kaynak meta verilerini döndürür.">
+                  <td><code class="method-chip">getPackage(idOrName)</code></td>
+                  <td>Belirli bir veri setinin tüm detay ve kaynak meta verilerini döndürür.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="listpackages(options) tüm veri setlerinin slug listesini döndürür.">
+                  <td><code class="method-chip">listPackages(options)</code></td>
+                  <td>Tüm veri setlerinin slug listesini döndürür.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="searchdatastore(resourceid, options) herhangi bir datastore kaynağında sql benzeri filtreleme (`filters`), arama (`q`), sıralama (`sort`) ve sayfalama yapar.">
+                  <td><code class="method-chip">searchDatastore(resourceId, options)</code></td>
+                  <td>Herhangi bir Datastore kaynağında SQL benzeri filtreleme (`filters`), arama (`q`), sıralama (`sort`) ve sayfalama yapar.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="dumpdatastore(resourceid) bir kaynağın tüm kayıtlarını tek seferde dump json olarak çeker.">
+                  <td><code class="method-chip">dumpDatastore(resourceId)</code></td>
+                  <td>Bir kaynağın tüm kayıtlarını tek seferde dump JSON olarak çeker.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="listorganizations() veri sağlayan kurum ve daire başkanlıklarını listeler.">
+                  <td><code class="method-chip">listOrganizations()</code></td>
+                  <td>Veri sağlayan kurum ve daire başkanlıklarını listeler.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="listgroups() veri kategorilerini (ulaşım, çevre vb.) listeler.">
+                  <td><code class="method-chip">listGroups()</code></td>
+                  <td>Veri kategorilerini (ulaşım, çevre vb.) listeler.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="listtags(options) veri etiketlerini listeler.">
+                  <td><code class="method-chip">listTags(options)</code></td>
+                  <td>Veri etiketlerini listeler.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="tuvaletler" data-namespace="client.tuvalet">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Tuvaletler</span>
+            <span class="doc-card-badge">client.tuvalet</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">4 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getakillituvaletler(options) i̇zmir genelindeki akıllı tuvaletlerin konum ve adres bilgilerini sorgular.">
+                  <td><code class="method-chip">getAkilliTuvaletler(options)</code></td>
+                  <td>İzmir genelindeki Akıllı Tuvaletlerin konum ve adres bilgilerini sorgular.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getmodulertuvaletler(options) modüler tuvalet ve bebek bakım alanlarının konum, kabin adedi ve erişilebilirlik verilerini sorgular.">
+                  <td><code class="method-chip">getModulerTuvaletler(options)</code></td>
+                  <td>Modüler tuvalet ve bebek bakım alanlarının konum, kabin adedi ve erişilebilirlik verilerini sorgular.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="dumpakillituvaletler() tüm akıllı tuvalet verilerini tek seferde indirir.">
+                  <td><code class="method-chip">dumpAkilliTuvaletler()</code></td>
+                  <td>Tüm akıllı tuvalet verilerini tek seferde indirir.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="dumpmodulertuvaletler() tüm modüler tuvalet verilerini tek seferde indirir.">
+                  <td><code class="method-chip">dumpModulerTuvaletler()</code></td>
+                  <td>Tüm modüler tuvalet verilerini tek seferde indirir.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="i̇tfaiye" data-namespace="client.itfaiye">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>İtfaiye</span>
+            <span class="doc-card-badge">client.itfaiye</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">5 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getgruplar() i̇zmir genelindeki itfaiye istasyonları ve gruplarının konumlarını listeler (cbs).">
+                  <td><code class="method-chip">getGruplar()</code></td>
+                  <td>İzmir genelindeki itfaiye istasyonları ve gruplarının konumlarını listeler (CBS).</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getacilmudahaleistatistigi(options) i̇tfaiyenin yangın, arama-kurtarma vb. olaylara müdahale istatistiklerini sorgular.">
+                  <td><code class="method-chip">getAcilMudahaleIstatistigi(options)</code></td>
+                  <td>İtfaiyenin yangın, arama-kurtarma vb. olaylara müdahale istatistiklerini sorgular.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getegitimhizmetleri(options) i̇tfaiye eğitim hizmetleri istatistiklerini sorgular.">
+                  <td><code class="method-chip">getEgitimHizmetleri(options)</code></td>
+                  <td>İtfaiye eğitim hizmetleri istatistiklerini sorgular.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="dumpacilmudahale() acil müdahale istatistiklerini toplu olarak indirir.">
+                  <td><code class="method-chip">dumpAcilMudahale()</code></td>
+                  <td>Acil müdahale istatistiklerini toplu olarak indirir.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="dumpegitimhizmetleri() i̇tfaiye eğitim istatistiklerini toplu olarak indirir.">
+                  <td><code class="method-chip">dumpEgitimHizmetleri()</code></td>
+                  <td>İtfaiye eğitim istatistiklerini toplu olarak indirir.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="i̇zum & ulaşım merkezi" data-namespace="client.izum">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>İZUM & Ulaşım Merkezi</span>
+            <span class="doc-card-badge">client.izum</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">7 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getanaarterhizvesure(options) i̇zum ana arterler günlük hız ve seyahat süresi verilerini sorgular.">
+                  <td><code class="method-chip">getAnaArterHizVeSure(options)</code></td>
+                  <td>İZUM ana arterler günlük hız ve seyahat süresi verilerini sorgular.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getvmspanolari(options) işıklı şehir yönlendirme panoları (vms) konum ve boyut bilgilerini sorgular.">
+                  <td><code class="method-chip">getVmsPanolari(options)</code></td>
+                  <td>Işıklı Şehir Yönlendirme Panoları (VMS) konum ve boyut bilgilerini sorgular.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getaracsayimverileri(options) ana arterler araç sayım istatistiklerini sorgular.">
+                  <td><code class="method-chip">getAracSayimVerileri(options)</code></td>
+                  <td>Ana arterler araç sayım istatistiklerini sorgular.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getotoparklar() i̇zum otopark konum ve doluluk verilerini döndürür.">
+                  <td><code class="method-chip">getOtoparklar()</code></td>
+                  <td>İZUM otopark konum ve doluluk verilerini döndürür.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getkameralar() i̇zum trafik kameralarını döndürür.">
+                  <td><code class="method-chip">getKameralar()</code></td>
+                  <td>İZUM trafik kameralarını döndürür.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="dumpanaarterhizvesure() hız ve süre verilerini toplu dump formatında çeker.">
+                  <td><code class="method-chip">dumpAnaArterHizVeSure()</code></td>
+                  <td>Hız ve süre verilerini toplu dump formatında çeker.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="dumparacsayimverileri() araç sayım verilerini toplu dump formatında çeker.">
+                  <td><code class="method-chip">dumpAracSayimVerileri()</code></td>
+                  <td>Araç sayım verilerini toplu dump formatında çeker.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="tramvay" data-namespace="client.tramvay">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Tramvay</span>
+            <span class="doc-card-badge">client.tramvay</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">6 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getdurakmesafeleri() tramvay hatları için durak mesafelerini içeren web servisi (csv).">
+                  <td><code class="method-chip">getDurakMesafeleri()</code></td>
+                  <td>Tramvay hatları için durak mesafelerini içeren web servisi (CSV).</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gethatlist() tramvay hatları bilgisini içeren web servis:">
+                  <td><code class="method-chip">getHatList()</code></td>
+                  <td>Tramvay hatları bilgisini içeren web servis:</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getistasyonlist() sefer numarasına göre tramvay istasyonları listesini içeren web servis.">
+                  <td><code class="method-chip">getIstasyonList()</code></td>
+                  <td>Sefer numarasına göre tramvay istasyonları listesini içeren web servis.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getplanlananisefersayilari() metro ve tramvay hatları için aylık planlanan sefer sayılarını içeren web servisi (csv).">
+                  <td><code class="method-chip">getPlanlananiSeferSayilari()</code></td>
+                  <td>Metro ve tramvay hatları için aylık planlanan sefer sayılarını içeren web servisi (CSV).</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getseferlist() tramvay sefer ve istasyon id bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getSeferList()</code></td>
+                  <td>Tramvay sefer ve istasyon id bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getsefersikliklist() sefer numarasına göre tramvay sefer sıklıkları bilgisini veren web servisi.">
+                  <td><code class="method-chip">getSeferSiklikList()</code></td>
+                  <td>Sefer numarasına göre tramvay sefer sıklıkları bilgisini veren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="tren" data-namespace="client.tren">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Tren</span>
+            <span class="doc-card-badge">client.tren</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">4 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getaracmuayeneistasyonlarilist() araç muayene istasyonları konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getAracMuayeneIstasyonlariList()</code></td>
+                  <td>Araç muayene istasyonları konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gethavaalanilist() havaalanı konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getHavaalaniList()</code></td>
+                  <td>Havaalanı konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getotobusterminallerilist() şehirlerarası otobüs terminalleri konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getOtobusTerminalleriList()</code></td>
+                  <td>Şehirlerarası otobüs terminalleri konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gettrengarlarilist() tren garları konum bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getTrenGarlariList()</code></td>
+                  <td>Tren garları konum bilgilerini içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="vapur" data-namespace="client.vapur">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Vapur</span>
+            <span class="doc-card-badge">client.vapur</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">5 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getcalismagunleri() vapurların çalışma günlerini içeren web servisi.">
+                  <td><code class="method-chip">getCalismaGunleri()</code></td>
+                  <td>Vapurların çalışma günlerini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getdetaylist() vapurların detaylı bilgilerini içeren web servisi (csv).">
+                  <td><code class="method-chip">getDetayList()</code></td>
+                  <td>Vapurların detaylı bilgilerini içeren web servisi (CSV).</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gethareketsaatleri() vapur hareket saatleri bilgisini içeren web servisi.">
+                  <td><code class="method-chip">getHareketSaatleri()</code></td>
+                  <td>Vapur hareket saatleri bilgisini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="gethareketsaatleribyhat() i̇skele bazlı vapur hareket saatleri bilgisini içeren web servisi.">
+                  <td><code class="method-chip">getHareketSaatleriByHat()</code></td>
+                  <td>İskele bazlı vapur hareket saatleri bilgisini içeren web servisi.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getiskelelist() vapur ve arabalı vapur iskele bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getIskeleList()</code></td>
+                  <td>Vapur ve arabalı vapur iskele bilgilerini içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="wizmirnet" data-namespace="client.wizmirnet">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Wizmirnet</span>
+            <span class="doc-card-badge">client.wizmirnet</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">1 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getlist() ücretsiz-kablosuz internet hizmet noktaları ve lokasyon bilgilerini içeren web servisi.">
+                  <td><code class="method-chip">getList()</code></td>
+                  <td>Ücretsiz-kablosuz internet hizmet noktaları ve lokasyon bilgilerini içeren web servisi.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="turuncu çember" data-namespace="client.turuncucember">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Turuncu Çember</span>
+            <span class="doc-card-badge">client.turuncucember</span>
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">3 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="getisletmeler() turuncu çember hijyen ve gıda güvenliği sertifikalı tüm aktif işletmeleri listeler.">
+                  <td><code class="method-chip">getIsletmeler()</code></td>
+                  <td>Turuncu Çember hijyen ve gıda güvenliği sertifikalı tüm aktif işletmeleri listeler.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getisletme(id) belirli bir işletmenin sertifika detay bilgilerini getirir.">
+                  <td><code class="method-chip">getIsletme(id)</code></td>
+                  <td>Belirli bir işletmenin sertifika detay bilgilerini getirir.</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="getsayilar() turuncu çember sertifika başvuru ve kabul/ret sayısal istatistiklerini getirir.">
+                  <td><code class="method-chip">getSayilar()</code></td>
+                  <td>Turuncu Çember sertifika başvuru ve kabul/ret sayısal istatistiklerini getirir.</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      <section class="doc-card endpoint-module-card" data-title="yardımcı araçlar ve normalleştiriciler" data-namespace="">
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span>Yardımcı Araçlar ve Normalleştiriciler</span>
+            
+          </div>
+          <span class="text-muted" style="font-size: 0.8125rem;">6 metot</span>
+        </div>
+        <div class="doc-table-wrapper">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Metot / Fonksiyon</th>
+                <th>Açıklama</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                <tr class="endpoint-row" data-search="memorycache ttl süreli ve azami eleman sınırlı dahili in-memory önbellek sağlayıcısı. (modül: <code>izmir-open-data-js</code>)">
+                  <td><code class="method-chip">MemoryCache</code></td>
+                  <td>TTL süreli ve azami eleman sınırlı dahili in-memory önbellek sağlayıcısı. (Modül: <code>izmir-open-data-js</code>)</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="executewithretry(fn, config) jitter destekli üstel geri çekilme (exponential backoff) retry mekanizması. (modül: <code>izmir-open-data-js</code>)">
+                  <td><code class="method-chip">executeWithRetry(fn, config)</code></td>
+                  <td>Jitter destekli üstel geri çekilme (exponential backoff) retry mekanizması. (Modül: <code>izmir-open-data-js</code>)</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="ckanquerybuilder ckan datastore için zincirlenebilir akıcı arama ve sayfalama oluşturucusu. (modül: <code>izmir-open-data-js</code>)">
+                  <td><code class="method-chip">CKANQueryBuilder</code></td>
+                  <td>CKAN Datastore için zincirlenebilir akıcı arama ve sayfalama oluşturucusu. (Modül: <code>izmir-open-data-js</code>)</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="togeojson(data) cbs, i̇zban, eshot veya poi verilerini standart rfc 7946 geojson featurecollection nesnesine dönüştürür. (modül: <code>izmir-open-data-js</code>)">
+                  <td><code class="method-chip">toGeoJSON(data)</code></td>
+                  <td>CBS, İZBAN, ESHOT veya POI verilerini standart RFC 7946 GeoJSON FeatureCollection nesnesine dönüştürür. (Modül: <code>izmir-open-data-js</code>)</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="togeojsonfeature(item) tekil bir poi kaydını geojson feature nesnesine dönüştürür. (modül: <code>izmir-open-data-js</code>)">
+                  <td><code class="method-chip">toGeoJSONFeature(item)</code></td>
+                  <td>Tekil bir POI kaydını GeoJSON Feature nesnesine dönüştürür. (Modül: <code>izmir-open-data-js</code>)</td>
+                </tr>
+              
+                <tr class="endpoint-row" data-search="extractcoordinates(item) farklı belediye koordinat formatlarından [boylam, enlem] wgs84 koordinat çifti ayıklar. (modül: <code>izmir-open-data-js</code>)">
+                  <td><code class="method-chip">extractCoordinates(item)</code></td>
+                  <td>Farklı belediye koordinat formatlarından [boylam, enlem] WGS84 koordinat çifti ayıklar. (Modül: <code>izmir-open-data-js</code>)</td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Live Search Filter for Endpoints Catalog
+    document.addEventListener("DOMContentLoaded", () => {
+      const searchInput = document.getElementById("endpoint-search-input");
+      const statsEl = document.getElementById("endpoint-search-stats");
+      const cards = document.querySelectorAll(".endpoint-module-card");
+      const totalCount = 178;
+
+      if (!searchInput || !statsEl) return;
+
+      searchInput.addEventListener("input", (e) => {
+        const query = e.target.value.trim().toLowerCase();
+
+        if (!query) {
+          cards.forEach(card => {
+            card.style.display = "";
+            card.querySelectorAll(".endpoint-row").forEach(row => row.style.display = "");
+          });
+          statsEl.textContent = `Toplam ${cards.length} servis grubu ve ${totalCount} metot listeleniyor.`;
+          return;
+        }
+
+        let visibleCards = 0;
+        let matchedMethods = 0;
+
+        cards.forEach(card => {
+          const cardTitle = card.getAttribute("data-title") || "";
+          const cardNs = card.getAttribute("data-namespace") || "";
+          const rows = card.querySelectorAll(".endpoint-row");
+          let cardMatches = 0;
+
+          const cardHeaderMatch = cardTitle.includes(query) || cardNs.includes(query);
+
+          rows.forEach(row => {
+            const rowText = row.getAttribute("data-search") || "";
+            if (cardHeaderMatch || rowText.includes(query)) {
+              row.style.display = "";
+              cardMatches++;
+              matchedMethods++;
+            } else {
+              row.style.display = "none";
+            }
+          });
+
+          if (cardMatches > 0) {
+            card.style.display = "";
+            visibleCards++;
+          } else {
+            card.style.display = "none";
+          }
+        });
+
+        statsEl.textContent = `"${query}" için ${matchedMethods} eşleşen metot (${visibleCards} kategori) bulundu.`;
+      });
+    });
+  </script>
+  
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.6rem; font-weight: 700; font-size: 1.125rem;">
+            <img src="assets/logo.svg" alt="Logo" width="24" height="24">
+            <span>izmir-open-data-js</span>
+          </div>
+          <p class="footer-brand-desc">
+            İzmir Büyükşehir Belediyesi Açık Veri Portalı için bağımsız, açık kaynaklı TypeScript istemcisi, terminal aracı ve Model Context Protocol sunucusu.
+          </p>
+        </div>
+
+        <div>
+          <div class="footer-heading">Dokümantasyon</div>
+          <ul class="footer-links">
+            <li><a href="ENDPOINTS.html" class="footer-link">Uç Nokta Listesi</a></li>
+            <li><a href="CLI.html" class="footer-link">CLI Kılavuzu</a></li>
+            <li><a href="MCP.html" class="footer-link">Model Context Protocol (MCP)</a></li>
+            <li><a href="specs/index.html" class="footer-link">Resmi Şartnameler (Specs)</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-heading">Topluluk & Dağıtım</div>
+          <ul class="footer-links">
+            <li><a href="https://github.com/AtaCanYmc/izmir-open-data-js" class="footer-link" target="_blank" rel="noopener noreferrer">GitHub Deposu</a></li>
+            <li><a href="https://www.npmjs.com/package/izmir-open-data-js" class="footer-link" target="_blank" rel="noopener noreferrer">npm Paketi</a></li>
+            <li><a href="https://github.com/AtaCanYmc/homebrew-tap" class="footer-link" target="_blank" rel="noopener noreferrer">Homebrew Tap</a></li>
+            <li><a href="https://acikveri.bizizmir.com/" class="footer-link" target="_blank" rel="noopener noreferrer">İzmir Açık Veri Portalı</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>Apache-2.0 Lisansı · Copyright © 2026 Ata Can Yaymacı.</div>
+        <div>İzmir Büyükşehir Belediyesi ile resmi bağlantısı bulunmayan açık kaynak topluluk projesidir.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

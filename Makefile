@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-.PHONY: help install build lint lint-fix format test test-coverage test-live clean check docs-serve serve
+.PHONY: help install build lint lint-fix format test test-coverage test-live clean check docs-build docs-serve serve
 
 help: ## Show this help message
 	@echo "Usage: make [target]"
@@ -33,6 +33,9 @@ test-live: ## Run live API integration tests against municipal endpoints
 	npm run test:live
 
 check: build lint test ## Run full build, lint, and unit test pipeline
+
+docs-build: ## Build HTML documentation pages from Markdown sources
+	npm run docs:build
 
 docs-serve: ## Serve the showcase and docs site locally on port 8080
 	@echo "Starting local showcase server at http://localhost:8080 ..."

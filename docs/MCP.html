@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <script>
+    try {
+      const stored = localStorage.getItem("color-scheme");
+      if (stored) {
+        document.querySelector('meta[name="color-scheme"]').content = stored;
+      }
+    } catch (e) {}
+  </script>
+  
+  <title>Model Context Protocol (MCP) Sunucusu — izmir-open-data-js</title>
+  <meta name="description" content="İzmir Açık Veri Portalı için Claude Desktop ve Cursor uyumlu MCP sunucu dokümantasyonu.">
+  
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container nav-wrapper">
+      <a href="index.html" class="brand-link" aria-label="İzmir Open Data JS Ana Sayfa">
+        <img src="assets/logo.svg" alt="Logo" class="brand-logo" width="32" height="32">
+        <span>izmir-open-data-js</span>
+        <span class="version-pill">v2.1.0</span>
+      </a>
+
+      <nav class="nav-menu" aria-label="Ana Gezinti">
+        <a href="index.html" class="nav-link">Ana Sayfa</a>
+        <a href="index.html#playground" class="nav-link">Canlı Demo</a>
+        <a href="ENDPOINTS.html" class="nav-link">Uç Noktalar</a>
+        <a href="CLI.html" class="nav-link">CLI</a>
+        <a href="MCP.html" class="nav-link">MCP</a>
+        <a href="specs/index.html" class="nav-link">Şartnameler</a>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Theme Toggle Button -->
+        <button type="button" id="theme-toggle" class="theme-toggle-btn" aria-label="Temayı değiştir">
+          <svg class="theme-icon-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <svg class="theme-icon-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+
+        <a href="https://github.com/AtaCanYmc/izmir-open-data-js" class="btn-github" target="_blank" rel="noopener noreferrer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+          </svg>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="doc-page">
+    <div class="container" style="max-width: 860px;">
+      <nav class="breadcrumb-nav" aria-label="Ekmek kırıntısı">
+        <a href="index.html" class="breadcrumb-link">Ana Sayfa</a>
+        <span>/</span>
+        <span class="text-secondary">Dokümantasyon</span>
+        <span>/</span>
+        <span aria-current="page">Model Context Protocol</span>
+      </nav>
+
+      <div class="doc-hero">
+        <h1 class="doc-title">Model Context Protocol (MCP) Sunucusu</h1>
+        <p class="doc-lead">
+          <code>izmir-open-data-js</code>, <code>@modelcontextprotocol/sdk</code> altyapısı üzerine inşa edilmiş tam uyumlu bir MCP sunucusu içerir. Claude Desktop, Cursor veya yerel AI ajanlarının İzmir Açık Veri API'lerini doğrudan çalıştırmasını sağlar.
+        </p>
+      </div>
+
+      <div class="doc-section">
+        <h2>Sunucuyu Başlatma</h2>
+        <p class="text-secondary">MCP sunucusu standart girdi ve çıktı (<code>stdio</code>) üzerinden çalışır:</p>
+
+        <div class="doc-code-block">
+          <div class="doc-code-header">
+            <span>bash</span>
+            <button type="button" class="copy-btn" data-copy="npx -y izmir-open-data-js" aria-label="Kopyala">Kopyala</button>
+          </div>
+          <div class="doc-code-content"># npx ile çalıştırma:
+npx -y izmir-open-data-js
+
+# Global paket üzerinden:
+izmir-mcp</div>
+        </div>
+      </div>
+
+      <div class="doc-section">
+        <h2>İstemci Yapılandırması</h2>
+
+        <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1.125rem;">Claude Desktop Entegrasyonu</h3>
+        <p class="text-secondary"><code>claude_desktop_config.json</code> dosyanıza aşağıdaki sunucu tanımını ekleyin:</p>
+
+        <div class="doc-code-block">
+          <div class="doc-code-header">
+            <span>claude_desktop_config.json</span>
+            <button type="button" class="copy-btn" data-copy='{
+  "mcpServers": {
+    "izmir-open-data": {
+      "command": "npx",
+      "args": ["-y", "izmir-open-data-js"]
+    }
+  }
+}' aria-label="Kopyala">Kopyala</button>
+          </div>
+          <div class="doc-code-content">{
+  "mcpServers": {
+    "izmir-open-data": {
+      "command": "npx",
+      "args": ["-y", "izmir-open-data-js"]
+    }
+  }
+}</div>
+        </div>
+      </div>
+
+      <div class="doc-section">
+        <h2>Sağlanan Araçlar (Tools)</h2>
+        <div class="doc-card" style="margin-top: 1rem;">
+          <div class="doc-card-header">
+            <span class="doc-card-title">1. list_endpoints</span>
+            <span class="doc-card-badge">Tool</span>
+          </div>
+          <div style="padding: 1.25rem;">
+            <p class="text-secondary" style="font-size: 0.9375rem; margin-bottom: 0.75rem;">
+              İstemcideki tüm servis ad alanlarını ve bunlara bağlı çağrılabilir metotları dinamik olarak listeler.
+            </p>
+            <div class="doc-code-block" style="margin: 0;">
+              <div class="doc-code-header"><span>Örnek Dizi Yanıtı</span></div>
+              <div class="doc-code-content">[
+  "bisim.getIstasyonList",
+  "eczaneler.getNobetciList",
+  "eshot.getHatlar",
+  "otopark.getList",
+  "ckan.searchPackages"
+]</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="doc-card">
+          <div class="doc-card-header">
+            <span class="doc-card-title">2. call_endpoint</span>
+            <span class="doc-card-badge">Tool</span>
+          </div>
+          <div style="padding: 1.25rem;">
+            <p class="text-secondary" style="font-size: 0.9375rem; margin-bottom: 0.75rem;">
+              Keşfedilen belirli bir belediye API metodunu argümanlarıyla birlikte yürütür.
+            </p>
+            <div class="doc-code-block" style="margin: 0;">
+              <div class="doc-code-header"><span>Parametre Şeması</span></div>
+              <div class="doc-code-content">{
+  "namespace": "eshot",
+  "endpoint_name": "getYakinDurakList",
+  "args": [38.4192, 27.1287]
+}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.6rem; font-weight: 700; font-size: 1.125rem;">
+            <img src="assets/logo.svg" alt="Logo" width="24" height="24">
+            <span>izmir-open-data-js</span>
+          </div>
+          <p class="footer-brand-desc">
+            İzmir Büyükşehir Belediyesi Açık Veri Portalı için bağımsız, açık kaynaklı TypeScript istemcisi, terminal aracı ve Model Context Protocol sunucusu.
+          </p>
+        </div>
+
+        <div>
+          <div class="footer-heading">Dokümantasyon</div>
+          <ul class="footer-links">
+            <li><a href="ENDPOINTS.html" class="footer-link">Uç Nokta Listesi</a></li>
+            <li><a href="CLI.html" class="footer-link">CLI Kılavuzu</a></li>
+            <li><a href="MCP.html" class="footer-link">Model Context Protocol (MCP)</a></li>
+            <li><a href="specs/index.html" class="footer-link">Resmi Şartnameler (Specs)</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-heading">Topluluk & Dağıtım</div>
+          <ul class="footer-links">
+            <li><a href="https://github.com/AtaCanYmc/izmir-open-data-js" class="footer-link" target="_blank" rel="noopener noreferrer">GitHub Deposu</a></li>
+            <li><a href="https://www.npmjs.com/package/izmir-open-data-js" class="footer-link" target="_blank" rel="noopener noreferrer">npm Paketi</a></li>
+            <li><a href="https://github.com/AtaCanYmc/homebrew-tap" class="footer-link" target="_blank" rel="noopener noreferrer">Homebrew Tap</a></li>
+            <li><a href="https://acikveri.bizizmir.com/" class="footer-link" target="_blank" rel="noopener noreferrer">İzmir Açık Veri Portalı</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>Apache-2.0 Lisansı · Copyright © 2026 Ata Can Yaymacı.</div>
+        <div>İzmir Büyükşehir Belediyesi ile resmi bağlantısı bulunmayan açık kaynak topluluk projesidir.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
