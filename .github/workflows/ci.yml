@@ -78,7 +78,7 @@ jobs:
               content = open(f, encoding="utf-8").read()
               content = re.sub(r"```[\s\S]*?```", "", content)
               content = re.sub(r"`[^`]*`", "", content)
-              for link in re.findall(r"\[.*?\]\((?!https?://|mailto:)(.*?)(?:#.*)?\)", content):
+              for link in re.findall(r"\[.*?\]\((?!https?://|mailto:|file://)(.*?)(?:#.*)?\)", content):
                   link = link.strip().split("?")[0]
                   if not link or link.startswith("#"):
                       continue
