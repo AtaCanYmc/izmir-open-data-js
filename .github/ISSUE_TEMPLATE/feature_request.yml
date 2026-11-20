@@ -1,0 +1,39 @@
+name: Feature Request
+description: Propose a new endpoint, dataset mapping, CLI flag, or architectural enhancement
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please check existing issues, endpoints list, and ROADMAP.md before submitting a proposal.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: Describe the technical limitation or missing dataset this proposal resolves.
+      placeholder: I need access to dataset X because...
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed Solution
+      description: Detail the requested API method, TypeScript interface, or CLI behavior.
+      placeholder: Add api.ulasim.getYeniServis() returning...
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Describe any alternative workarounds or endpoints considered.
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Contributor Checklist
+      options:
+        - label: I searched existing issues and pull requests before submitting this request.
+          required: true
+        - label: This proposal adheres to anti-AI-slop and governance standards.
+          required: true

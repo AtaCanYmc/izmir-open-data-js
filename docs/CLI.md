@@ -1,43 +1,65 @@
-# İzmir Open Data JS - CLI (Komut Satırı) Kullanım Kılavuzu
+[← Back to Main Documentation](../README.md)
 
-Projemiz, İzmir Büyükşehir Belediyesi Açık Veri Portalı verilerini doğrudan terminal (komut satırı) ortamınızdan çekip şık tablolar halinde görüntülemenizi sağlayan entegre bir CLI aracı barındırır.
+# CLI Kullanım Kılavuzu
 
-## Nasıl Çalıştırılır?
+`izmir-open-data-js`, İzmir Büyükşehir Belediyesi Açık Veri Portalı verilerini doğrudan terminal üzerinden sorgulamak ve ASCII tabloları halinde listelemek için `izmir-cli` ikili dosyasını sunar.
 
-Projeyi klonladıktan veya global olarak npm üzerinden kurduktan sonra terminalinizde şu komutları kullanabilirsiniz:
+---
+
+## Çalıştırma
+
+Global kurulum veya `npx` aracılığıyla çalıştırılabilir:
 
 ```bash
-# Global kurulum varsa:
+# Global paket üzerinden çalıştırma:
 izmir-cli get <dataset_id>
 
-# Proje dizininde npx üzerinden çalıştırmak için:
+# npx üzerinden doğrudan çalıştırma:
 npx izmir-cli get <dataset_id>
 ```
 
+---
+
+## Komut ve Parametre Referansı
+
+| Komut | Parametre | Açıklama |
+| --- | --- | --- |
+| `get` | `<dataset_id>` | Belirtilen veri seti kimliğine ait kayıtları çeker ve terminal tablosunda listeler. |
+| `--help` | - | Komut satırı kullanım kılavuzunu ve mevcut seçenekleri gösterir. |
+| `--version` | - | Yüklü paket sürümünü görüntüler. |
+
+---
+
 ## Örnek Kullanımlar
 
-### 1. BİSİM İstasyonlarını Listelemek
-İzmir'deki BİSİM istasyonlarını komut satırında tablo olarak görmek için:
+### 1. BİSİM İstasyonları
+
+İzmir genelindeki akıllı bisiklet istasyonlarını listelemek için:
+
 ```bash
-izmir-cli get cbs/bisimistasyon
+npx izmir-cli get cbs/bisimistasyon
 ```
 
 ### 2. Otopark Doluluk Oranları
-Otopark verilerini anlık olarak listelemek için:
+
+Anlık otopark doluluk ve kapasite bilgilerini listelemek için:
+
 ```bash
-izmir-cli get otopark/otoparklar
+npx izmir-cli get otopark/otoparklar
 ```
 
 ### 3. Hastaneler
+
+Hastanelerin adres ve koordinat verilerini listelemek için:
+
 ```bash
-izmir-cli get cbs/hastaneler
+npx izmir-cli get cbs/hastaneler
 ```
 
-## Özellikler
-
-- **Şık Tablolar:** JSON verilerini satır satır okumak yerine `cli-table3` ve `picocolors` kütüphaneleriyle formatlanmış, renkli tablolar sunar.
-- **Dinamik Sütun Yönetimi:** Çok fazla özelliği bulunan veri setlerinde terminali yatayda boğmamak için yalnızca ilk 6 sütunu tabloya yerleştirir. Geriye kalan sütunları dipnot olarak gri renkle aşağıya yazar.
-- **Hata Yönetimi:** Geçersiz bir `dataset_id` veya bağlantı problemi olduğunda terminal ekranına anlaşılır uyarı mesajları yansıtır.
-
 ---
-*Not: Bu CLI aracı projenin `src/cli/index.ts` dosyası içerisinde barınır ve standart Node.js betiği olarak derlenir.*
+
+## Çıktı ve Formatlama Kuralları
+
+- **ASCII Tablo Formatı:** Veri alanları `cli-table3` ve `picocolors` kullanılarak yapılandırılmış terminal tablosuna dönüştürülür.
+- **Sütun Sınırlandırması:** Çok sütunlu geniş veri setlerinde terminal genişliğini korumak için ilk 6 sütun tabloda gösterilir. Kalan alanlar tablonun altında dipnot olarak listelenir.
+- **Hata Yönetimi:** Geçersiz `dataset_id` veya ağ erişim sorunlarında sıfırdan farklı çıkış kodu (`exit code 1`) ve hata detayları terminale iletilir.

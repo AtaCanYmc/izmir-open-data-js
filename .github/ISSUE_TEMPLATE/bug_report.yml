@@ -1,0 +1,49 @@
+name: Bug Report
+description: Report a reproducible defect, API error, or type mismatch
+title: "fix: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please verify the issue has not been reported before opening a new ticket.
+        For security vulnerability reports, refer to [SECURITY.md](../../SECURITY.md).
+  - type: textarea
+    id: summary
+    attributes:
+      label: Bug Description
+      description: Provide a clear and concise description of the bug.
+      placeholder: Describe what happened.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Step-by-step instructions or minimal code snippet to reproduce the behavior.
+      placeholder: |
+        1. Call api.eshot.getHatlar()
+        2. Observe runtime error or type failure
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or Terminal Output
+      description: Paste relevant terminal output, stack traces, or API responses.
+      render: shell
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Node.js version, library version, OS, browser (if applicable).
+      placeholder: Node.js 20.10.0, izmir-open-data-js 2.0.0, macOS 14.5
+    validations:
+      required: true

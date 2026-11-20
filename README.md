@@ -1,454 +1,281 @@
-# izmir-open-data-js 🌊
+<p align="center">
+  <img src="assets/logo.svg" alt="izmir-open-data-js logo" width="160" height="160" />
+</p>
 
-İzmir Büyükşehir Belediyesi **Açık Veri Portalı** (acikveri.bizizmir.com) API'lerini JavaScript ve TypeScript projelerinizde kolayca kullanmanızı sağlayan hafif ve modern bir kütüphanedir.
+# izmir-open-data-js
 
-[![CI](https://github.com/AtaCanYmc/izmir-open-data-js/actions/workflows/ci.yml/badge.svg)](https://github.com/atacan/izmir-open-data-js/actions/workflows/ci.yml)
+İzmir Büyükşehir Belediyesi Açık Veri Portalı API servisleri için geliştirilmiş TypeScript ve JavaScript istemci kütüphanesi, terminal CLI aracı ve Model Context Protocol (MCP) sunucusu.
+
+[![CI](https://github.com/AtaCanYmc/izmir-open-data-js/actions/workflows/ci.yml/badge.svg)](https://github.com/AtaCanYmc/izmir-open-data-js/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/izmir-open-data-js.svg)](https://www.npmjs.com/package/izmir-open-data-js)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Node Version](https://img.shields.io/node/v/izmir-open-data-js.svg)](https://nodejs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
+
+[Türkçe](README.md) | [English](README.en.md)
 
 ---
 
-## ✨ Özellikler
+## İçindekiler
 
-* 🚀 **Hızlı Başlangıç:** Karmaşık API uç noktalarıyla uğraşmadan veriye ulaşın.
-* 📊 **Geniş Veri Yelpazesi:** Eczanelerden ulaşım ağlarına kadar birçok veriye erişim.
-* 🔄 **Modern Yapı:** `async/await` desteği ile temiz ve okunabilir kod.
-* 🏗️ **Esnek:** Hem Node.js hem de modern tarayıcı ortamlarında kullanılabilir.
-* 📦 **CKAN Desteği:** Açık veri portalının CKAN API'si üzerinden detaylı veri setlerine erişim.
-* 🤖 **MCP Sunucusu:** LLM'lerin (Örn: Claude Desktop) kullanabilmesi için gömülü **Model Context Protocol** modülü (`izmir-mcp`).
-* 💻 **CLI Aracı:** Terminal üzerinden komut satırı aracılığıyla verilere anında ulaşıp tablo çizebilme (`izmir-cli`).
-* 💡 **TypeScript:** `%100` Typescript desteği, Generic typelar ile güvenli veri yapıları.
+- [Sistem Mimarisi](#sistem-mimarisi)
+- [Kurulum](#kurulum)
+- [Hızlı Başlangıç](#hızlı-başlangıç)
+  - [1. Programatik Kütüphane Kullanımı](#1-programatik-kütüphane-kullanımı)
+  - [2. Terminal CLI Aracı](#2-terminal-cli-aracı)
+  - [3. Model Context Protocol (MCP) Sunucusu](#3-model-context-protocol-mcp-sunucusu)
+- [Uç Nokta ve Servis Modülleri](#uç-nokta-ve-servis-modülleri)
+- [Kod Örnekleri](#kod-örnekleri)
+- [Proje Dizin Yapısı](#proje-dizin-yapısı)
+- [Geliştirme ve Test](#geliştirme-ve-test)
+- [Teknik Sıkça Sorulan Sorular (FAQ)](#teknik-sıkça-sorulan-sorular-faq)
+- [Katkıda Bulunma](#katkıda-bulunma)
+- [Lisans](#lisans)
 
 ---
 
-## 🚀 Kurulum
+## Sistem Mimarisi
 
-Projeye dahil etmek için npm veya yarn kullanabilirsiniz:
+Kütüphane; uygulama kodları, komut satırı kullanıcıları ve yapay zeka ajanları için ortak bir istemci katmanı sunar. İstemci motoru Node.js üzerinde yerel `fetch` API'sini, tarayıcı ortamlarında ise CKAN kısıtlamalarını aşmak için JSONP mekanizmasını kullanır.
+
+```mermaid
+flowchart TD
+    subgraph Consumers["İstemci ve Tüketici Katmanı"]
+        Apps["Node.js ve Web Uygulamaları"]
+        CLI["izmir-cli (Terminal Arayüzü)"]
+        LLM["AI Ajanları / Claude Desktop (izmir-mcp)"]
+    end
+
+    subgraph Core["Çekirdek Kütüphane (izmir-open-data-js)"]
+        API["IzmirAPI İstemcisi"]
+        Client["IzmirClient (HTTP ve JSONP Motoru)"]
+        Modules["Servis Modülleri (eshot, eczaneler, bisim, izsu, metro, otopark)"]
+    end
+
+    subgraph Upstream["İzmir Büyükşehir Belediyesi Açık Veri Altyapısı"]
+        OpenAPI["Belediye Web Servisleri (acikveri.bizizmir.com)"]
+        CKAN["CKAN Datastore API (api/3/action)"]
+        CBS["CBS Coğrafi Veri Servisleri"]
+        CSV["Toplu Veri Setleri"]
+    end
+
+    Apps -->|"Import"| API
+    CLI -->|"Komut Yürütme"| API
+    LLM -->|"stdio JSON-RPC"| API
+    API --> Modules
+    Modules --> Client
+    Client -->|"HTTPS GET / Fetch"| OpenAPI
+    Client -->|"Datastore Sorguları"| CKAN
+    Client -->|"REST / JSONP"| CBS
+    Client -->|"CSV Akış Çözümleme"| CSV
+```
+
+---
+
+## Kurulum
+
+Projeye bağımlılık olarak eklemek için:
 
 ```bash
 npm install izmir-open-data-js
-# veya
-yarn add izmir-open-data-js
 ```
 
-## 🛠️ Kullanım
-
-Kütüphaneyi projenize dahil ettikten sonra `async/await` yapısını kullanarak verilere hızlıca erişebilirsiniz.
-
-### Örnek: Nöbetçi Eczaneleri Listeleme
-
-```javascript
-import { IzmirAPI } from 'izmir-open-data-js';
-
-const api = new IzmirAPI();
-
-async function verileriGetir() {
-  try {
-    // Güncel nöbetçi eczane listesini çeker
-    const eczaneler = await api.eczaneler.getNobetciList();
-    console.log("Nöbetçi Eczaneler:", eczaneler);
-  } catch (err) {
-    console.error("Veri çekme hatası:", err.message);
-  }
-}
-
-verileriGetir();
-```
-
-### Örnek: ESHOT Hat ve Durak Bilgileri
-
-```javascript
-import { IzmirAPI } from 'izmir-open-data-js';
-
-const api = new IzmirAPI();
-
-async function eshotVerileri() {
-  // Tüm ESHOT hatlarını çek (~441 hat)
-  const hatlar = await api.eshot.getHatlar();
-  console.log(`Toplam ${hatlar.length} hat bulundu`);
-  
-  // İlk 10 hattı göster
-  hatlar.slice(0, 10).forEach(hat => {
-    console.log(`Hat ${hat.HAT_NO}: ${hat.HAT_ADI}`);
-  });
-
-  // Tüm durakları çek (~11,770 durak)
-  const duraklar = await api.eshot.getDuraklar();
-  console.log(`Toplam ${duraklar.length} durak mevcut`);
-
-  // Metro, İzban, Vapur bağlantılı hatları çek
-  const baglantilar = await api.eshot.getBaglantiHatlari();
-  const metroHatlari = baglantilar.filter(h => h.BAGLANTI_TIP_ID === 1);
-  console.log(`Metro bağlantılı ${metroHatlari.length} hat var`);
-}
-
-eshotVerileri();
-```
-
-### 💻 CLI Aracı Kullanımı
-
-Projeyi global olarak yüklediyseniz (veya `npx` üzerinden) verileri harika terminal tablolarıyla hızlıca çekebilirsiniz.
+Yarn veya pnpm ile kurulum:
 
 ```bash
-# ESHOT hatlarını ve duraklarını komut satırından görüntüleyin
-npx izmir-cli get cbs/hastaneler
-
-# Nöbetçi Eczaneleri hızlıca listeleyin
-npx izmir-cli get nobetcieczaneler
+yarn add izmir-open-data-js
+# veya
+pnpm add izmir-open-data-js
 ```
-Daha fazla detay için: [CLI Dokümantasyonu](docs/CLI.md)
 
-### 🤖 MCP (Model Context Protocol) Entegrasyonu
+---
 
-Claude Desktop gibi LLM ajanlarınızın İzmir verilerini yerel olarak keşfedip sorgulayabilmesi için sisteme gömülü bir **MCP Sunucusu** eklenmiştir. Claude konfigürasyonunuza şu satırları ekleyerek paketi bir yapay zeka aracı olarak kullanabilirsiniz:
+## Hızlı Başlangıç
+
+### 1. Programatik Kütüphane Kullanımı
+
+Kütüphane tam TypeScript tip tanımlamaları içerir. `IzmirAPI` sınıfı üzerinden ilgili servis ad alanlarına erişebilirsiniz:
+
+```typescript
+import { IzmirAPI } from "izmir-open-data-js";
+
+const api = new IzmirAPI();
+
+// Nöbetçi eczaneleri sorgulama
+const eczaneler = await api.eczaneler.getNobetciList();
+console.log(`Nöbetçi eczane sayısı: ${eczaneler.length}`);
+
+// ESHOT hat listesini sorgulama
+const hatlar = await api.eshot.getHatlar();
+console.log(`Toplam hat sayısı: ${hatlar.length}`);
+
+// BİSİM istasyon doluluk oranlarını alma
+const bisim = await api.bisim.getIstasyonList();
+console.log("BİSİM Durumu:", bisim);
+```
+
+### 2. Terminal CLI Aracı
+
+Paket içerisinde kurulu gelen `izmir-cli` aracı ile belediye veri setlerini doğrudan terminalde ASCII tablosu formatında görüntüleyebilirsiniz:
+
+```bash
+# Nöbetçi eczaneleri terminal tablosunda listeleme
+npx izmir-cli get nobetcieczaneler
+
+# BİSİM istasyonlarını sorgulama
+npx izmir-cli get cbs/bisimistasyon
+
+# Hastane konumlarını sorgulama
+npx izmir-cli get cbs/hastaneler
+```
+
+Ayrıntılı komut seçenekleri ve parametreler için [CLI Dokümantasyonu](docs/CLI.md) sayfasına başvurabilirsiniz.
+
+### 3. Model Context Protocol (MCP) Sunucusu
+
+`izmir-open-data-js`, Claude Desktop veya Cursor gibi yapay zeka araçlarına belediye verilerini sunan standart bir MCP sunucusu (`izmir-mcp`) barındırır.
+
+`claude_desktop_config.json` dosyasına ekleyin:
 
 ```json
-"mcpServers": {
-  "izmir-open-data": {
-    "command": "npx",
-    "args": ["-y", "izmir-open-data-js"]
+{
+  "mcpServers": {
+    "izmir-open-data": {
+      "command": "npx",
+      "args": ["-y", "izmir-open-data-js"]
+    }
   }
 }
 ```
-Daha fazla detay için: [MCP Dokümantasyonu](docs/MCP.md)
+
+Entegrasyon şemaları ve sunucu araçları için [MCP Dokümantasyonu](docs/MCP.md) sayfasına başvurabilirsiniz.
 
 ---
 
-## 📋 Tüm Endpoint'ler
+## Uç Nokta ve Servis Modülleri
 
-### 🏥 Eczaneler (`api.eczaneler`)
+Kütüphane, İzmir Açık Veri Portalı üzerindeki servisleri modüler ad alanlarına ayırır:
 
-| Metot | Açıklama |
-| :--- | :--- |
-| `getNobetciList()` | Nöbetçi eczanelerin listesini döner |
-| `getList()` | Tüm eczanelerin listesini döner |
+| Modül | Ad Alanı | Kapsam ve Temel Metotlar |
+| --- | --- | --- |
+| **Toplu Ulaşım** | `api.eshot`, `api.metro`, `api.tramvay`, `api.izban`, `api.vapur` | Hatlar, duraklar, hareket saatleri, güzergahlar ve canlı otobüs konumları. |
+| **Mikro Hareketlilik** | `api.bisim`, `api.taksi` | BİSİM akıllı bisiklet istasyonları, bisiklet dolulukları ve taksi durakları. |
+| **Sağlık & Eczane** | `api.eczaneler`, `api.saglik` | Nöbetçi eczaneler, tüm eczaneler, hastaneler ve acil yardım istasyonları. |
+| **Su & Altyapı** | `api.izsu`, `api.otopark`, `api.afetler` | Baraj doluluk oranları, su üretimi, otopark dolulukları ve toplanma alanları. |
+| **Kültür & Sosyal** | `api.kultur`, `api.etkinlikler`, `api.egitim` | Kütüphaneler, müzeler, sinemalar, okullar ve belediye etkinlik takvimi. |
+| **Kamu & Coğrafya** | `api.kamu`, `api.cografi`, `api.muhtarliklar` | Noterler, muhtarlıklar, PTT, göller, dağlar ve kıyı şeridi bilgileri. |
+| **Açık Veri CKAN** | `client.getCKAN()`, `client.getCKANDump()` | CKAN portalındaki herhangi bir `resource_id` için datastore sorguları. |
 
-### 👨‍⚕️ Sağlık (`api.saglik`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getAcilYardimIstasyonlariList()` | Acil yardım istasyonlarını listeler |
-| `getAileSagligiMerkezleriList()` | Aile sağlığı merkezlerini listeler |
-| `getAgizDisSagligiMerkezleriList()` | Ağız ve diş sağlığı merkezlerini listeler |
-| `getAnaCocukSagligiMerkezleriList()` | Ana çocuk sağlığı merkezlerini listeler |
-| `getDalMerkezleriList()` | Dal merkezlerini listeler |
-| `getHastanelerList()` | Hastaneleri listeler |
-| `getKanMerkezleriList()` | Kan merkezlerini listeler |
-| `getLaboratuvarlarList()` | Laboratuvarları listeler |
-| `getPolikliniklerList()` | Poliklinikleri listeler |
-| `getTipMerkezleriList()` | Tıp merkezlerini listeler |
-| `getToplumSagligiMerkezleriList()` | Toplum sağlığı merkezlerini listeler |
-| `getVeremSavasDispanserleriList()` | Verem savaş dispanserlerini listeler |
-| `getVeterinerliklerList()` | Veterinerlikleri listeler |
-
-### 💧 İZSU (`api.izsu`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getSuUretimiDagilimi()` | Su üretiminin aylara ve kaynaklara göre dağılımını döner |
-| `getGunlukSuUretimi()` | Günlük su üretimi miktarlarını döner |
-| `getBarajDolulukOranlari()` | Barajların doluluk oranlarını döner |
-| `getHaftalikSuAnalizi()` | Haftalık su analiz sonuçlarını döner |
-| `getBarajSuKaliteRaporlari()` | Baraj su kalite raporlarını döner |
-| `getArizaKaynakliKesintiList()` | Arıza kaynaklı su kesintilerini listeler |
-| `getBarajVeKuyuList()` | Baraj ve kuyuları listeler |
-| `getIzsuSubeList()` | İZSU şubelerini listeler |
-| `getIzsuVezneList()` | İZSU veznelerini listeler |
-
-### 🚌 Ulaşım - ESHOT (`api.eshot`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getYakinDurakList(enlem, boylam)` | Belirtilen konuma yakın ESHOT duraklarını listeler |
-| `getDuragaYaklasanOtobusList(durakId)` | Bir durağa yaklaşan otobüsleri listeler |
-| `getHattinYaklasanOtobusleri(hatId, durakId)` | Bir hattın durağa yaklaşan otobüslerini listeler |
-| `getHatOtobusKonumlari(hatId)` | Hatta ait otobüslerin anlık konum bilgilerini döner |
-| `getHatlar()` | Tüm ESHOT hat bilgilerini döner (~441 hat) |
-| `getHareketSaatleri()` | Tüm otobüs hareket saatlerini döner (~101,000+ kayıt) |
-| `getDuraklar()` | Tüm ESHOT duraklarını listeler (~11,770 durak) |
-| `getHatGuzergahlari()` | Hat güzergah koordinatlarını döner (~563,000+ nokta) |
-| `getBaglantiTipleri()` | Diğer ulaşım araçları ile bağlantı tiplerini döner |
-| `getBaglantiHatlari()` | Diğer ulaşım araçlarına bağlantılı hatları ve çalışma saatlerini döner (~583 kayıt) |
-
-### 🚲 Ulaşım - BİSİM (`api.bisim`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getIstasyonList()` | BİSİM istasyonlarını listeler |
-
-### 🚃 Ulaşım - Tramvay (`api.tramvay`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getHatList()` | Tramvay hatlarını listeler |
-| `getSeferList()` | Tüm tramvay sefer bilgilerini listeler |
-| `getIstasyonList(seferId)` | Sefer numarasına göre tramvay istasyonlarını listeler |
-| `getSeferSiklikList(seferId)` | Sefer numarasına göre sefer sıklıklarını döner |
-| `getPlanlananiSeferSayilari()` | Metro ve tramvay için aylık planlanan sefer sayılarını döner (~74 kayıt) |
-| `getDurakMesafeleri(hat)` | Tramvay hattı durak mesafelerini döner. Hat: `'karsiyaka'`, `'konak-sag'`, `'konak-sol'`, `'cigili'` |
-
-### 🚇 Ulaşım - Metro (`api.metro`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getIstasyonList()` | Metro istasyonlarını listeler |
-| `getDurakMesafeleri()` | Metro istasyonları arasındaki mesafe bilgilerini döner |
-
-### 🚆 Ulaşım - İZBAN (`api.izban`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getTarife(binisId, inisId, aktarma, httMi)` | İZBAN fiyat tarifesini hesaplar |
-| `getIstasyonList()` | İZBAN istasyonlarını listeler |
-| `getHareketSaatleri(kalkisId, varisId)` | İZBAN hareket saatlerini döner |
-| `getDurakMesafeleri()` | İZBAN istasyonları arasındaki mesafe bilgilerini döner |
-
-### ⛴️ Ulaşım - Vapur (`api.vapur`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getHareketSaatleri(kalkis, varis, gunTipi, detay)` | Vapur hareket saatlerini döner |
-| `getCalismaGunleri()` | Vapurların çalışma günlerini döner |
-| `getHareketSaatleriByHat(iskeleId, gunId)` | İskele bazlı hareket saatlerini döner |
-| `getIskeleList()` | Vapur iskelelerini listeler |
-| `getDetayList()` | Vapurların kapasite ve donanım bilgilerini döner (~20 gemi) |
-
-### 🚃 Ulaşım - Tren & Diğer (`api.tren`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getTrenGarlariList()` | Tren garlarını listeler |
-| `getHavaalaniList()` | Havaalanlarını listeler |
-| `getOtobusTerminalleriList()` | Şehirlerarası otobüs terminallerini listeler |
-| `getAracMuayeneIstasyonlariList()` | Araç muayene istasyonlarını listeler |
-
-### 🅿️ Otopark (`api.otopark`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getList()` | Otoparkların doluluk ve konum bilgilerini döner |
-| `getUcretler(limit, offset)` | İzelman otopark ücretlerini döner (CKAN) |
-
-### 💳 İzmirimKart (`api.izmirimkart`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getDolumNoktalari()` | İzmirimKart dolum noktalarının adres ve konum bilgilerini döner |
-
-### 🚦 Trafik (`api.trafik`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getKameraList()` | Trafik kameralarının konum bilgilerini döner (~92 kamera) |
-
-### 🚕 Taksi (`api.taksi`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getDurakList()` | Taksi duraklarını listeler |
-
-### 🎭 Etkinlikler (`api.etkinlikler`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getList()` | Kültür sanat etkinliklerini listeler |
-| `getEtkinlikById(id)` | Belirli bir etkinliğin detaylarını döner |
-
-### 🌡️ İklim (`api.iklim`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getGunlukHavaKalitesiOlcumleri(tarih)` | Belirtilen tarihe göre hava kalitesi ölçümlerini döner |
-| `getHavaKalitesiIstasyonlari()` | Hava kalitesi ölçüm istasyonlarının konum bilgilerini döner |
-
-### 🛒 Pazarlar (`api.pazarlar`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getList()` | Semt pazar yerlerini listeler |
-| `getBalikHalFiyatlari(tarih)` | Balık hal fiyatlarını döner |
-| `getSebzeMeyveHalFiyatlari(tarih)` | Sebze meyve hal fiyatlarını döner |
-
-### 🏛️ Muhtarlıklar (`api.muhtarliklar`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getList()` | Muhtarlıkları listeler |
-
-### 📶 WiFi (`api.wizmirnet`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getList()` | Ücretsiz kablosuz internet noktalarını listeler |
-
-### ⚠️ Afetler (`api.afetler`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getAcilDurumToplanmaAlanlari()` | Afet ve acil durum toplanma alanlarını listeler |
-
-### 🏢 Hizmet Noktaları (`api.hizmet`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getHizmetNoktaList()` | İzBB hizmet noktalarını listeler |
-
-### 📚 Eğitim (`api.egitim`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getEngelliOkullariList()` | Engelliler okullarını listeler |
-| `getAnaokullarList()` | Anaokullarını listeler |
-| `getEtutMerkezleriList()` | Etüt merkezlerini listeler |
-| `getHalkEgitimList()` | Halk eğitim merkezlerini listeler |
-| `getIlkokullarList()` | İlkokulları listeler |
-| `getKolejlerList()` | Kolejleri listeler |
-| `getLiselerList()` | Liseleri listeler |
-| `getMeslekLiseleriList()` | Meslek liselerini listeler |
-| `getOrtaokullarList()` | Ortaokulları listeler |
-| `getSanatOkullariList()` | Sanat okullarını listeler |
-| `getUniversitelerList()` | Üniversiteleri listeler |
-| `getMilliEgitimList()` | Milli eğitim müdürlüklerini listeler |
-
-### 📖 Kütüphane & Kültür (`api.kutuphane`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getKutuphanelerList()` | Kütüphaneleri listeler |
-| `getKulturMerkezleriList()` | Kültür merkezlerini listeler |
-| `getOperaVeBaleList()` | Opera ve bale mekanlarını listeler |
-| `getGaleriVeSalonlarList()` | Sanat galerisi ve sergi salonlarını listeler |
-| `getSenfoniOrkestrasiList()` | Senfoni orkestrası mekanlarını listeler |
-| `getSinemalarList()` | Sinemaları listeler |
-| `getTiyatrolarList()` | Tiyatroları listeler |
-| `getMuzelerList()` | Müzeleri listeler |
-
-### 🏛️ Tarihi Yerler (`api.tarihi`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getAntikKentlerList()` | Antik kentleri listeler |
-| `getAntikKentYapilariList()` | Antik kent yapılarını listeler |
-| `getKoskVeKonaklarList()` | Köşk ve konakları listeler |
-| `getKuleAnitHeykellerList()` | Kule, anıt ve heykelleri listeler |
-| `getTarihiCarsiHanlarList()` | Tarihi çarşı ve hanları listeler |
-| `getTarihiSuYapilariList()` | Tarihi su yapılarını listeler |
-| `getTarihiYapilarList()` | Tarihi yapıları listeler |
-
-### 🏖️ Plaj & Turizm (`api.plaj`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getPlajlarList()` | Plajları listeler |
-| `getHamamlarList()` | Hamamları listeler |
-| `getKaplicalarList()` | Kaplıcaları listeler |
-| `getFuarList()` | Fuar alanlarını listeler |
-
-### 🏛️ Kamu Kurumları (`api.kamu`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getBankalarList()` | Bankaları listeler |
-| `getBelediyelerList()` | Belediye ve birimleri listeler |
-| `getBolgeMudurlukleriList()` | Bölge müdürlüklerini listeler |
-| `getDefterdarliklarList()` | Defterdarlıkları listeler |
-| `getDerneklerList()` | Dernekleri listeler |
-| `getEvlendirmeDaireleriList()` | Evlendirme dairelerini listeler |
-| `getIlIlceMudurlukleriList()` | İl ve ilçe müdürlüklerini listeler |
-| `getItfaiyeGruplariList()` | İtfaiye gruplarını listeler |
-| `getKonsolosluklarList()` | Konsoloslukları listeler |
-| `getMeslekOdalariList()` | Meslek odalarını listeler |
-| `getNoterlerList()` | Noterleri listeler |
-| `getNufusMudurlukleriList()` | Nüfus müdürlüklerini listeler |
-| `getPttList()` | PTT şubelerini listeler |
-| `getTurizmDanismaList()` | Turizm danışma merkezlerini listeler |
-| `getVergiDaireleriList()` | Vergi dairelerini listeler |
-| `getMaskematikNoktalariList()` | Maskematik istasyonlarını listeler |
-
-### 👨‍👩‍👧‍👦 Sosyal Hizmetler (`api.sosyal`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getAileDayanismaMerkezleriList()` | Aile dayanışma merkezlerini listeler |
-| `getCocukGenclikMerkezleriList()` | Çocuk ve gençlik merkezlerini listeler |
-| `getCocukYuvalariList()` | Çocuk yuvalarını listeler |
-| `getHuzurevleriList()` | Huzurevlerini listeler |
-| `getToplumMerkezleriList()` | Toplum merkezlerini listeler |
-| `getYetistirmeYurtlariList()` | Yetiştirme yurtlarını listeler |
-
-### ⚽ Spor (`api.spor`) _(Deneysel)_
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getHipodromList()` | Hipodromları listeler |
-| `getSporSalonlariList()` | Spor salonlarını listeler |
-| `getStadyumlarList()` | Stadyumları listeler |
-| `getYuruyusYollari()` | Yürüyüş ve bisiklet parkurlarını döner (mesafe, zorluk, süre bilgileri) |
-
-> ⚠️ **Not:** Bazı spor endpoint'leri API'de henüz tam aktif olmayabilir.
-
-### 🗺️ Coğrafi Özellikler (`api.cografi`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getAdaYarimadaList()` | Ada ve yarımadaları listeler |
-| `getBurunlarList()` | Burunları listeler |
-| `getDagTepeList()` | Dağ ve tepeleri listeler |
-| `getGollerList()` | Gölleri listeler |
-| `getKorfezKoylarList()` | Körfez ve koyları listeler |
-| `getNehirCaylarList()` | Nehir ve çayları listeler |
-| `getOrmanlarList()` | Ormanları listeler |
-| `getMeydanlarList()` | Meydanları listeler |
-
-### 🎫 İztek - İzmirim Kart (`api.iztek`)
-
-| Metot | Açıklama |
-| :--- | :--- |
-| `getAskidaIzmirimKartIstatistik()` | Askıda İzmirim Kart istatistiklerini döner |
+Uç noktaların tam parametre listesi için [Uç Nokta Referansı](docs/ENDPOINTS.md) sayfasına bakabilirsiniz.
 
 ---
 
-## 📖 API Kaynağı
+## Kod Örnekleri
 
-Bu kütüphane, verileri [İzmir Büyükşehir Belediyesi Açık Veri Portalı](https://acikveri.bizizmir.com/) üzerinden çekmektedir. Veri yapılarındaki herhangi bir değişiklik veya kesinti portal kaynaklı olabilir.
-
----
-
-## 🤝 Katkıda Bulunma
-
-İzmir için geliştirilen bu projeye katkı sağlamak harika olur! Yeni bir özellik eklemek veya bir hatayı düzeltmek için:
-
-1. Bu depoyu (repository) **fork** edin.
-2. Yeni bir dal (branch) oluşturun: `git checkout -b feature/yeniOzellik`
-3. Değişikliklerinizi yapın ve **commit** edin: `git commit -m 'Ekle: Yeni API uç noktası'`
-4. Dalınızı **push** edin: `git push origin feature/yeniOzellik`
-5. Bir **Pull Request** açın.
-
----
-
-## 🧪 Test
+Depoda her servis için ayrıntılı örnek betikler yer almaktadır. Bu betikleri `tsx` ile doğrudan çalıştırabilirsiniz:
 
 ```bash
-# Unit testleri çalıştır
-npm test
+# ESHOT durak ve hat sorgu örnekleri
+npx tsx examples/eshot-example.ts
 
-# Watch modunda testler
-npm run test:watch
+# BİSİM istasyon sorgu örnekleri
+npx tsx examples/bisim-example.ts
 
-# Coverage raporuyla testler
-npm run test:coverage
+# İZSU baraj doluluk ve su üretim örnekleri
+npx tsx examples/izsu.ts
+```
 
-# Canlı API testleri (opsiyonel)
-npm run test:live
+Tüm örnek dosyalarının açıklaması için [Örnekler Kılavuzu](examples/README.md) ve [docs/EXAMPLES.md](docs/EXAMPLES.md) dokümanlarına bakabilirsiniz.
+
+---
+
+## Proje Dizin Yapısı
+
+```text
+izmir-open-data-js/
+├── .github/
+│   ├── ISSUE_TEMPLATE/        # Yapılandırılmış hata ve öneri formları
+│   ├── PULL_REQUEST_TEMPLATE/ # Doğrulama adımlarını zorunlu kılan PR şablonu
+│   └── workflows/             # CI, lint, güvenlik ve yayınlama iş akışları
+├── docs/                      # CLI, MCP ve uç nokta dokümantasyonları
+├── examples/                  # Her servis için çalıştırılabilir örnek betikler
+├── src/
+│   ├── cli/                   # izmir-cli terminal aracı kaynak kodları
+│   ├── common/                # Tipler ve ortak yardımcı fonksiyonlar
+│   ├── endpoints/             # Her belediye servisi için modüler API sınıfları
+│   ├── mcp/                   # Model Context Protocol stdio sunucu modülü
+│   ├── client.ts              # HTTP ve JSONP istek motoru
+│   └── index.ts               # Ana kütüphane dışa aktarımı (IzmirAPI)
+├── tests/                     # Vitest birim ve entegrasyon test paketleri
+├── Makefile                   # Geliştirme ve test otomasyon hedefleri
+├── LICENSE                    # Apache 2.0 lisans metni
+├── CONTRIBUTING.md            # Katkı ve commit kuralları
+├── SECURITY.md                # Güvenlik açığı bildirim politikası
+└── ROADMAP.md                 # Sürüm hedefleri ve geliştirme yol haritası
 ```
 
 ---
 
-## 📄 Lisans
+## Geliştirme ve Test
 
-Bu proje [Apache 2.0 Lisansı](LICENSE) ile lisanslanmıştır.
+Tüm derleme, lint ve test süreçlerini `make` üzerinden tek komutla yürütebilirsiniz:
+
+```bash
+# Tüm pipeline'ı doğrulama (build + lint + test)
+make check
+
+# Kullanılabilir tüm Makefile hedeflerini listeleme
+make help
+```
+
+Aşağıdaki doğrudan `npm` komutları da alternatif olarak kullanılabilir:
+
+```bash
+# 1. Bağımlılıkları kurma
+npm install
+
+# 2. TypeScript kodunu derleme (dist/ dizini oluşturur)
+npm run build
+
+# 3. Kod standartları ve linter kontrolü
+npm run lint
+
+# 4. Linter biçimlendirme hatalarını otomatik düzeltme
+npm run lint:fix
+
+# 5. Birim testlerini çalıştırma (ağ erişimi gerektirmez)
+npm test
+
+# 6. Test kapsamı (coverage) raporu üretme
+npm run test:coverage
+
+# 7. Canlı API entegrasyon testlerini çalıştırma (ağ erişimi gerektirir)
+LIVE_API_TESTS=1 npm run test:live
+```
 
 ---
 
-> [!NOTE]  
-> Bu paket, geliştiricilerin İzmir'in açık verilerini projelerine daha hızlı entegre etmesi için hazırlanmış bir topluluk projesidir. Resmi kurumlarla doğrudan bir bağı yoktur.
+## Teknik Sıkça Sorulan Sorular (FAQ)
+
+### Bu kütüphane tarayıcı ortamlarında doğrudan çalışır mı?
+Evet. Kütüphane evrensel modül yapısına (`ESM`) sahiptir. Node.js ortamında yerel `fetch` motoru kullanılır. Tarayıcı ortamında çalıştırıldığında, CKAN API'sinin CORS kısıtlamalarına takılmaması için otomatik olarak JSONP mekanizmasına geçer.
+
+### API anahtarı (token) almam gerekiyor mu?
+Hayır. İzmir Büyükşehir Belediyesi Açık Veri Portalı uç noktaları halka açık olarak sunulmaktadır. Çoğu uç nokta kimlik doğrulama gerektirmez. Ancak aşırı istek durumunda belediye sunucuları IP bazlı hız kısıtlaması (rate limiting) uygulayabilir.
+
+### MCP sunucusu internet erişimi olmadan çalışır mı?
+`izmir-mcp` yerel bir `stdio` sürecidir. Ancak asistanın talep ettiği verileri getirmek için belediyenin açık veri sunucularına giden giden HTTPS bağlantısına ihtiyaç duyar.
+
+---
+
+## Katkıda Bulunma
+
+Hata bildirimleri, yeni uç nokta eklemeleri ve dokümantasyon düzeltmeleri memnuniyetle karşılanır. Geliştirme standartları, branch isimlendirme ve Conventional Commits kuralları için lütfen [CONTRIBUTING.md](CONTRIBUTING.md) dosyasını inceleyin.
+
+Güvenlik açıklarını bildirmek için [SECURITY.md](SECURITY.md) dosyasındaki özel iletişim yönergelerini takip edin.
+
+---
+
+## Lisans
+
+Bu proje [Apache 2.0 Lisansı](LICENSE) kapsamında lisanslanmıştır. Telif hakkı (c) 2026 Ata Can Yaymacı.

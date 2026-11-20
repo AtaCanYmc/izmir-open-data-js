@@ -30,6 +30,11 @@ describe("IzmirClient", () => {
 describe("IzmirAPI endpoint route sozlesmeleri", () => {
     it("tum endpoint metodlari mock ile sorunsuz calismali", async () => {
         const { fetchMock } = installMockFetch({ jsonData: [] });
+        fetchMock.mockImplementation(async (url: string) => ({
+            ok: true,
+            status: 200,
+            json: async () => (String(url).includes("/api/3/action") ? { success: true, result: [] } : []),
+        }));
         const api = new IzmirAPI("https://example.test/api/");
 
         await api.afetler.getAcilDurumToplanmaAlanlari();
