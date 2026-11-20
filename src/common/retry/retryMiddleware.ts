@@ -24,7 +24,10 @@ function sleep(ms: number): Promise<void> {
 }
 
 export function calculateBackoff(attempt: number, config: Required<RetryConfig>): number {
-    const exponential = Math.min(config.maxDelayMs, config.baseDelayMs * Math.pow(2, attempt - 1));
+    const safeAttempt = Math.max(1, Math.min(20, attempt));
+    const baseDelay = Math.max(0, config.baseDelayMs);
+    const maxDelay = Math.max(baseDelay, config.maxDelayMs);
+    const exponential = Math.min(maxDelay, baseDelay * Math.pow(2, safeAttempt - 1));
     if (!config.jitter) {
         return exponential;
     }
@@ -71,18 +74,19 @@ export async function executeWithRetry<T>(
         ...(typeof customConfig === "object" ? customConfig : {}),
     };
 
-    if (config.retries <= 0) {
+    const maxRetries = Math.max(0, Math.min(10, typeof config.retries === "number" ? config.retries : 3));
+    if (maxRetries <= 0) {
         return operation();
     }
 
     let lastError: any;
-    for (let attempt = 1; attempt <= config.retries + 1; attempt++) {
+    for (let attempt = 1; attempt <= maxRetries + 1; attempt++) {
         try {
             return await operation();
         } catch (error: any) {
             lastError = error;
             // Son denemede veya hata tekrarlanabilir değilse doğrudan fırlat
-            if (attempt > config.retries || !isRetryableError(error, config.statusCodes)) {
+            if (attempt > maxRetries || !isRetryableError(error, config.statusCodes)) {
                 throw error;
             }
 

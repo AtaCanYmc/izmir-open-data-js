@@ -24,8 +24,16 @@ export class MemoryCache implements CacheProvider {
     private readonly maxItems: number;
 
     constructor(options: MemoryCacheOptions = {}) {
-        this.defaultTtlMs = options.defaultTtlMs ?? 300_000;
-        this.maxItems = options.maxItems ?? 500;
+        this.defaultTtlMs =
+            typeof options.defaultTtlMs === "number" &&
+            Number.isFinite(options.defaultTtlMs) &&
+            options.defaultTtlMs > 0
+                ? options.defaultTtlMs
+                : 300_000;
+        this.maxItems =
+            typeof options.maxItems === "number" && Number.isFinite(options.maxItems) && options.maxItems > 0
+                ? Math.floor(options.maxItems)
+                : 500;
     }
 
     get<T>(key: string): T | undefined {
@@ -43,7 +51,7 @@ export class MemoryCache implements CacheProvider {
     }
 
     set<T>(key: string, value: T, ttlMs?: number): void {
-        const ttl = ttlMs ?? this.defaultTtlMs;
+        const ttl = typeof ttlMs === "number" && Number.isFinite(ttlMs) && ttlMs > 0 ? ttlMs : this.defaultTtlMs;
         const expiresAt = Date.now() + ttl;
 
         // Kapasite aşıldığında en eski anahtarı sil (FIFO tahliye)

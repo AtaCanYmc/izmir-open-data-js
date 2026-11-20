@@ -6,6 +6,8 @@ import { IzmirAPI } from "../index.js";
 
 const api = new IzmirAPI();
 
+const DISALLOWED_PROPERTIES = new Set(["__proto__", "constructor", "prototype", "client", "cache", "clearCache"]);
+
 const server = new Server(
     {
         name: "izmir-open-data-mcp",
@@ -21,9 +23,14 @@ const server = new Server(
 function getEndpoints() {
     const endpoints: string[] = [];
     for (const [namespace, service] of Object.entries(api)) {
-        if (typeof service === "object" && service !== null && namespace !== "client") {
+        if (
+            typeof service === "object" &&
+            service !== null &&
+            !DISALLOWED_PROPERTIES.has(namespace) &&
+            Object.prototype.hasOwnProperty.call(api, namespace)
+        ) {
             for (const methodName of Object.keys(service)) {
-                if (typeof (service as any)[methodName] === "function") {
+                if (!DISALLOWED_PROPERTIES.has(methodName) && typeof (service as any)[methodName] === "function") {
                     endpoints.push(`${namespace}.${methodName}`);
                 }
             }
@@ -89,14 +96,22 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             throw new Error("namespace ve endpoint_name gereklidir.");
         }
 
+        if (DISALLOWED_PROPERTIES.has(namespace) || !Object.prototype.hasOwnProperty.call(api, namespace)) {
+            throw new Error(`Yetkisiz veya geçersiz namespace: '${namespace}'.`);
+        }
+
         const service = (api as any)[namespace];
-        if (!service) {
+        if (!service || typeof service !== "object") {
             throw new Error(`Namespace '${namespace}' bulunamadı.`);
         }
 
-        const method = service[endpoint_name];
-        if (!method || typeof method !== "function") {
+        if (DISALLOWED_PROPERTIES.has(endpoint_name) || !Object.prototype.hasOwnProperty.call(service, endpoint_name)) {
             throw new Error(`Metod '${endpoint_name}', '${namespace}' içerisinde bulunamadı.`);
+        }
+
+        const method = service[endpoint_name];
+        if (typeof method !== "function") {
+            throw new Error(`Metod '${endpoint_name}', '${namespace}' içerisinde geçerli bir fonksiyon değil.`);
         }
 
         try {

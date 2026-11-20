@@ -69,7 +69,12 @@ export class IzmirClient {
     }
 
     async get<T = any>(path: string): Promise<T> {
-        const url = this.baseUrl + path;
+        // Path traversal ve SSRF koruması
+        const normalizedPath = path.startsWith("/") ? path.slice(1) : path;
+        if (normalizedPath.includes("..") || /^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(normalizedPath)) {
+            throw new Error(`Geçersiz veya güvensiz istek yolu: ${path}`);
+        }
+        const url = this.baseUrl + normalizedPath;
         const cacheKey = `GET:${url}`;
 
         if (this.cacheProvider) {
@@ -101,6 +106,10 @@ export class IzmirClient {
      * Tarayıcıda JSONP, Node.js'de normal fetch kullanır.
      */
     async getCKAN<T = any>(action: string, params: Record<string, any> = {}): Promise<T> {
+        const cleanAction = action.replace(/^\/+/, "");
+        if (cleanAction.includes("..") || /^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(cleanAction)) {
+            throw new Error(`Geçersiz veya güvensiz CKAN aksiyonu: ${action}`);
+        }
         const queryParams = new URLSearchParams();
 
         for (const [key, value] of Object.entries(params)) {
@@ -114,7 +123,7 @@ export class IzmirClient {
         }
 
         const qs = queryParams.toString();
-        const url = qs ? `${this.ckanBaseUrl}${action}?${qs}` : `${this.ckanBaseUrl}${action}`;
+        const url = qs ? `${this.ckanBaseUrl}${cleanAction}?${qs}` : `${this.ckanBaseUrl}${cleanAction}`;
         const cacheKey = `CKAN:${url}`;
 
         if (this.cacheProvider) {
@@ -203,7 +212,8 @@ export class IzmirClient {
      * @param resourceId Kaynak ID'si
      */
     async getCKANDump<T = any>(resourceId: string): Promise<T> {
-        const url = `${this.ckanDumpBaseUrl}${resourceId}?format=json`;
+        const cleanId = encodeURIComponent(resourceId.trim());
+        const url = `${this.ckanDumpBaseUrl}${cleanId}?format=json`;
         const cacheKey = `DUMP:${url}`;
 
         if (this.cacheProvider) {
@@ -334,6 +344,12 @@ export class IzmirClient {
             const obj: Record<string, string | number> = {};
 
             for (let j = 0; j < headers.length; j++) {
+                const header = headers[j];
+                // Prototype pollution koruması
+                if (!header || header === "__proto__" || header === "constructor" || header === "prototype") {
+                    continue;
+                }
+
                 const rawValue = values[j]?.trim() || "";
                 const value = cleanValue(rawValue);
                 if (
@@ -343,10 +359,10 @@ export class IzmirClient {
                     value.toLowerCase() === "true" ||
                     value.toLowerCase() === "false"
                 ) {
-                    obj[headers[j]] = value;
+                    obj[header] = value;
                 } else {
                     const numValue = parseFloat(value);
-                    obj[headers[j]] = !isNaN(numValue) ? numValue : value;
+                    obj[header] = !isNaN(numValue) ? numValue : value;
                 }
             }
 

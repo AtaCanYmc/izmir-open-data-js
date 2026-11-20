@@ -26,6 +26,10 @@ program
     .description("Fetch and display a dataset from Izmir Open Data API.")
     .argument("<dataset_id>", "The ID of the dataset to fetch (e.g. 'cbs/adayarimada')")
     .action(async (datasetId) => {
+        if (!/^[a-zA-Z0-9_\-/]+$/.test(datasetId) || datasetId.includes("..")) {
+            console.error(pc.bold(pc.red("Hata: ")) + pc.red("Geçersiz veya güvensiz dataset_id formatı."));
+            return;
+        }
         const client = new IzmirClient();
         try {
             console.log(
@@ -134,6 +138,10 @@ program
     .option("-l, --limit <number>", "Number of records to fetch", "10")
     .option("-q, --query <string>", "Full text query")
     .action(async (resourceId, options) => {
+        if (!/^[a-zA-Z0-9_-]+$/.test(resourceId)) {
+            console.error(pc.bold(pc.red("Hata: ")) + pc.red("Geçersiz veya güvensiz resource_id formatı."));
+            return;
+        }
         const client = new IzmirClient();
         const ckanEndpoint = ckan(client);
         try {
