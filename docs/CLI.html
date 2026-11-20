@@ -14,7 +14,7 @@
   </script>
   
   <title>CLI Kullanım Kılavuzu — izmir-open-data-js</title>
-  <meta name="description" content="İzmir Açık Veri terminal aracı izmir-cli ve Homebrew tap kurulum kılavuzu.">
+  <meta name="description" content="İzmir Açık Veri terminal aracı izmir-cli ve Homebrew tap kurulum ve komut kılavuzu.">
   
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,8 +38,8 @@
         <a href="index.html" class="nav-link">Ana Sayfa</a>
         <a href="index.html#playground" class="nav-link">Canlı Demo</a>
         <a href="ENDPOINTS.html" class="nav-link">Uç Noktalar</a>
-        <a href="CLI.html" class="nav-link">CLI</a>
-        <a href="MCP.html" class="nav-link">MCP</a>
+        <a href="CLI.html" class="nav-link">CLI Kılavuzu</a>
+        <a href="MCP.html" class="nav-link">MCP Sunucusu</a>
         <a href="specs/index.html" class="nav-link">Şartnameler</a>
       </nav>
 
@@ -65,7 +65,7 @@
   </header>
 
   <main class="doc-page">
-    <div class="container" style="max-width: 860px;">
+    <div class="container" style="max-width: 920px;">
       <nav class="breadcrumb-nav" aria-label="Ekmek kırıntısı">
         <a href="index.html" class="breadcrumb-link">Ana Sayfa</a>
         <span>/</span>
@@ -74,15 +74,20 @@
         <span aria-current="page">CLI Kılavuzu</span>
       </nav>
 
-      <div class="doc-hero">
-        <h1 class="doc-title">Terminal CLI Kılavuzu</h1>
-        <p class="doc-lead">
-          <code>izmir-open-data-js</code>, belediye açık veri portallarını terminal üzerinden sorgulamak, filtrelemek ve ASCII tabloları halinde görselleştirmek için <code>izmir-cli</code> komut satırı aracını sunar.
-        </p>
+      <div class="doc-hero-with-illustration">
+        <div class="doc-hero-text">
+          <h1 class="doc-title">Terminal CLI Kılavuzu</h1>
+          <p class="doc-lead">
+            <code>izmir-open-data-js</code>, belediye açık veri portallarını terminal üzerinden sorgulamak, filtrelemek ve ASCII tabloları halinde görselleştirmek için <code>izmir-cli</code> komut satırı aracını sunar.
+          </p>
+        </div>
+        <div class="doc-hero-image-wrap">
+          <img src="assets/illustrations/map_mobility.svg" alt="Terminal Hareketlilik Haritası" class="doc-hero-img" width="220" height="180">
+        </div>
       </div>
 
       <div class="doc-section">
-        <h2>Kurulum ve Çalıştırma</h2>
+        <h2>Kurulum ve Paket Yöneticileri</h2>
         
         <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1.125rem;">1. Homebrew ile Kurulum (macOS / Linux)</h3>
         <p class="text-secondary">Official Homebrew Tap üzerinden kalıcı global CLI kurulumu:</p>
@@ -96,7 +101,7 @@
 brew tap AtaCanYmc/tap
 brew install izmir-cli
 
-# Veya tek komutla kurma:
+# Veya doğrudan tek komutla:
 brew install AtaCanYmc/tap/izmir-cli</div>
         </div>
         <p class="text-secondary">Kurulum tamamlandığında hem <code>izmir-cli</code> hem de <code>izmir</code> komutu terminalinizde hazır hale gelir.</p>
@@ -109,9 +114,8 @@ brew install AtaCanYmc/tap/izmir-cli</div>
           </div>
           <div class="doc-code-content"># Global npm kurulumu
 npm install -g izmir-open-data-js
-izmir get nobetcieczaneler
 
-# Veya npx ile kurulumsuz çalıştırma:
+# npx ile anında çalıştırma (kurulum gerektirmez):
 npx izmir-cli get cbs/bisimistasyon</div>
         </div>
       </div>
@@ -123,8 +127,8 @@ npx izmir-cli get cbs/bisimistasyon</div>
             <table class="doc-table">
               <thead>
                 <tr>
-                  <th>Komut</th>
-                  <th>Parametreler</th>
+                  <th style="width: 22%;">Komut</th>
+                  <th style="width: 32%;">Parametreler</th>
                   <th>Açıklama</th>
                 </tr>
               </thead>
@@ -161,11 +165,17 @@ npx izmir-cli get cbs/bisimistasyon</div>
       </div>
 
       <div class="doc-section">
-        <h2>Örnek Komutlar</h2>
+        <h2>Detaylı Kullanım Senaryoları & Örnekler</h2>
         
         <div class="doc-card" style="padding: 1.5rem; margin-bottom: 1.25rem;">
-          <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">BİSİM İstasyonları</h3>
-          <div class="doc-code-block" style="margin: 0.5rem 0 0 0;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <img src="assets/categories/rekreasyon.svg" width="20" height="20" alt="">
+            <h3 style="font-size: 1rem;">1. BİSİM Akıllı Bisiklet İstasyonları</h3>
+          </div>
+          <p class="text-secondary" style="font-size: 0.875rem; margin-bottom: 0.75rem;">
+            İzmir genelindeki tüm BİSİM istasyonlarının koordinat ve kapasite bilgilerini çeker:
+          </p>
+          <div class="doc-code-block" style="margin: 0;">
             <div class="doc-code-header">
               <span>bash</span>
               <button type="button" class="copy-btn" data-copy="izmir get cbs/bisimistasyon" aria-label="Kopyala">Kopyala</button>
@@ -175,8 +185,14 @@ npx izmir-cli get cbs/bisimistasyon</div>
         </div>
 
         <div class="doc-card" style="padding: 1.5rem; margin-bottom: 1.25rem;">
-          <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Otopark Doluluk Oranları</h3>
-          <div class="doc-code-block" style="margin: 0.5rem 0 0 0;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <img src="assets/categories/ulasim.svg" width="20" height="20" alt="">
+            <h3 style="font-size: 1rem;">2. Canlı Otopark Doluluk Verileri</h3>
+          </div>
+          <p class="text-secondary" style="font-size: 0.875rem; margin-bottom: 0.75rem;">
+            İZELMAN otoparklarının anlık boş kapasiteleri ve toplam kontenjanları:
+          </p>
+          <div class="doc-code-block" style="margin: 0;">
             <div class="doc-code-header">
               <span>bash</span>
               <button type="button" class="copy-btn" data-copy="izmir get otopark/otoparklar" aria-label="Kopyala">Kopyala</button>
@@ -186,14 +202,57 @@ npx izmir-cli get cbs/bisimistasyon</div>
         </div>
 
         <div class="doc-card" style="padding: 1.5rem; margin-bottom: 1.25rem;">
-          <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">CKAN Veri Seti Arama</h3>
-          <div class="doc-code-block" style="margin: 0.5rem 0 0 0;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <img src="assets/categories/dijital.svg" width="20" height="20" alt="">
+            <h3 style="font-size: 1rem;">3. CKAN Veri Seti Arama (Package Search)</h3>
+          </div>
+          <p class="text-secondary" style="font-size: 0.875rem; margin-bottom: 0.75rem;">
+            Portaldaki 260+ veri seti arasında anahtar kelime ile arama:
+          </p>
+          <div class="doc-code-block" style="margin: 0;">
             <div class="doc-code-header">
               <span>bash</span>
               <button type="button" class="copy-btn" data-copy="izmir search otopark -l 5" aria-label="Kopyala">Kopyala</button>
             </div>
-            <div class="doc-code-content">izmir search otopark -l 5</div>
+            <div class="doc-code-content"># İtfaiye ile ilgili ilk 5 veri setini listele
+izmir search itfaiye -l 5
+
+# Tuvalet veri setlerini ara
+izmir search tuvalet</div>
           </div>
+        </div>
+
+        <div class="doc-card" style="padding: 1.5rem; margin-bottom: 1.25rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <img src="assets/categories/dijital.svg" width="20" height="20" alt="">
+            <h3 style="font-size: 1rem;">4. Canlı Datastore Sorgulama (Resource UUID)</h3>
+          </div>
+          <p class="text-secondary" style="font-size: 0.875rem; margin-bottom: 0.75rem;">
+            Belirli bir CKAN tablosundan canlı kayıtları filtreleyip tablolar:
+          </p>
+          <div class="doc-code-block" style="margin: 0;">
+            <div class="doc-code-header">
+              <span>bash</span>
+              <button type="button" class="copy-btn" data-copy="izmir datastore d87de3c1-9bc0-4a8c-842a-90cd2a30d03a -l 10" aria-label="Kopyala">Kopyala</button>
+            </div>
+            <div class="doc-code-content">izmir datastore d87de3c1-9bc0-4a8c-842a-90cd2a30d03a -l 10</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-section">
+        <h2>Boru Hatları & Kabuk Entegrasyonu (Pipelines)</h2>
+        <p class="text-secondary">
+          <code>izmir-cli</code> komutları Unix felsefesine uygun olarak tasarlanmıştır. Çıktıları <code>grep</code>, <code>fzf</code>, <code>awk</code> veya <code>crontab</code> süreçlerine bağlayabilirsiniz.
+        </p>
+
+        <div class="doc-code-block" style="margin-top: 1rem;">
+          <div class="doc-code-header"><span>Boru Hattı Örneği</span></div>
+          <div class="doc-code-content"># Nöbetçi eczaneler arasından sadece Konak ilçesini filtreleme
+izmir get nobetcieczaneler | grep -i "Konak"
+
+# Günlük otopark durumunu bir metin dosyasına arşivleme (Cronjob)
+0 * * * * izmir get otopark/otoparklar >> /var/log/izmir_otopark.log</div>
         </div>
       </div>
     </div>

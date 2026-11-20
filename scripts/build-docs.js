@@ -48,8 +48,8 @@ function getCommonHead(title, description, relativeRoot = "") {
         <a href="${relativeRoot}index.html" class="nav-link">Ana Sayfa</a>
         <a href="${relativeRoot}index.html#playground" class="nav-link">Canlı Demo</a>
         <a href="${relativeRoot}ENDPOINTS.html" class="nav-link">Uç Noktalar</a>
-        <a href="${relativeRoot}CLI.html" class="nav-link">CLI</a>
-        <a href="${relativeRoot}MCP.html" class="nav-link">MCP</a>
+        <a href="${relativeRoot}CLI.html" class="nav-link">CLI Kılavuzu</a>
+        <a href="${relativeRoot}MCP.html" class="nav-link">MCP Sunucusu</a>
         <a href="${relativeRoot}specs/index.html" class="nav-link">Şartnameler</a>
       </nav>
 
@@ -123,6 +123,66 @@ function getCommonFooter(relativeRoot = "") {
 </html>`;
 }
 
+// Map service titles to category icons
+const CATEGORY_MAP = {
+  afetler: { cat: "afet", icon: "afet.svg", label: "Afet & Acil Durum" },
+  itfaiye: { cat: "afet", icon: "afet.svg", label: "Afet & Acil Durum" },
+  
+  eshot: { cat: "ulasim", icon: "ulasim.svg", label: "Ulaşım & Hareketlilik" },
+  izban: { cat: "ulasim", icon: "ulasim.svg", label: "Ulaşım & Hareketlilik" },
+  metro: { cat: "ulasim", icon: "ulasim.svg", label: "Ulaşım & Hareketlilik" },
+  tramvay: { cat: "ulasim", icon: "ulasim.svg", label: "Ulaşım & Hareketlilik" },
+  vapur: { cat: "ulasim", icon: "ulasim.svg", label: "Ulaşım & Hareketlilik" },
+  tren: { cat: "ulasim", icon: "ulasim.svg", label: "Ulaşım & Hareketlilik" },
+  taksi: { cat: "ulasim", icon: "ulasim.svg", label: "Ulaşım & Hareketlilik" },
+  trafik: { cat: "ulasim", icon: "ulasim.svg", label: "Ulaşım & Hareketlilik" },
+  otopark: { cat: "ulasim", icon: "ulasim.svg", label: "Ulaşım & Hareketlilik" },
+  izmirimkart: { cat: "ulasim", icon: "ulasim.svg", label: "Ulaşım & Hareketlilik" },
+  izum: { cat: "ulasim", icon: "ulasim.svg", label: "Ulaşım & Hareketlilik" },
+  ulasim: { cat: "ulasim", icon: "ulasim.svg", label: "Ulaşım & Hareketlilik" },
+
+  eczaneler: { cat: "saglik", icon: "saglik.svg", label: "Sağlık & Eczane" },
+  saglik: { cat: "saglik", icon: "saglik.svg", label: "Sağlık & Eczane" },
+  turuncucember: { cat: "saglik", icon: "saglik.svg", label: "Sağlık & Eczane" },
+
+  ckan: { cat: "dijital", icon: "dijital.svg", label: "Dijital & CKAN" },
+  veri: { cat: "dijital", icon: "dijital.svg", label: "Dijital & CKAN" },
+  iztek: { cat: "dijital", icon: "dijital.svg", label: "Dijital & CKAN" },
+  wizmirnet: { cat: "dijital", icon: "dijital.svg", label: "Dijital & CKAN" },
+  yardimci: { cat: "dijital", icon: "dijital.svg", label: "Dijital & CKAN" },
+
+  bisim: { cat: "rekreasyon", icon: "rekreasyon.svg", label: "Rekreasyon & Spor" },
+  spor: { cat: "rekreasyon", icon: "rekreasyon.svg", label: "Rekreasyon & Spor" },
+  plaj: { cat: "rekreasyon", icon: "rekreasyon.svg", label: "Rekreasyon & Spor" },
+
+  tarihi: { cat: "tarih", icon: "tarih.svg", label: "Tarih & Miras" },
+  tarih: { cat: "tarih", icon: "tarih.svg", label: "Tarih & Miras" },
+
+  egitim: { cat: "egitim", icon: "egitim.svg", label: "Eğitim" },
+
+  etkinlikler: { cat: "kultur", icon: "kultur.svg", label: "Kültür Sanat" },
+  kutuphane: { cat: "kultur", icon: "kultur.svg", label: "Kültür Sanat" },
+
+  izsu: { cat: "yasam", icon: "yasam.svg", label: "Kentsel Yaşam" },
+  iklim: { cat: "yasam", icon: "yasam.svg", label: "Kentsel Yaşam" },
+  cografi: { cat: "yasam", icon: "yasam.svg", label: "Kentsel Yaşam" },
+  pazarlar: { cat: "yasam", icon: "yasam.svg", label: "Kentsel Yaşam" },
+  sosyal: { cat: "yasam", icon: "yasam.svg", label: "Kentsel Yaşam" },
+  tuvalet: { cat: "yasam", icon: "yasam.svg", label: "Kentsel Yaşam" },
+
+  kamu: { cat: "yonetim", icon: "yonetim.svg", label: "Yönetim & Hizmet" },
+  hizmet: { cat: "yonetim", icon: "yonetim.svg", label: "Yönetim & Hizmet" },
+  muhtarliklar: { cat: "yonetim", icon: "yonetim.svg", label: "Yönetim & Hizmet" }
+};
+
+function resolveCategory(key) {
+  const norm = key.toLowerCase().replace(/[^a-z]/g, "");
+  for (const [k, v] of Object.entries(CATEGORY_MAP)) {
+    if (norm.includes(k)) return v;
+  }
+  return { cat: "dijital", icon: "dijital.svg", label: "Genel Veri" };
+}
+
 // ----------------------------------------------------------------------------
 // 1. Build ENDPOINTS.html
 // ----------------------------------------------------------------------------
@@ -147,9 +207,14 @@ function buildEndpointsHtml() {
         namespace = match[2].trim();
       }
 
+      const catInfo = resolveCategory(title);
+
       currentSection = {
         title,
         namespace,
+        category: catInfo.cat,
+        icon: catInfo.icon,
+        categoryLabel: catInfo.label,
         methods: []
       };
       sections.push(currentSection);
@@ -168,7 +233,6 @@ function buildEndpointsHtml() {
         let name = parts[0].replace(/`/g, "");
         let desc = parts[1];
         if (parts.length >= 3 && currentSection.title.includes("Yardımcı")) {
-          // Module is parts[1], desc is parts[2]
           desc = `${parts[2]} (Modül: <code>${parts[1].replace(/`/g, "")}</code>)`;
         }
         currentSection.methods.push({ name, desc });
@@ -182,13 +246,19 @@ function buildEndpointsHtml() {
   for (const s of sections) {
     if (s.methods.length === 0) continue;
     cardsHtml += `
-      <section class="doc-card endpoint-module-card" data-title="${s.title.toLowerCase()}" data-namespace="${s.namespace.toLowerCase()}">
+      <section class="doc-card endpoint-module-card" data-category="${s.category}" data-title="${s.title.toLowerCase()}" data-namespace="${s.namespace.toLowerCase()}">
         <div class="doc-card-header">
           <div class="doc-card-title">
+            <div class="category-icon-wrap" style="width: 32px; height: 32px;">
+              <img src="assets/categories/${s.icon}" alt="${s.categoryLabel}" class="category-icon" width="18" height="18">
+            </div>
             <span>${s.title}</span>
             ${s.namespace ? `<span class="doc-card-badge">${s.namespace}</span>` : ""}
           </div>
-          <span class="text-muted" style="font-size: 0.8125rem;">${s.methods.length} metot</span>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span class="doc-card-badge" style="background: rgba(2, 132, 199, 0.05); color: var(--text-muted);">${s.categoryLabel}</span>
+            <span class="text-muted" style="font-size: 0.8125rem;">${s.methods.length} metot</span>
+          </div>
         </div>
         <div class="doc-table-wrapper">
           <table class="doc-table">
@@ -223,29 +293,70 @@ function buildEndpointsHtml() {
         <span aria-current="page">Uç Noktalar</span>
       </nav>
 
-      <div class="doc-hero">
-        <h1 class="doc-title">İzmir Open Data Uç Nokta Kataloğu</h1>
-        <p class="doc-lead">
-          İzmir Büyükşehir Belediyesi Açık Veri Portalı ve REST web servislerinin <code>izmir-open-data-js</code> istemcisi içindeki modül, metod ve normalleştirici referansı.
-        </p>
+      <div class="doc-hero-with-illustration">
+        <div class="doc-hero-text">
+          <h1 class="doc-title">İzmir Open Data Uç Nokta Kataloğu</h1>
+          <p class="doc-lead">
+            İzmir Büyükşehir Belediyesi Açık Veri Portalı ve REST web servislerinin <code>izmir-open-data-js</code> istemcisi içindeki modül, metod ve normalleştirici referansı.
+          </p>
 
-        <div class="doc-search-wrapper">
-          <div class="doc-search-box">
-            <svg class="doc-search-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <input 
-              type="search" 
-              id="endpoint-search-input" 
-              class="doc-search-input" 
-              placeholder="Uç nokta veya metot ara (örn: eshot, nobetci, su kesinti, ckan)..." 
-              aria-label="Uç noktalarda ara"
-              autocomplete="off"
-            >
+          <div class="doc-search-wrapper">
+            <div class="doc-search-box">
+              <svg class="doc-search-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input 
+                type="search" 
+                id="endpoint-search-input" 
+                class="doc-search-input" 
+                placeholder="Uç nokta veya metot ara (örn: eshot, nobetci, su kesinti, ckan)..." 
+                aria-label="Uç noktalarda ara"
+                autocomplete="off"
+              >
+            </div>
+            <div class="doc-search-stats" id="endpoint-search-stats" aria-live="polite">
+              Toplam ${sections.length} servis grubu ve ${totalMethods} metot listeleniyor.
+            </div>
           </div>
-          <div class="doc-search-stats" id="endpoint-search-stats" aria-live="polite">
-            Toplam ${sections.length} servis grubu ve ${totalMethods} metot listeleniyor.
+
+          <!-- Category Quick Filter Buttons -->
+          <div class="doc-quick-filters" role="group" aria-label="Kategoriye göre filtrele">
+            <button type="button" class="quick-filter-btn" data-filter="all" aria-pressed="true">
+              <span>Tümü</span>
+            </button>
+            <button type="button" class="quick-filter-btn" data-filter="ulasim">
+              <img src="assets/categories/ulasim.svg" class="quick-filter-icon" alt="">
+              <span>Ulaşım (${sections.filter(s => s.category === 'ulasim').length})</span>
+            </button>
+            <button type="button" class="quick-filter-btn" data-filter="saglik">
+              <img src="assets/categories/saglik.svg" class="quick-filter-icon" alt="">
+              <span>Sağlık & Eczane</span>
+            </button>
+            <button type="button" class="quick-filter-btn" data-filter="yasam">
+              <img src="assets/categories/yasam.svg" class="quick-filter-icon" alt="">
+              <span>Kentsel Yaşam & Su</span>
+            </button>
+            <button type="button" class="quick-filter-btn" data-filter="afet">
+              <img src="assets/categories/afet.svg" class="quick-filter-icon" alt="">
+              <span>Afet & İtfaiye</span>
+            </button>
+            <button type="button" class="quick-filter-btn" data-filter="dijital">
+              <img src="assets/categories/dijital.svg" class="quick-filter-icon" alt="">
+              <span>CKAN & Dijital</span>
+            </button>
+            <button type="button" class="quick-filter-btn" data-filter="rekreasyon">
+              <img src="assets/categories/rekreasyon.svg" class="quick-filter-icon" alt="">
+              <span>BİSİM & Spor</span>
+            </button>
+            <button type="button" class="quick-filter-btn" data-filter="kultur">
+              <img src="assets/categories/kultur.svg" class="quick-filter-icon" alt="">
+              <span>Kültür & Etkinlik</span>
+            </button>
           </div>
+        </div>
+
+        <div class="doc-hero-image-wrap">
+          <img src="assets/illustrations/smart_city.svg" alt="İzmir Akıllı Şehir Açık Veri Ağı" class="doc-hero-img" width="220" height="180">
         </div>
       </div>
 
@@ -256,36 +367,43 @@ function buildEndpointsHtml() {
   </main>
 
   <script>
-    // Live Search Filter for Endpoints Catalog
+    // Live Search & Category Filtering
     document.addEventListener("DOMContentLoaded", () => {
       const searchInput = document.getElementById("endpoint-search-input");
       const statsEl = document.getElementById("endpoint-search-stats");
       const cards = document.querySelectorAll(".endpoint-module-card");
+      const filterBtns = document.querySelectorAll(".quick-filter-btn");
       const totalCount = ${totalMethods};
 
-      if (!searchInput || !statsEl) return;
+      let activeCategory = "all";
 
-      searchInput.addEventListener("input", (e) => {
-        const query = e.target.value.trim().toLowerCase();
-
-        if (!query) {
-          cards.forEach(card => {
-            card.style.display = "";
-            card.querySelectorAll(".endpoint-row").forEach(row => row.style.display = "");
-          });
-          statsEl.textContent = \`Toplam \${cards.length} servis grubu ve \${totalCount} metot listeleniyor.\`;
-          return;
-        }
-
+      function updateResults() {
+        const query = searchInput.value.trim().toLowerCase();
         let visibleCards = 0;
         let matchedMethods = 0;
 
         cards.forEach(card => {
+          const cardCat = card.getAttribute("data-category") || "";
           const cardTitle = card.getAttribute("data-title") || "";
           const cardNs = card.getAttribute("data-namespace") || "";
           const rows = card.querySelectorAll(".endpoint-row");
-          let cardMatches = 0;
 
+          const matchesCategory = activeCategory === "all" || cardCat === activeCategory;
+
+          if (!matchesCategory) {
+            card.style.display = "none";
+            return;
+          }
+
+          if (!query) {
+            card.style.display = "";
+            rows.forEach(r => r.style.display = "");
+            visibleCards++;
+            matchedMethods += rows.length;
+            return;
+          }
+
+          let cardMatches = 0;
           const cardHeaderMatch = cardTitle.includes(query) || cardNs.includes(query);
 
           rows.forEach(row => {
@@ -307,7 +425,24 @@ function buildEndpointsHtml() {
           }
         });
 
-        statsEl.textContent = \`"\${query}" için \${matchedMethods} eşleşen metot (\${visibleCards} kategori) bulundu.\`;
+        if (query || activeCategory !== "all") {
+          statsEl.textContent = \`Filtrelenen: \${matchedMethods} metot (\${visibleCards} servis grubu).\`;
+        } else {
+          statsEl.textContent = \`Toplam \${cards.length} servis grubu ve \${totalCount} metot listeleniyor.\`;
+        }
+      }
+
+      if (searchInput) {
+        searchInput.addEventListener("input", updateResults);
+      }
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          filterBtns.forEach(b => b.setAttribute("aria-pressed", "false"));
+          btn.setAttribute("aria-pressed", "true");
+          activeCategory = btn.getAttribute("data-filter") || "all";
+          updateResults();
+        });
       });
     });
   </script>
@@ -328,7 +463,7 @@ function buildEndpointsHtml() {
 function buildCliHtml() {
   const bodyContent = `
   <main class="doc-page">
-    <div class="container" style="max-width: 860px;">
+    <div class="container" style="max-width: 920px;">
       <nav class="breadcrumb-nav" aria-label="Ekmek kırıntısı">
         <a href="index.html" class="breadcrumb-link">Ana Sayfa</a>
         <span>/</span>
@@ -337,15 +472,20 @@ function buildCliHtml() {
         <span aria-current="page">CLI Kılavuzu</span>
       </nav>
 
-      <div class="doc-hero">
-        <h1 class="doc-title">Terminal CLI Kılavuzu</h1>
-        <p class="doc-lead">
-          <code>izmir-open-data-js</code>, belediye açık veri portallarını terminal üzerinden sorgulamak, filtrelemek ve ASCII tabloları halinde görselleştirmek için <code>izmir-cli</code> komut satırı aracını sunar.
-        </p>
+      <div class="doc-hero-with-illustration">
+        <div class="doc-hero-text">
+          <h1 class="doc-title">Terminal CLI Kılavuzu</h1>
+          <p class="doc-lead">
+            <code>izmir-open-data-js</code>, belediye açık veri portallarını terminal üzerinden sorgulamak, filtrelemek ve ASCII tabloları halinde görselleştirmek için <code>izmir-cli</code> komut satırı aracını sunar.
+          </p>
+        </div>
+        <div class="doc-hero-image-wrap">
+          <img src="assets/illustrations/map_mobility.svg" alt="Terminal Hareketlilik Haritası" class="doc-hero-img" width="220" height="180">
+        </div>
       </div>
 
       <div class="doc-section">
-        <h2>Kurulum ve Çalıştırma</h2>
+        <h2>Kurulum ve Paket Yöneticileri</h2>
         
         <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1.125rem;">1. Homebrew ile Kurulum (macOS / Linux)</h3>
         <p class="text-secondary">Official Homebrew Tap üzerinden kalıcı global CLI kurulumu:</p>
@@ -359,7 +499,7 @@ function buildCliHtml() {
 brew tap AtaCanYmc/tap
 brew install izmir-cli
 
-# Veya tek komutla kurma:
+# Veya doğrudan tek komutla:
 brew install AtaCanYmc/tap/izmir-cli</div>
         </div>
         <p class="text-secondary">Kurulum tamamlandığında hem <code>izmir-cli</code> hem de <code>izmir</code> komutu terminalinizde hazır hale gelir.</p>
@@ -372,9 +512,8 @@ brew install AtaCanYmc/tap/izmir-cli</div>
           </div>
           <div class="doc-code-content"># Global npm kurulumu
 npm install -g izmir-open-data-js
-izmir get nobetcieczaneler
 
-# Veya npx ile kurulumsuz çalıştırma:
+# npx ile anında çalıştırma (kurulum gerektirmez):
 npx izmir-cli get cbs/bisimistasyon</div>
         </div>
       </div>
@@ -386,8 +525,8 @@ npx izmir-cli get cbs/bisimistasyon</div>
             <table class="doc-table">
               <thead>
                 <tr>
-                  <th>Komut</th>
-                  <th>Parametreler</th>
+                  <th style="width: 22%;">Komut</th>
+                  <th style="width: 32%;">Parametreler</th>
                   <th>Açıklama</th>
                 </tr>
               </thead>
@@ -424,11 +563,17 @@ npx izmir-cli get cbs/bisimistasyon</div>
       </div>
 
       <div class="doc-section">
-        <h2>Örnek Komutlar</h2>
+        <h2>Detaylı Kullanım Senaryoları & Örnekler</h2>
         
         <div class="doc-card" style="padding: 1.5rem; margin-bottom: 1.25rem;">
-          <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">BİSİM İstasyonları</h3>
-          <div class="doc-code-block" style="margin: 0.5rem 0 0 0;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <img src="assets/categories/rekreasyon.svg" width="20" height="20" alt="">
+            <h3 style="font-size: 1rem;">1. BİSİM Akıllı Bisiklet İstasyonları</h3>
+          </div>
+          <p class="text-secondary" style="font-size: 0.875rem; margin-bottom: 0.75rem;">
+            İzmir genelindeki tüm BİSİM istasyonlarının koordinat ve kapasite bilgilerini çeker:
+          </p>
+          <div class="doc-code-block" style="margin: 0;">
             <div class="doc-code-header">
               <span>bash</span>
               <button type="button" class="copy-btn" data-copy="izmir get cbs/bisimistasyon" aria-label="Kopyala">Kopyala</button>
@@ -438,8 +583,14 @@ npx izmir-cli get cbs/bisimistasyon</div>
         </div>
 
         <div class="doc-card" style="padding: 1.5rem; margin-bottom: 1.25rem;">
-          <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Otopark Doluluk Oranları</h3>
-          <div class="doc-code-block" style="margin: 0.5rem 0 0 0;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <img src="assets/categories/ulasim.svg" width="20" height="20" alt="">
+            <h3 style="font-size: 1rem;">2. Canlı Otopark Doluluk Verileri</h3>
+          </div>
+          <p class="text-secondary" style="font-size: 0.875rem; margin-bottom: 0.75rem;">
+            İZELMAN otoparklarının anlık boş kapasiteleri ve toplam kontenjanları:
+          </p>
+          <div class="doc-code-block" style="margin: 0;">
             <div class="doc-code-header">
               <span>bash</span>
               <button type="button" class="copy-btn" data-copy="izmir get otopark/otoparklar" aria-label="Kopyala">Kopyala</button>
@@ -449,14 +600,57 @@ npx izmir-cli get cbs/bisimistasyon</div>
         </div>
 
         <div class="doc-card" style="padding: 1.5rem; margin-bottom: 1.25rem;">
-          <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">CKAN Veri Seti Arama</h3>
-          <div class="doc-code-block" style="margin: 0.5rem 0 0 0;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <img src="assets/categories/dijital.svg" width="20" height="20" alt="">
+            <h3 style="font-size: 1rem;">3. CKAN Veri Seti Arama (Package Search)</h3>
+          </div>
+          <p class="text-secondary" style="font-size: 0.875rem; margin-bottom: 0.75rem;">
+            Portaldaki 260+ veri seti arasında anahtar kelime ile arama:
+          </p>
+          <div class="doc-code-block" style="margin: 0;">
             <div class="doc-code-header">
               <span>bash</span>
               <button type="button" class="copy-btn" data-copy="izmir search otopark -l 5" aria-label="Kopyala">Kopyala</button>
             </div>
-            <div class="doc-code-content">izmir search otopark -l 5</div>
+            <div class="doc-code-content"># İtfaiye ile ilgili ilk 5 veri setini listele
+izmir search itfaiye -l 5
+
+# Tuvalet veri setlerini ara
+izmir search tuvalet</div>
           </div>
+        </div>
+
+        <div class="doc-card" style="padding: 1.5rem; margin-bottom: 1.25rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <img src="assets/categories/dijital.svg" width="20" height="20" alt="">
+            <h3 style="font-size: 1rem;">4. Canlı Datastore Sorgulama (Resource UUID)</h3>
+          </div>
+          <p class="text-secondary" style="font-size: 0.875rem; margin-bottom: 0.75rem;">
+            Belirli bir CKAN tablosundan canlı kayıtları filtreleyip tablolar:
+          </p>
+          <div class="doc-code-block" style="margin: 0;">
+            <div class="doc-code-header">
+              <span>bash</span>
+              <button type="button" class="copy-btn" data-copy="izmir datastore d87de3c1-9bc0-4a8c-842a-90cd2a30d03a -l 10" aria-label="Kopyala">Kopyala</button>
+            </div>
+            <div class="doc-code-content">izmir datastore d87de3c1-9bc0-4a8c-842a-90cd2a30d03a -l 10</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-section">
+        <h2>Boru Hatları & Kabuk Entegrasyonu (Pipelines)</h2>
+        <p class="text-secondary">
+          <code>izmir-cli</code> komutları Unix felsefesine uygun olarak tasarlanmıştır. Çıktıları <code>grep</code>, <code>fzf</code>, <code>awk</code> veya <code>crontab</code> süreçlerine bağlayabilirsiniz.
+        </p>
+
+        <div class="doc-code-block" style="margin-top: 1rem;">
+          <div class="doc-code-header"><span>Boru Hattı Örneği</span></div>
+          <div class="doc-code-content"># Nöbetçi eczaneler arasından sadece Konak ilçesini filtreleme
+izmir get nobetcieczaneler | grep -i "Konak"
+
+# Günlük otopark durumunu bir metin dosyasına arşivleme (Cronjob)
+0 * * * * izmir get otopark/otoparklar >> /var/log/izmir_otopark.log</div>
         </div>
       </div>
     </div>
@@ -465,7 +659,7 @@ npx izmir-cli get cbs/bisimistasyon</div>
 
   const finalHtml = `${getCommonHead(
     "CLI Kullanım Kılavuzu",
-    "İzmir Açık Veri terminal aracı izmir-cli ve Homebrew tap kurulum kılavuzu."
+    "İzmir Açık Veri terminal aracı izmir-cli ve Homebrew tap kurulum ve komut kılavuzu."
   )}\n${bodyContent}\n${getCommonFooter()}`;
 
   fs.writeFileSync(path.join(docsDir, "CLI.html"), finalHtml, "utf8");
@@ -478,7 +672,7 @@ npx izmir-cli get cbs/bisimistasyon</div>
 function buildMcpHtml() {
   const bodyContent = `
   <main class="doc-page">
-    <div class="container" style="max-width: 860px;">
+    <div class="container" style="max-width: 920px;">
       <nav class="breadcrumb-nav" aria-label="Ekmek kırıntısı">
         <a href="index.html" class="breadcrumb-link">Ana Sayfa</a>
         <span>/</span>
@@ -487,11 +681,16 @@ function buildMcpHtml() {
         <span aria-current="page">Model Context Protocol</span>
       </nav>
 
-      <div class="doc-hero">
-        <h1 class="doc-title">Model Context Protocol (MCP) Sunucusu</h1>
-        <p class="doc-lead">
-          <code>izmir-open-data-js</code>, <code>@modelcontextprotocol/sdk</code> altyapısı üzerine inşa edilmiş tam uyumlu bir MCP sunucusu içerir. Claude Desktop, Cursor veya yerel AI ajanlarının İzmir Açık Veri API'lerini doğrudan çalıştırmasını sağlar.
-        </p>
+      <div class="doc-hero-with-illustration">
+        <div class="doc-hero-text">
+          <h1 class="doc-title">Model Context Protocol (MCP) Sunucusu</h1>
+          <p class="doc-lead">
+            <code>izmir-open-data-js</code>, <code>@modelcontextprotocol/sdk</code> altyapısı üzerine inşa edilmiş tam uyumlu bir MCP sunucusu içerir. Claude Desktop, Cursor veya yerel AI ajanlarının İzmir Açık Veri API'lerini doğrudan çalıştırmasını sağlar.
+          </p>
+        </div>
+        <div class="doc-hero-image-wrap">
+          <img src="assets/illustrations/city_analytics.svg" alt="MCP Şehir Analitiği ve Yapay Zeka" class="doc-hero-img" width="220" height="180">
+        </div>
       </div>
 
       <div class="doc-section">
@@ -503,19 +702,21 @@ function buildMcpHtml() {
             <span>bash</span>
             <button type="button" class="copy-btn" data-copy="npx -y izmir-open-data-js" aria-label="Kopyala">Kopyala</button>
           </div>
-          <div class="doc-code-content"># npx ile çalıştırma:
+          <div class="doc-code-content"># npx ile anında çalıştırma (Önerilen)
 npx -y izmir-open-data-js
 
-# Global paket üzerinden:
+# Global paket kurulu ise:
 izmir-mcp</div>
         </div>
       </div>
 
       <div class="doc-section">
-        <h2>İstemci Yapılandırması</h2>
+        <h2>İstemci Entegrasyonları & Yapılandırma</h2>
 
-        <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1.125rem;">Claude Desktop Entegrasyonu</h3>
-        <p class="text-secondary"><code>claude_desktop_config.json</code> dosyanıza aşağıdaki sunucu tanımını ekleyin:</p>
+        <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1.125rem;">1. Claude Desktop Entegrasyonu</h3>
+        <p class="text-secondary">
+          <code>~/Library/Application Support/Claude/claude_desktop_config.json</code> (macOS) veya <code>%APPDATA%\\Claude\\claude_desktop_config.json</code> (Windows) dosyasına aşağıdaki sunucu tanımını ekleyin:
+        </p>
 
         <div class="doc-code-block">
           <div class="doc-code-header">
@@ -531,18 +732,38 @@ izmir-mcp</div>
   }
 }</div>
         </div>
+
+        <h3 style="margin-top: 2rem; margin-bottom: 0.5rem; font-size: 1.125rem;">2. Cursor IDE Entegrasyonu</h3>
+        <p class="text-secondary">
+          Proje kök dizinindeki <code>.cursor/mcp.json</code> dosyasında MCP sunucusunu tanımlayın:
+        </p>
+
+        <div class="doc-code-block">
+          <div class="doc-code-header">
+            <span>.cursor/mcp.json</span>
+            <button type="button" class="copy-btn" data-copy='{\n  "mcpServers": {\n    "izmir-api": {\n      "command": "npx",\n      "args": ["-y", "izmir-open-data-js"]\n    }\n  }\n}' aria-label="Kopyala">Kopyala</button>
+          </div>
+          <div class="doc-code-content">{
+  "mcpServers": {
+    "izmir-api": {
+      "command": "npx",
+      "args": ["-y", "izmir-open-data-js"]
+    }
+  }
+}</div>
+        </div>
       </div>
 
       <div class="doc-section">
-        <h2>Sağlanan Araçlar (Tools)</h2>
+        <h2>Sağlanan Araçlar (Tools Reference)</h2>
         <div class="doc-card" style="margin-top: 1rem;">
           <div class="doc-card-header">
             <span class="doc-card-title">1. list_endpoints</span>
-            <span class="doc-card-badge">Tool</span>
+            <span class="doc-card-badge">Discovery Tool</span>
           </div>
           <div style="padding: 1.25rem;">
             <p class="text-secondary" style="font-size: 0.9375rem; margin-bottom: 0.75rem;">
-              İstemcideki tüm servis ad alanlarını ve bunlara bağlı çağrılabilir metotları dinamik olarak listeler.
+              İstemcideki tüm servis ad alanlarını ve bunlara bağlı çağrılabilir metotları dinamik olarak listeler. Yapay zeka modeli önce bu aracı çağırarak hangi belediye servislerinin mevcut olduğunu keşfeder.
             </p>
             <div class="doc-code-block" style="margin: 0;">
               <div class="doc-code-header"><span>Örnek Dizi Yanıtı</span></div>
@@ -550,6 +771,8 @@ izmir-mcp</div>
   "bisim.getIstasyonList",
   "eczaneler.getNobetciList",
   "eshot.getHatlar",
+  "eshot.getYakinDurakList",
+  "izsu.getBarajDolulukOranlari",
   "otopark.getList",
   "ckan.searchPackages"
 ]</div>
@@ -560,14 +783,48 @@ izmir-mcp</div>
         <div class="doc-card">
           <div class="doc-card-header">
             <span class="doc-card-title">2. call_endpoint</span>
-            <span class="doc-card-badge">Tool</span>
+            <span class="doc-card-badge">Execution Tool</span>
           </div>
           <div style="padding: 1.25rem;">
             <p class="text-secondary" style="font-size: 0.9375rem; margin-bottom: 0.75rem;">
-              Keşfedilen belirli bir belediye API metodunu argümanlarıyla birlikte yürütür.
+              Keşfedilen belirli bir belediye API metodunu parametreleriyle birlikte yürütür ve JSON yanıtını model bağlamına döndürür.
             </p>
+
+            <div class="doc-table-wrapper" style="margin-bottom: 1rem;">
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th>Alan Adı</th>
+                    <th>Tip</th>
+                    <th>Zorunlu</th>
+                    <th>Açıklama</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>namespace</code></td>
+                    <td><code>string</code></td>
+                    <td>Evet</td>
+                    <td>Servis grubu adı (ör: <code>eshot</code>, <code>eczaneler</code>, <code>izsu</code>, <code>bisim</code>).</td>
+                  </tr>
+                  <tr>
+                    <td><code>endpoint_name</code></td>
+                    <td><code>string</code></td>
+                    <td>Evet</td>
+                    <td>Çağrılacak metodun adı (ör: <code>getNobetciList</code>, <code>getYakinDurakList</code>).</td>
+                  </tr>
+                  <tr>
+                    <td><code>args</code></td>
+                    <td><code>array</code></td>
+                    <td>Hayır</td>
+                    <td>Metoda aktarılacak sıralı parametre listesi (ör: koordinatlar, hat no, tarih).</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
             <div class="doc-code-block" style="margin: 0;">
-              <div class="doc-code-header"><span>Parametre Şeması</span></div>
+              <div class="doc-code-header"><span>Örnek Parametre Çağrısı</span></div>
               <div class="doc-code-content">{
   "namespace": "eshot",
   "endpoint_name": "getYakinDurakList",
@@ -577,13 +834,31 @@ izmir-mcp</div>
           </div>
         </div>
       </div>
+
+      <div class="doc-section">
+        <h2>Örnek Yapay Zeka Ajanı Diyalogları</h2>
+        
+        <div class="doc-card" style="padding: 1.5rem; margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1rem; color: var(--brand-aegean); margin-bottom: 0.5rem;">Soru: "Şu an Konak'ta açık olan nöbetçi eczaneler nerede?"</h3>
+          <p class="text-secondary" style="font-size: 0.875rem;">
+            Ajan otomatik olarak <code>call_endpoint({ namespace: "eczaneler", endpoint_name: "getNobetciList" })</code> metodunu tetikler. Gelen listeden Konak bölgesindeki eczanelerin telefon, harita koordinatları ve tarif bilgilerini özetleyerek kullanıcıya sunar.
+          </p>
+        </div>
+
+        <div class="doc-card" style="padding: 1.5rem; margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1rem; color: var(--brand-aegean); margin-bottom: 0.5rem;">Soru: "İzmir barajlarının güncel doluluk durumu nedir?"</h3>
+          <p class="text-secondary" style="font-size: 0.875rem;">
+            Ajan <code>call_endpoint({ namespace: "izsu", endpoint_name: "getBarajDolulukOranlari" })</code> aracını çağırır. Tahtalı, Balçova, Gördes ve Ürkmez barajlarının su hacimlerini ve yıllık doluluk oranlarını karşılaştırmalı olarak analiz eder.
+          </p>
+        </div>
+      </div>
     </div>
   </main>
   `;
 
   const finalHtml = `${getCommonHead(
     "Model Context Protocol (MCP) Sunucusu",
-    "İzmir Açık Veri Portalı için Claude Desktop ve Cursor uyumlu MCP sunucu dokümantasyonu."
+    "İzmir Açık Veri Portalı için Claude Desktop, Cursor ve yerel yapay zeka ajanları uyumlu MCP sunucu dokümantasyonu."
   )}\n${bodyContent}\n${getCommonFooter()}`;
 
   fs.writeFileSync(path.join(docsDir, "MCP.html"), finalHtml, "utf8");
@@ -597,7 +872,7 @@ function buildSpecsHtml() {
   const specsDir = path.join(docsDir, "specs");
   const bodyContent = `
   <main class="doc-page">
-    <div class="container" style="max-width: 900px;">
+    <div class="container" style="max-width: 920px;">
       <nav class="breadcrumb-nav" aria-label="Ekmek kırıntısı">
         <a href="../index.html" class="breadcrumb-link">Ana Sayfa</a>
         <span>/</span>
@@ -606,11 +881,16 @@ function buildSpecsHtml() {
         <span aria-current="page">Resmi Şartnameler (Specs)</span>
       </nav>
 
-      <div class="doc-hero">
-        <h1 class="doc-title">Resmi API Şartnameleri Arşivi</h1>
-        <p class="doc-lead">
-          İzmir Büyükşehir Belediyesi Bilgi İşlem Dairesi Başkanlığı ve bağlı iştirakleri (İZBAN, İZSU, İzmir Metro A.Ş.) resmi web servis şartnameleri, veri modelleri ve entegrasyon kuralları.
-        </p>
+      <div class="doc-hero-with-illustration">
+        <div class="doc-hero-text">
+          <h1 class="doc-title">Resmi API Şartnameleri Arşivi</h1>
+          <p class="doc-lead">
+            İzmir Büyükşehir Belediyesi Bilgi İşlem Dairesi Başkanlığı ve bağlı iştirakleri (İZBAN, İZSU, İzmir Metro A.Ş.) resmi web servis şartnameleri, veri modelleri ve entegrasyon kuralları.
+          </p>
+        </div>
+        <div class="doc-hero-image-wrap">
+          <img src="../assets/illustrations/open_data_mesh.svg" alt="Açık Veri Standartları" class="doc-hero-img" width="220" height="180">
+        </div>
       </div>
 
       <div class="doc-card" style="margin-bottom: 2rem;">

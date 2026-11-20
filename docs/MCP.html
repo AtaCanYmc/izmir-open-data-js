@@ -14,7 +14,7 @@
   </script>
   
   <title>Model Context Protocol (MCP) Sunucusu — izmir-open-data-js</title>
-  <meta name="description" content="İzmir Açık Veri Portalı için Claude Desktop ve Cursor uyumlu MCP sunucu dokümantasyonu.">
+  <meta name="description" content="İzmir Açık Veri Portalı için Claude Desktop, Cursor ve yerel yapay zeka ajanları uyumlu MCP sunucu dokümantasyonu.">
   
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,8 +38,8 @@
         <a href="index.html" class="nav-link">Ana Sayfa</a>
         <a href="index.html#playground" class="nav-link">Canlı Demo</a>
         <a href="ENDPOINTS.html" class="nav-link">Uç Noktalar</a>
-        <a href="CLI.html" class="nav-link">CLI</a>
-        <a href="MCP.html" class="nav-link">MCP</a>
+        <a href="CLI.html" class="nav-link">CLI Kılavuzu</a>
+        <a href="MCP.html" class="nav-link">MCP Sunucusu</a>
         <a href="specs/index.html" class="nav-link">Şartnameler</a>
       </nav>
 
@@ -65,7 +65,7 @@
   </header>
 
   <main class="doc-page">
-    <div class="container" style="max-width: 860px;">
+    <div class="container" style="max-width: 920px;">
       <nav class="breadcrumb-nav" aria-label="Ekmek kırıntısı">
         <a href="index.html" class="breadcrumb-link">Ana Sayfa</a>
         <span>/</span>
@@ -74,11 +74,16 @@
         <span aria-current="page">Model Context Protocol</span>
       </nav>
 
-      <div class="doc-hero">
-        <h1 class="doc-title">Model Context Protocol (MCP) Sunucusu</h1>
-        <p class="doc-lead">
-          <code>izmir-open-data-js</code>, <code>@modelcontextprotocol/sdk</code> altyapısı üzerine inşa edilmiş tam uyumlu bir MCP sunucusu içerir. Claude Desktop, Cursor veya yerel AI ajanlarının İzmir Açık Veri API'lerini doğrudan çalıştırmasını sağlar.
-        </p>
+      <div class="doc-hero-with-illustration">
+        <div class="doc-hero-text">
+          <h1 class="doc-title">Model Context Protocol (MCP) Sunucusu</h1>
+          <p class="doc-lead">
+            <code>izmir-open-data-js</code>, <code>@modelcontextprotocol/sdk</code> altyapısı üzerine inşa edilmiş tam uyumlu bir MCP sunucusu içerir. Claude Desktop, Cursor veya yerel AI ajanlarının İzmir Açık Veri API'lerini doğrudan çalıştırmasını sağlar.
+          </p>
+        </div>
+        <div class="doc-hero-image-wrap">
+          <img src="assets/illustrations/city_analytics.svg" alt="MCP Şehir Analitiği ve Yapay Zeka" class="doc-hero-img" width="220" height="180">
+        </div>
       </div>
 
       <div class="doc-section">
@@ -90,19 +95,21 @@
             <span>bash</span>
             <button type="button" class="copy-btn" data-copy="npx -y izmir-open-data-js" aria-label="Kopyala">Kopyala</button>
           </div>
-          <div class="doc-code-content"># npx ile çalıştırma:
+          <div class="doc-code-content"># npx ile anında çalıştırma (Önerilen)
 npx -y izmir-open-data-js
 
-# Global paket üzerinden:
+# Global paket kurulu ise:
 izmir-mcp</div>
         </div>
       </div>
 
       <div class="doc-section">
-        <h2>İstemci Yapılandırması</h2>
+        <h2>İstemci Entegrasyonları & Yapılandırma</h2>
 
-        <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1.125rem;">Claude Desktop Entegrasyonu</h3>
-        <p class="text-secondary"><code>claude_desktop_config.json</code> dosyanıza aşağıdaki sunucu tanımını ekleyin:</p>
+        <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1.125rem;">1. Claude Desktop Entegrasyonu</h3>
+        <p class="text-secondary">
+          <code>~/Library/Application Support/Claude/claude_desktop_config.json</code> (macOS) veya <code>%APPDATA%\Claude\claude_desktop_config.json</code> (Windows) dosyasına aşağıdaki sunucu tanımını ekleyin:
+        </p>
 
         <div class="doc-code-block">
           <div class="doc-code-header">
@@ -125,18 +132,45 @@ izmir-mcp</div>
   }
 }</div>
         </div>
+
+        <h3 style="margin-top: 2rem; margin-bottom: 0.5rem; font-size: 1.125rem;">2. Cursor IDE Entegrasyonu</h3>
+        <p class="text-secondary">
+          Proje kök dizinindeki <code>.cursor/mcp.json</code> dosyasında MCP sunucusunu tanımlayın:
+        </p>
+
+        <div class="doc-code-block">
+          <div class="doc-code-header">
+            <span>.cursor/mcp.json</span>
+            <button type="button" class="copy-btn" data-copy='{
+  "mcpServers": {
+    "izmir-api": {
+      "command": "npx",
+      "args": ["-y", "izmir-open-data-js"]
+    }
+  }
+}' aria-label="Kopyala">Kopyala</button>
+          </div>
+          <div class="doc-code-content">{
+  "mcpServers": {
+    "izmir-api": {
+      "command": "npx",
+      "args": ["-y", "izmir-open-data-js"]
+    }
+  }
+}</div>
+        </div>
       </div>
 
       <div class="doc-section">
-        <h2>Sağlanan Araçlar (Tools)</h2>
+        <h2>Sağlanan Araçlar (Tools Reference)</h2>
         <div class="doc-card" style="margin-top: 1rem;">
           <div class="doc-card-header">
             <span class="doc-card-title">1. list_endpoints</span>
-            <span class="doc-card-badge">Tool</span>
+            <span class="doc-card-badge">Discovery Tool</span>
           </div>
           <div style="padding: 1.25rem;">
             <p class="text-secondary" style="font-size: 0.9375rem; margin-bottom: 0.75rem;">
-              İstemcideki tüm servis ad alanlarını ve bunlara bağlı çağrılabilir metotları dinamik olarak listeler.
+              İstemcideki tüm servis ad alanlarını ve bunlara bağlı çağrılabilir metotları dinamik olarak listeler. Yapay zeka modeli önce bu aracı çağırarak hangi belediye servislerinin mevcut olduğunu keşfeder.
             </p>
             <div class="doc-code-block" style="margin: 0;">
               <div class="doc-code-header"><span>Örnek Dizi Yanıtı</span></div>
@@ -144,6 +178,8 @@ izmir-mcp</div>
   "bisim.getIstasyonList",
   "eczaneler.getNobetciList",
   "eshot.getHatlar",
+  "eshot.getYakinDurakList",
+  "izsu.getBarajDolulukOranlari",
   "otopark.getList",
   "ckan.searchPackages"
 ]</div>
@@ -154,14 +190,48 @@ izmir-mcp</div>
         <div class="doc-card">
           <div class="doc-card-header">
             <span class="doc-card-title">2. call_endpoint</span>
-            <span class="doc-card-badge">Tool</span>
+            <span class="doc-card-badge">Execution Tool</span>
           </div>
           <div style="padding: 1.25rem;">
             <p class="text-secondary" style="font-size: 0.9375rem; margin-bottom: 0.75rem;">
-              Keşfedilen belirli bir belediye API metodunu argümanlarıyla birlikte yürütür.
+              Keşfedilen belirli bir belediye API metodunu parametreleriyle birlikte yürütür ve JSON yanıtını model bağlamına döndürür.
             </p>
+
+            <div class="doc-table-wrapper" style="margin-bottom: 1rem;">
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th>Alan Adı</th>
+                    <th>Tip</th>
+                    <th>Zorunlu</th>
+                    <th>Açıklama</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>namespace</code></td>
+                    <td><code>string</code></td>
+                    <td>Evet</td>
+                    <td>Servis grubu adı (ör: <code>eshot</code>, <code>eczaneler</code>, <code>izsu</code>, <code>bisim</code>).</td>
+                  </tr>
+                  <tr>
+                    <td><code>endpoint_name</code></td>
+                    <td><code>string</code></td>
+                    <td>Evet</td>
+                    <td>Çağrılacak metodun adı (ör: <code>getNobetciList</code>, <code>getYakinDurakList</code>).</td>
+                  </tr>
+                  <tr>
+                    <td><code>args</code></td>
+                    <td><code>array</code></td>
+                    <td>Hayır</td>
+                    <td>Metoda aktarılacak sıralı parametre listesi (ör: koordinatlar, hat no, tarih).</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
             <div class="doc-code-block" style="margin: 0;">
-              <div class="doc-code-header"><span>Parametre Şeması</span></div>
+              <div class="doc-code-header"><span>Örnek Parametre Çağrısı</span></div>
               <div class="doc-code-content">{
   "namespace": "eshot",
   "endpoint_name": "getYakinDurakList",
@@ -169,6 +239,24 @@ izmir-mcp</div>
 }</div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div class="doc-section">
+        <h2>Örnek Yapay Zeka Ajanı Diyalogları</h2>
+        
+        <div class="doc-card" style="padding: 1.5rem; margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1rem; color: var(--brand-aegean); margin-bottom: 0.5rem;">Soru: "Şu an Konak'ta açık olan nöbetçi eczaneler nerede?"</h3>
+          <p class="text-secondary" style="font-size: 0.875rem;">
+            Ajan otomatik olarak <code>call_endpoint({ namespace: "eczaneler", endpoint_name: "getNobetciList" })</code> metodunu tetikler. Gelen listeden Konak bölgesindeki eczanelerin telefon, harita koordinatları ve tarif bilgilerini özetleyerek kullanıcıya sunar.
+          </p>
+        </div>
+
+        <div class="doc-card" style="padding: 1.5rem; margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1rem; color: var(--brand-aegean); margin-bottom: 0.5rem;">Soru: "İzmir barajlarının güncel doluluk durumu nedir?"</h3>
+          <p class="text-secondary" style="font-size: 0.875rem;">
+            Ajan <code>call_endpoint({ namespace: "izsu", endpoint_name: "getBarajDolulukOranlari" })</code> aracını çağırır. Tahtalı, Balçova, Gördes ve Ürkmez barajlarının su hacimlerini ve yıllık doluluk oranlarını karşılaştırmalı olarak analiz eder.
+          </p>
         </div>
       </div>
     </div>
