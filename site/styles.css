@@ -171,24 +171,32 @@ code, pre {
 .nav-menu {
   display: none;
   align-items: center;
-  gap: 1.5rem;
+  gap: clamp(0.75rem, 1.25vw, 1.25rem);
 }
 
-@media (min-width: 840px) {
+@media (min-width: 860px) {
   .nav-menu {
     display: flex;
   }
 }
 
 .nav-link {
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 500;
   color: var(--text-secondary);
   transition: color var(--transition-fast);
+  white-space: nowrap;
 }
 
-.nav-link:hover {
-  color: var(--text-primary);
+.nav-link:hover,
+.nav-link.active,
+.nav-link[aria-current="page"] {
+  color: var(--brand-aegean);
+}
+
+.nav-link.active,
+.nav-link[aria-current="page"] {
+  font-weight: 600;
 }
 
 .header-actions {

@@ -8,7 +8,7 @@ const rootDir = path.resolve(__dirname, "..");
 const docsDir = path.join(rootDir, "docs");
 const siteDir = path.join(rootDir, "site");
 
-function getCommonHead(title, description, relativeRoot = "") {
+function getCommonHead(title, description, relativeRoot = "", activePage = "") {
   return `<!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -46,12 +46,13 @@ function getCommonHead(title, description, relativeRoot = "") {
       </a>
 
       <nav class="nav-menu" aria-label="Ana Gezinti">
-        <a href="${relativeRoot}index.html" class="nav-link">Ana Sayfa</a>
         <a href="${relativeRoot}index.html#playground" class="nav-link">Canlı Demo</a>
-        <a href="${relativeRoot}ENDPOINTS.html" class="nav-link">Uç Noktalar</a>
-        <a href="${relativeRoot}CLI.html" class="nav-link">CLI Kılavuzu</a>
-        <a href="${relativeRoot}MCP.html" class="nav-link">MCP Sunucusu</a>
-        <a href="${relativeRoot}specs/index.html" class="nav-link">Şartnameler</a>
+        <a href="${relativeRoot}index.html#features" class="nav-link">Özellikler</a>
+        <a href="${relativeRoot}index.html#categories" class="nav-link">Kategoriler</a>
+        <a href="${relativeRoot}ENDPOINTS.html" class="nav-link ${activePage === 'endpoints' ? 'active' : ''}" ${activePage === 'endpoints' ? 'aria-current="page"' : ''}>Uç Noktalar</a>
+        <a href="${relativeRoot}CLI.html" class="nav-link ${activePage === 'cli' ? 'active' : ''}" ${activePage === 'cli' ? 'aria-current="page"' : ''}>CLI</a>
+        <a href="${relativeRoot}MCP.html" class="nav-link ${activePage === 'mcp' ? 'active' : ''}" ${activePage === 'mcp' ? 'aria-current="page"' : ''}>MCP</a>
+        <a href="${relativeRoot}specs/index.html" class="nav-link ${activePage === 'specs' ? 'active' : ''}" ${activePage === 'specs' ? 'aria-current="page"' : ''}>Şartnameler</a>
       </nav>
 
       <div class="header-actions">
@@ -451,7 +452,9 @@ function buildEndpointsHtml() {
 
   const finalHtml = `${getCommonHead(
     "Uç Nokta Kataloğu (API Reference)",
-    "İzmir Büyükşehir Belediyesi Açık Veri Portalı tüm API uç noktaları, ESHOT, İZSU, BİSİM, CKAN ve coğrafi servis metotları referansı."
+    "İzmir Büyükşehir Belediyesi Açık Veri Portalı tüm API uç noktaları, ESHOT, İZSU, BİSİM, CKAN ve coğrafi servis metotları referansı.",
+    "",
+    "endpoints"
   )}\n${bodyContent}\n${getCommonFooter()}`;
 
   fs.writeFileSync(path.join(siteDir, "ENDPOINTS.html"), finalHtml, "utf8");
@@ -660,7 +663,9 @@ izmir get nobetcieczaneler | grep -i "Konak"
 
   const finalHtml = `${getCommonHead(
     "CLI Kullanım Kılavuzu",
-    "İzmir Açık Veri terminal aracı izmir-cli ve Homebrew tap kurulum ve komut kılavuzu."
+    "İzmir Açık Veri terminal aracı izmir-cli ve Homebrew tap kurulum ve komut kılavuzu.",
+    "",
+    "cli"
   )}\n${bodyContent}\n${getCommonFooter()}`;
 
   fs.writeFileSync(path.join(siteDir, "CLI.html"), finalHtml, "utf8");
@@ -859,7 +864,9 @@ izmir-mcp</div>
 
   const finalHtml = `${getCommonHead(
     "Model Context Protocol (MCP) Sunucusu",
-    "İzmir Açık Veri Portalı için Claude Desktop, Cursor ve yerel yapay zeka ajanları uyumlu MCP sunucu dokümantasyonu."
+    "İzmir Açık Veri Portalı için Claude Desktop, Cursor ve yerel yapay zeka ajanları uyumlu MCP sunucu dokümantasyonu.",
+    "",
+    "mcp"
   )}\n${bodyContent}\n${getCommonFooter()}`;
 
   fs.writeFileSync(path.join(siteDir, "MCP.html"), finalHtml, "utf8");
@@ -963,7 +970,8 @@ function buildSpecsHtml() {
   const finalHtml = `${getCommonHead(
     "Resmi Şartnameler (Specs)",
     "İzmir Büyükşehir Belediyesi resmi web servis kullanım şartnameleri arşivi.",
-    "../"
+    "../",
+    "specs"
   )}\n${bodyContent}\n${getCommonFooter("../")}`;
 
   fs.writeFileSync(path.join(specsSiteDir, "index.html"), finalHtml, "utf8");
