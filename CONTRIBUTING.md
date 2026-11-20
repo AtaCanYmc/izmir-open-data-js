@@ -49,6 +49,14 @@ LIVE_API_TESTS=1 npm run test:live
 
 ---
 
+## npm Releases
+
+The publishing workflows use npm trusted publishing with GitHub Actions OIDC. In the npm package settings, configure a trusted publisher for the `AtaCanYmc/izmir-open-data-js` repository and the `release-please.yml` workflow. If publishing through the release-triggered workflow, configure `publish.yml` as a trusted publisher as well. Any configured npm environment must match the GitHub Actions job environment. See the [npm trusted publishing documentation](https://docs.npmjs.com/trusted-publishers/).
+
+For a release that failed to publish, first check whether its version already exists with `npm view izmir-open-data-js@<version> version`. Rerunning the original failed run uses its original workflow revision, not this fix. If the version is missing, an authorized maintainer can check out the release tag, run `npm ci`, `npm run build`, and `npm test`, then publish with `npm publish --access public` using an authorized npm account and the package's authentication requirements.
+
+---
+
 ## Branching Strategy
 
 Create focused feature branches originating from `main`:
