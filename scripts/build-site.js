@@ -6,6 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
 const docsDir = path.join(rootDir, "docs");
+const siteDir = path.join(rootDir, "site");
 
 function getCommonHead(title, description, relativeRoot = "") {
   return `<!DOCTYPE html>
@@ -453,8 +454,8 @@ function buildEndpointsHtml() {
     "İzmir Büyükşehir Belediyesi Açık Veri Portalı tüm API uç noktaları, ESHOT, İZSU, BİSİM, CKAN ve coğrafi servis metotları referansı."
   )}\n${bodyContent}\n${getCommonFooter()}`;
 
-  fs.writeFileSync(path.join(docsDir, "ENDPOINTS.html"), finalHtml, "utf8");
-  console.log("Generated docs/ENDPOINTS.html");
+  fs.writeFileSync(path.join(siteDir, "ENDPOINTS.html"), finalHtml, "utf8");
+  console.log("Generated site/ENDPOINTS.html");
 }
 
 // ----------------------------------------------------------------------------
@@ -662,8 +663,8 @@ izmir get nobetcieczaneler | grep -i "Konak"
     "İzmir Açık Veri terminal aracı izmir-cli ve Homebrew tap kurulum ve komut kılavuzu."
   )}\n${bodyContent}\n${getCommonFooter()}`;
 
-  fs.writeFileSync(path.join(docsDir, "CLI.html"), finalHtml, "utf8");
-  console.log("Generated docs/CLI.html");
+  fs.writeFileSync(path.join(siteDir, "CLI.html"), finalHtml, "utf8");
+  console.log("Generated site/CLI.html");
 }
 
 // ----------------------------------------------------------------------------
@@ -861,15 +862,18 @@ izmir-mcp</div>
     "İzmir Açık Veri Portalı için Claude Desktop, Cursor ve yerel yapay zeka ajanları uyumlu MCP sunucu dokümantasyonu."
   )}\n${bodyContent}\n${getCommonFooter()}`;
 
-  fs.writeFileSync(path.join(docsDir, "MCP.html"), finalHtml, "utf8");
-  console.log("Generated docs/MCP.html");
+  fs.writeFileSync(path.join(siteDir, "MCP.html"), finalHtml, "utf8");
+  console.log("Generated site/MCP.html");
 }
 
 // ----------------------------------------------------------------------------
 // 4. Build specs/index.html
 // ----------------------------------------------------------------------------
 function buildSpecsHtml() {
-  const specsDir = path.join(docsDir, "specs");
+  const specsSiteDir = path.join(siteDir, "specs");
+  if (!fs.existsSync(specsSiteDir)) {
+    fs.mkdirSync(specsSiteDir, { recursive: true });
+  }
   const bodyContent = `
   <main class="doc-page">
     <div class="container" style="max-width: 920px;">
@@ -962,8 +966,8 @@ function buildSpecsHtml() {
     "../"
   )}\n${bodyContent}\n${getCommonFooter("../")}`;
 
-  fs.writeFileSync(path.join(specsDir, "index.html"), finalHtml, "utf8");
-  console.log("Generated docs/specs/index.html");
+  fs.writeFileSync(path.join(specsSiteDir, "index.html"), finalHtml, "utf8");
+  console.log("Generated site/specs/index.html");
 }
 
 buildEndpointsHtml();

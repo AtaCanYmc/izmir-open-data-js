@@ -60,8 +60,10 @@
     "test:coverage": "vitest run --coverage --exclude 'tests/integration/**'",
     "test:live": "LIVE_API_TESTS=1 vitest run tests/integration/",
     "test:all": "LIVE_API_TESTS=1 vitest run",
-    "docs:build": "node scripts/build-docs.js",
-    "docs:serve": "python3 -m http.server 8080 --directory docs",
+    "site:build": "node scripts/build-site.js",
+    "site:serve": "python3 -m http.server 8080 --directory site",
+    "docs:build": "npm run site:build",
+    "docs:serve": "npm run site:serve",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
