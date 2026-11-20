@@ -6,15 +6,38 @@
 
 ---
 
-## Çalıştırma
+## Kurulum ve Çalıştırma
 
-Global kurulum veya `npx` aracılığıyla çalıştırılabilir:
+### 1. Homebrew ile Kurulum (macOS / Linux)
+
+Official Homebrew Tap üzerinden `izmir-cli` kurulumu:
+
+```bash
+# Tap ekleyip kurma:
+brew tap AtaCanYmc/tap
+brew install izmir-cli
+
+# Veya doğrudan tek komutla kurma:
+brew install AtaCanYmc/tap/izmir-cli
+```
+
+Kurulum tamamlandıktan sonra hem `izmir-cli` hem de `izmir` komutu terminalinizde hazır hale gelir:
+
+```bash
+izmir get nobetcieczaneler
+izmir search otopark
+```
+
+### 2. npm / npx ile Çalıştırma
+
+Global kurulum veya `npx` aracılığıyla çalıştırma:
 
 ```bash
 # Global paket üzerinden çalıştırma:
+npm install -g izmir-open-data-js
 izmir-cli get <dataset_id>
 
-# npx üzerinden doğrudan çalıştırma:
+# npx üzerinden anında çalıştırma:
 npx izmir-cli get <dataset_id>
 ```
 

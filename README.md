@@ -116,17 +116,30 @@ console.log("BİSİM Durumu:", bisim);
 
 ### 2. Terminal CLI Aracı
 
-Paket içerisinde kurulu gelen `izmir-cli` aracı ile belediye veri setlerini doğrudan terminalde ASCII tablosu formatında görüntüleyebilirsiniz:
+`izmir-cli` aracı ile belediye veri setlerini doğrudan terminalde ASCII tablosu formatında görüntüleyebilirsiniz.
+
+Homebrew ile kurulum (macOS / Linux):
+
+```bash
+brew tap AtaCanYmc/tap
+brew install izmir-cli
+# veya tek komutla doğrudan:
+brew install AtaCanYmc/tap/izmir-cli
+```
+
+Veya `npx` ile anında çalıştırma:
 
 ```bash
 # Nöbetçi eczaneleri terminal tablosunda listeleme
+izmir get nobetcieczaneler
+# veya
 npx izmir-cli get nobetcieczaneler
 
 # BİSİM istasyonlarını sorgulama
-npx izmir-cli get cbs/bisimistasyon
+izmir get cbs/bisimistasyon
 
 # Hastane konumlarını sorgulama
-npx izmir-cli get cbs/hastaneler
+izmir get cbs/hastaneler
 ```
 
 Ayrıntılı komut seçenekleri ve parametreler için [CLI Dokümantasyonu](docs/CLI.md) sayfasına başvurabilirsiniz.

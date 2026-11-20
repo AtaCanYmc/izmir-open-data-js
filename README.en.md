@@ -116,17 +116,30 @@ console.log("BİSİM status:", bisim);
 
 ### 2. Terminal CLI Utility
 
-Use the bundled `izmir-cli` executable to inspect datasets directly from your terminal rendered as ASCII tables:
+Inspect municipal datasets directly from your terminal rendered as ASCII tables using `izmir-cli`.
+
+Install via Homebrew (macOS / Linux):
+
+```bash
+brew tap AtaCanYmc/tap
+brew install izmir-cli
+# or install directly in one command:
+brew install AtaCanYmc/tap/izmir-cli
+```
+
+Or execute instantly via `npx`:
 
 ```bash
 # Display duty pharmacies in a formatted terminal table
+izmir get nobetcieczaneler
+# or
 npx izmir-cli get nobetcieczaneler
 
 # Query smart bike station statuses
-npx izmir-cli get cbs/bisimistasyon
+izmir get cbs/bisimistasyon
 
 # Query hospital locations and contact details
-npx izmir-cli get cbs/hastaneler
+izmir get cbs/hastaneler
 ```
 
 For complete command syntax and column handling rules, see [docs/CLI.md](docs/CLI.md).
