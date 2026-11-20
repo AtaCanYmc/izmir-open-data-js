@@ -1,8 +1,11 @@
-[← Back to Main Documentation](../README.md)
+[← Back to Main Documentation](../README.md) | [Resmi Şartnameler (Specs)](specs/README.md)
 
 # İzmir Open Data API Endpoint Listesi
 
 İzmir Büyükşehir Belediyesi Açık Veri Portalı ve Open API servislerinin `izmir-open-data-js` kütüphanesi içindeki sınıf ve metod dağılımları.
+
+> [!NOTE] Resmi Teknik Şartnameler
+> İZBAN, İZSU, Metro, Tramvay ve CBS resmi belediye web servis şartnameleri, veri modelleri ve parametre detayları için [docs/specs](specs/README.md) dizinini inceleyebilirsiniz.
 
 ## Afetler (`client.afetler`)
 | Metod Adı | Açıklama |
@@ -103,7 +106,8 @@
 | `getHaftalikSuAnalizi()` | Güncel haftalık analiz sonuçlarını içeren web servisi. |
 | `getIzsuSubeList()` | Şube adresleri, telefonları ve konum bilgilerini içeren web servisi. |
 | `getIzsuVezneList()` | Vezne adresleri, telefonları ve konum bilgilerini içeren web servisi. |
-| `getSuUretimiDagilimi()` | Su üretiminin aylara ve kaynaklara göre dağılımını içeren web servisi. |
+| `getCevreIlceSuAnalizi()` | Çevre ilçe merkezlerinde bulunan analiz noktalarının analiz sonuçlarını içeren web servisi. |
+| `getSuUretimiDagilimi(yil?)` | Su üretiminin aylara ve kaynaklara göre dağılımını içeren web servisi. |
 
 ## Iztek (`client.iztek`)
 | Metod Adı | Açıklama |
@@ -147,6 +151,7 @@
 |---|---|
 | `getDurakMesafeleri()` | Metro istasyonları arasındaki mesafe bilgilerini içeren web servisi (CSV). |
 | `getIstasyonList()` | Metro istasyonları sıra ve konum verisi bilgileri içeren web servis. |
+| `getSeferSaatleri()` | Metro sefer saatleri ve sefer aralığı bilgilerini içeren web servis. |
 
 ## Muhtarliklar (`client.muhtarliklar`)
 | Metod Adı | Açıklama |

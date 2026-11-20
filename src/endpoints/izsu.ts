@@ -87,6 +87,31 @@ export interface BarajAnalizResponse {
     BarajAnalizleri: BarajAnalizKaydi[];
 }
 
+export interface CevreIlceNoktaAnalizi {
+    ParametreAdi: string;
+    ParametreDegeri: string;
+    Birim: string;
+    Sira: number;
+    Standart: string;
+}
+
+export interface CevreIlceAnalizNoktasi {
+    Adres: string;
+    NoktaKodu: string;
+    NoktaAnalizleri: CevreIlceNoktaAnalizi[];
+}
+
+export interface CevreIlceAnalizi {
+    IlceAdi: string;
+    IlceKodu: number;
+    AnalizTarihi: string;
+    Noktalar: CevreIlceAnalizNoktasi[];
+}
+
+export interface CevreIlceAnalizResponse {
+    Ilceler: CevreIlceAnalizi[];
+}
+
 export interface KesintiBilgisi {
     KesintiTarihi: string;
     Aciklama: string;
@@ -130,10 +155,12 @@ export function izsu(client: IzmirClient) {
         /**
          * Su üretiminin aylara ve kaynaklara göre dağılımını içeren web servisi.
          *
-         * Kaynak: https://acikveri.bizizmir.com/dataset/su-uretiminin-aylara-ve-kaynaklara-gore-dagilimi
+         * Kaynak: İZSU Web Servis Kullanım Dokümanı V.1.0 (Bölüm 4.5)
+         * @param yil İsteğe bağlı filtreleme yapılacak yıl (örn: 2024)
          */
-        getSuUretimiDagilimi() {
-            return client.get<SuUretimi[]>("izsu/suuretiminindagilimi");
+        getSuUretimiDagilimi(yil?: number) {
+            const path = yil !== undefined ? `izsu/suuretiminindagilimi/${yil}` : "izsu/suuretiminindagilimi";
+            return client.get<SuUretimi[]>(path);
         },
 
         /**
@@ -157,10 +184,19 @@ export function izsu(client: IzmirClient) {
         /**
          * Güncel haftalık analiz sonuçlarını içeren web servisi.
          *
-         * Kaynak: https://acikveri.bizizmir.com/dataset/haftalik-analiz-sonuclari
+         * Kaynak: İZSU Web Servis Kullanım Dokümanı V.1.0 (Bölüm 4.6)
          */
         getHaftalikSuAnalizi() {
             return client.get<SuAnalizResponse>("izsu/haftaliksuanalizleri");
+        },
+
+        /**
+         * Çevre ilçe merkezlerinde bulunan analiz noktalarının analiz sonuçlarını içeren web servisi.
+         *
+         * Kaynak: İZSU Web Servis Kullanım Dokümanı V.1.0 (Bölüm 4.7)
+         */
+        getCevreIlceSuAnalizi() {
+            return client.get<CevreIlceAnalizResponse>("izsu/cevreilcesuanalizleri");
         },
 
         /**

@@ -1,5 +1,5 @@
 import { IzmirClient } from "../client.js";
-import { formatDate } from "../common/utils/dateUtils";
+import { formatDate } from "../common/utils/dateUtils.js";
 
 export interface HavaKalitesiOlcum {
     OlcumTarihi: string; // ISO date

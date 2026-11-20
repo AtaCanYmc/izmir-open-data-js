@@ -166,7 +166,7 @@ Kütüphane, İzmir Açık Veri Portalı üzerindeki servisleri modüler ad alan
 | **Kamu & Coğrafya** | `api.kamu`, `api.cografi`, `api.muhtarliklar` | Noterler, muhtarlıklar, PTT, göller, dağlar ve kıyı şeridi bilgileri. |
 | **Açık Veri CKAN** | `client.getCKAN()`, `client.getCKANDump()` | CKAN portalındaki herhangi bir `resource_id` için datastore sorguları. |
 
-Uç noktaların tam parametre listesi için [Uç Nokta Referansı](docs/ENDPOINTS.md) sayfasına bakabilirsiniz.
+Uç noktaların tam parametre listesi için [Uç Nokta Referansı](docs/ENDPOINTS.md), belediye birimlerinin resmi şartnameleri için [Resmi Şartnameler (Specs)](docs/specs/README.md) sayfasına bakabilirsiniz.
 
 ---
 

@@ -166,7 +166,7 @@ The library organizes municipal services into distinct domain namespaces:
 | **Public Administration** | `api.kamu`, `api.cografi`, `api.muhtarliklar` | Notaries, neighborhood administration offices, post offices, lakes, and peaks. |
 | **Open Data CKAN** | `client.getCKAN()`, `client.getCKANDump()` | Direct CKAN datastore search and query operations for any valid `resource_id`. |
 
-For the complete parameter list and response types, consult [docs/ENDPOINTS.md](docs/ENDPOINTS.md).
+For the complete parameter list and response types, consult [docs/ENDPOINTS.md](docs/ENDPOINTS.md). For official municipality web service specifications, see [Official Specifications (Specs)](docs/specs/README.md).
 
 ---
 

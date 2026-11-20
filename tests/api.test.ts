@@ -81,6 +81,7 @@ describe("IzmirAPI endpoint route sozlesmeleri", () => {
         await api.izsu.getBarajVeKuyuList();
         await api.izsu.getIzsuSubeList();
         await api.izsu.getIzsuVezneList();
+        await api.izsu.getCevreIlceSuAnalizi();
         await api.iztek.getAskidaIzmirimKartIstatistik();
         await api.kamu.getBankalarList();
         await api.kamu.getBelediyelerList();
@@ -107,6 +108,7 @@ describe("IzmirAPI endpoint route sozlesmeleri", () => {
         await api.kutuphane.getTiyatrolarList();
         await api.kutuphane.getMuzelerList();
         await api.metro.getIstasyonList();
+        await api.metro.getSeferSaatleri();
         await api.muhtarliklar.getList();
         await api.otopark.getList();
         await api.otopark.getUcretler(1, 1);

@@ -100,25 +100,25 @@ export function tramvay(client: IzmirClient) {
         },
 
         /**
-         * Sefer numarasına göre tramvay istasyonları listesini içeren web servis.
+         * Hat numarasına göre tramvay istasyonları listesini içeren web servis.
          *
-         * Kaynak: https://acikveri.bizizmir.com/dataset/izmir-tramvay-hatlari-ve-istasyonlari
+         * Kaynak: İZMİR METRO A.Ş. Web Servis Kullanım Dokümanı V.1.0 (Bölüm 5.2)
          *
-         * @param seferId Sefer numarası
+         * @param hatId Tramvay hat numarası (Örn: 1: Fahrettin Altay - Halkapınar)
          */
-        getIstasyonList(seferId: number) {
-            return client.get<TramvayIstasyonu[]>(`tramvay/istasyonlar/${seferId}`);
+        getIstasyonList(hatId: number) {
+            return client.get<TramvayIstasyonu[]>(`tramvay/istasyonlar/${hatId}`);
         },
 
         /**
-         * Sefer numarasına göre tramvay sefer sıklıkları bilgisini veren web servisi.
+         * Hat numarasına göre tramvay sefer saatleri ve sıklıkları bilgisini veren web servisi.
          *
-         * Kaynak: https://acikveri.bizizmir.com/dataset/tramvay-seferleri
+         * Kaynak: İZMİR METRO A.Ş. Web Servis Kullanım Dokümanı V.1.0 (Bölüm 5.4)
          *
-         * @param seferId Sefer numarası
+         * @param hatId Tramvay hat numarası (Örn: 1: Fahrettin Altay - Halkapınar)
          */
-        getSeferSiklikList(seferId: number) {
-            return client.get<TramvaySeferSikligi[]>(`tramvay/seferler/${seferId}`);
+        getSeferSiklikList(hatId: number) {
+            return client.get<TramvaySeferSikligi[]>(`tramvay/seferler/${hatId}`);
         },
 
         /**
