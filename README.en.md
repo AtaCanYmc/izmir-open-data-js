@@ -150,6 +150,89 @@ Add to `claude_desktop_config.json`:
 
 For tool schemas and stdio configurations, see [docs/MCP.md](docs/MCP.md).
 
+### 4. Advanced Features (Cache, Retry, CKAN Query Builder, GeoJSON)
+
+#### In-Memory TTL Cache
+
+In-memory cache provider to prevent redundant network roundtrips against rate-limited municipal servers:
+
+```typescript
+import { IzmirAPI } from "izmir-open-data-js";
+
+// Enable cache with default 5-minute TTL
+const api = new IzmirAPI({
+    cache: true,
+});
+
+// Or customize TTL and maximum item capacity:
+const customApi = new IzmirAPI({
+    cache: {
+        defaultTtlMs: 60_000, // 1 minute
+        maxItems: 200,
+    },
+});
+
+// First call fetches from network, second returns from memory
+const pharmacies1 = await api.eczaneler.getNobetciList();
+const pharmacies2 = await api.eczaneler.getNobetciList();
+
+// Clear cached entries when needed
+api.clearCache();
+```
+
+#### Request Retry Middleware
+
+Exponential backoff with full jitter to handle transient HTTP 5xx errors and network timeouts:
+
+```typescript
+const api = new IzmirAPI({
+    retry: {
+        retries: 3,         // Maximum attempts
+        baseDelayMs: 300,   // Initial delay (ms)
+        maxDelayMs: 3000,   // Maximum delay cap (ms)
+        jitter: true,       // Full jitter to prevent thundering herd
+    },
+});
+```
+
+#### CKAN Fluent Query Builder
+
+Fluent chainable interface for CKAN Datastore filtering, full-text search, sorting, and pagination:
+
+```typescript
+const query = api.ckan.query("d87de3c1-9bc0-4a8c-842a-90cd2a30d03a")
+    .where("ILCE", "KONAK")
+    .search("Alsancak")
+    .sort("TARIH", "desc")
+    .page(1, 20);
+
+// Execute single page request
+const result = await query.execute();
+console.log(result.records);
+
+// Auto-paginate and fetch all matching records
+const allRecords = await query.fetchAll({ batchSize: 100, maxRecords: 500 });
+```
+
+#### GeoJSON Geometry Normalizer
+
+Convert municipal spatial coordinates (CBS `BOYLAM`/`ENLEM`, Software Branch `LokasyonX`/`LokasyonY`) into standard RFC 7946 GeoJSON format:
+
+```typescript
+import { toGeoJSON, extractCoordinates } from "izmir-open-data-js";
+
+// Extract coordinate pair as [longitude, latitude]
+const coords = extractCoordinates({ LokasyonX: "38.4192", LokasyonY: "27.1287" });
+// [27.1287, 38.4192]
+
+// Convert CBS or POI arrays to standard GeoJSON FeatureCollection
+const squares = await api.cografi.getMeydanlarList();
+const geojson = toGeoJSON(squares);
+
+console.log(geojson.type); // "FeatureCollection"
+console.log(geojson.features[0].geometry.coordinates); // [27.1428, 38.4237]
+```
+
 ---
 
 ## Endpoint Modules

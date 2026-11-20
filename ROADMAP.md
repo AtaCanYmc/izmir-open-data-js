@@ -14,12 +14,12 @@ This roadmap outlines completed architectural milestones and planned enhancement
 
 ---
 
-## Planned: v2.1.0
+## Release: v2.1.0
 
-- [ ] **Configurable In-Memory Cache**: Built-in TTL cache provider to prevent redundant network requests against rate-limited municipal servers.
-- [ ] **Request Retry Middleware**: Configurable retry backoff with jitter for handling transient HTTP 5xx errors and upstream timeouts.
-- [ ] **CKAN Query Builder**: Fluent query interface for sorting, full-text filtering, and offset pagination across large CKAN datastores.
-- [ ] **GeoJSON Geometry Normalizers**: Standardized GeoJSON converters for CBS spatial datasets (parks, stations, emergency assembly areas).
+- [x] **Configurable In-Memory Cache**: Built-in TTL cache provider to prevent redundant network requests against rate-limited municipal servers.
+- [x] **Request Retry Middleware**: Configurable retry backoff with jitter for handling transient HTTP 5xx errors and upstream timeouts.
+- [x] **CKAN Query Builder**: Fluent query interface for sorting, full-text filtering, and offset pagination across large CKAN datastores.
+- [x] **GeoJSON Geometry Normalizers**: Standardized GeoJSON converters for CBS spatial datasets (parks, stations, emergency assembly areas).
 
 ---
 

@@ -1,3 +1,6 @@
+import { CacheProvider, MemoryCache, MemoryCacheOptions } from "./common/cache/memoryCache.js";
+import { executeWithRetry, RetryConfig } from "./common/retry/retryMiddleware.js";
+
 // Node.js ortamında window yoktur, tarayıcıda JSONP kullanılır
 const isBrowser = typeof window !== "undefined";
 
@@ -6,30 +9,91 @@ type FetchJsonpFunction = (
     options?: { jsonpCallback?: string; timeout?: number },
 ) => Promise<{ json: () => Promise<any> }>;
 
+export interface IzmirClientOptions {
+    baseUrl?: string;
+    ckanBaseUrl?: string;
+    ckanDumpBaseUrl?: string;
+    /** In-Memory TTL Cache (true: varsayılan 5dk, ayar objesi veya özel CacheProvider) */
+    cache?: boolean | MemoryCacheOptions | CacheProvider;
+    /** İstek yeniden deneme (retry) yapılandırması (true: varsayılan 3 deneme + jitter, false: kapalı) */
+    retry?: boolean | RetryConfig;
+}
+
 export class IzmirClient {
     private readonly baseUrl: string;
     private readonly ckanBaseUrl: string;
     private readonly ckanDumpBaseUrl: string;
+    private readonly cacheProvider?: CacheProvider;
+    private readonly retryConfig?: boolean | RetryConfig;
     private fetchJsonp: FetchJsonpFunction | null = null;
 
     constructor(
-        baseUrl = "https://openapi.izmir.bel.tr/api/",
+        baseUrlOrOptions: string | IzmirClientOptions = "https://openapi.izmir.bel.tr/api/",
         ckanBaseUrl = "https://acikveri.bizizmir.com/api/3/action/",
         ckanDumpBaseUrl = "https://acikveri.bizizmir.com/datastore/dump/",
     ) {
-        this.baseUrl = baseUrl;
-        this.ckanBaseUrl = ckanBaseUrl;
-        this.ckanDumpBaseUrl = ckanDumpBaseUrl;
+        if (typeof baseUrlOrOptions === "object" && baseUrlOrOptions !== null) {
+            this.baseUrl = baseUrlOrOptions.baseUrl ?? "https://openapi.izmir.bel.tr/api/";
+            this.ckanBaseUrl = baseUrlOrOptions.ckanBaseUrl ?? "https://acikveri.bizizmir.com/api/3/action/";
+            this.ckanDumpBaseUrl = baseUrlOrOptions.ckanDumpBaseUrl ?? "https://acikveri.bizizmir.com/datastore/dump/";
+            this.retryConfig = baseUrlOrOptions.retry;
+
+            if (baseUrlOrOptions.cache === true) {
+                this.cacheProvider = new MemoryCache();
+            } else if (typeof baseUrlOrOptions.cache === "object" && baseUrlOrOptions.cache !== null) {
+                if ("get" in baseUrlOrOptions.cache) {
+                    this.cacheProvider = baseUrlOrOptions.cache as CacheProvider;
+                } else {
+                    this.cacheProvider = new MemoryCache(baseUrlOrOptions.cache);
+                }
+            }
+        } else {
+            this.baseUrl = baseUrlOrOptions;
+            this.ckanBaseUrl = ckanBaseUrl;
+            this.ckanDumpBaseUrl = ckanDumpBaseUrl;
+        }
+    }
+
+    /**
+     * Etkin önbellek sağlayıcısını döndürür (tanımlıysa).
+     */
+    get cache(): CacheProvider | undefined {
+        return this.cacheProvider;
+    }
+
+    /**
+     * Tüm önbellek kayıtlarını temizler.
+     */
+    clearCache(): void {
+        this.cacheProvider?.clear();
     }
 
     async get<T = any>(path: string): Promise<T> {
-        const res = await fetch(this.baseUrl + path);
+        const url = this.baseUrl + path;
+        const cacheKey = `GET:${url}`;
 
-        if (!res.ok) {
-            throw new Error(`API response error: ${res.status}`);
+        if (this.cacheProvider) {
+            const cached = await this.cacheProvider.get<T>(cacheKey);
+            if (cached !== undefined) {
+                return cached;
+            }
         }
 
-        return res.json() as Promise<T>;
+        const execute = async () => {
+            const res = await fetch(url);
+            if (!res.ok) {
+                throw new Error(`API response error: ${res.status}`);
+            }
+            return res.json() as Promise<T>;
+        };
+
+        const result = this.retryConfig ? await executeWithRetry(execute, this.retryConfig) : await execute();
+
+        if (this.cacheProvider) {
+            await this.cacheProvider.set(cacheKey, result);
+        }
+
+        return result;
     }
 
     /**
@@ -51,12 +115,30 @@ export class IzmirClient {
 
         const qs = queryParams.toString();
         const url = qs ? `${this.ckanBaseUrl}${action}?${qs}` : `${this.ckanBaseUrl}${action}`;
+        const cacheKey = `CKAN:${url}`;
 
-        if (isBrowser) {
-            return this.getCKANWithJsonp<T>(url);
-        } else {
-            return this.getCKANWithFetch<T>(url);
+        if (this.cacheProvider) {
+            const cached = await this.cacheProvider.get<T>(cacheKey);
+            if (cached !== undefined) {
+                return cached;
+            }
         }
+
+        const execute = () => {
+            if (isBrowser) {
+                return this.getCKANWithJsonp<T>(url);
+            } else {
+                return this.getCKANWithFetch<T>(url);
+            }
+        };
+
+        const result = this.retryConfig ? await executeWithRetry(execute, this.retryConfig) : await execute();
+
+        if (this.cacheProvider) {
+            await this.cacheProvider.set(cacheKey, result);
+        }
+
+        return result;
     }
 
     /**
@@ -64,7 +146,6 @@ export class IzmirClient {
      */
     private async getCKANWithJsonp<T>(url: string): Promise<T> {
         try {
-            // Lazy load fetch-jsonp
             if (!this.fetchJsonp) {
                 const module = await import("fetch-jsonp");
                 this.fetchJsonp = module.default;
@@ -123,12 +204,30 @@ export class IzmirClient {
      */
     async getCKANDump<T = any>(resourceId: string): Promise<T> {
         const url = `${this.ckanDumpBaseUrl}${resourceId}?format=json`;
+        const cacheKey = `DUMP:${url}`;
 
-        if (isBrowser) {
-            return this.getCKANDumpWithJsonp<T>(url);
-        } else {
-            return this.getCKANDumpWithFetch<T>(url);
+        if (this.cacheProvider) {
+            const cached = await this.cacheProvider.get<T>(cacheKey);
+            if (cached !== undefined) {
+                return cached;
+            }
         }
+
+        const execute = () => {
+            if (isBrowser) {
+                return this.getCKANDumpWithJsonp<T>(url);
+            } else {
+                return this.getCKANDumpWithFetch<T>(url);
+            }
+        };
+
+        const result = this.retryConfig ? await executeWithRetry(execute, this.retryConfig) : await execute();
+
+        if (this.cacheProvider) {
+            await this.cacheProvider.set(cacheKey, result);
+        }
+
+        return result;
     }
 
     /**
@@ -143,7 +242,7 @@ export class IzmirClient {
 
             const response = await this.fetchJsonp(url, {
                 jsonpCallback: "callback",
-                timeout: 30000, // Dump daha büyük olabilir
+                timeout: 30000,
             });
 
             const data = await response.json();
@@ -183,21 +282,31 @@ export class IzmirClient {
      * @param delimiter Ayırıcı karakter (varsayılan: ;)
      */
     async getCSV<T = Record<string, string>>(url: string, delimiter = ";"): Promise<T[]> {
-        try {
-            const res = await fetch(url);
+        const cacheKey = `CSV:${url}`;
 
+        if (this.cacheProvider) {
+            const cached = await this.cacheProvider.get<T[]>(cacheKey);
+            if (cached !== undefined) {
+                return cached;
+            }
+        }
+
+        const execute = async () => {
+            const res = await fetch(url);
             if (!res.ok) {
                 throw new Error(`CSV API response error: ${res.status}`);
             }
-
             const text = await res.text();
             return this.parseCSV<T>(text, delimiter);
-        } catch (error) {
-            if (error instanceof Error) {
-                throw new Error(`CSV Hatası: ${error.message}`);
-            }
-            throw new Error("Bilinmeyen CSV hatası");
+        };
+
+        const result = this.retryConfig ? await executeWithRetry(execute, this.retryConfig) : await execute();
+
+        if (this.cacheProvider) {
+            await this.cacheProvider.set(cacheKey, result);
         }
+
+        return result;
     }
 
     /**
@@ -209,7 +318,6 @@ export class IzmirClient {
         const lines = csv.trim().split("\n");
         if (lines.length < 2) return [];
 
-        // Tırnak işaretlerini temizle
         const cleanValue = (val: string): string => {
             let cleaned = val.trim();
             if (cleaned.startsWith('"') && cleaned.endsWith('"')) {
@@ -228,8 +336,6 @@ export class IzmirClient {
             for (let j = 0; j < headers.length; j++) {
                 const rawValue = values[j]?.trim() || "";
                 const value = cleanValue(rawValue);
-                // Sayısal değerleri number'a çevir, ancak özel karakterler içeriyorsa string bırak
-                // Örn: "06:00" (saat), "29-30" (hat numaraları), "True/False" string kalmalı
                 if (
                     value === "" ||
                     value.includes(":") ||

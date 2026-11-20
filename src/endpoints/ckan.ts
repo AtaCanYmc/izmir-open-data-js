@@ -1,4 +1,5 @@
 import { IzmirClient } from "../client.js";
+import { CKANQueryBuilder } from "./ckanQueryBuilder.js";
 
 export interface CKANTag {
     id: string;
@@ -148,6 +149,15 @@ export function ckan(client: IzmirClient) {
          */
         listPackages(options?: { limit?: number; offset?: number }): Promise<string[]> {
             return client.getCKAN<string[]>("package_list", options || {});
+        },
+
+        /**
+         * Belirli bir Datastore kaynağı için akıcı (fluent) sorgu oluşturucu başlatır.
+         *
+         * @param resourceId CKAN Resource UUID
+         */
+        query<T = any>(resourceId: string): CKANQueryBuilder<T> {
+            return new CKANQueryBuilder<T>(client, resourceId);
         },
 
         /**

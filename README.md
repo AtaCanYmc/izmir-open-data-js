@@ -150,6 +150,89 @@ Ayrıntılı komut seçenekleri ve parametreler için [CLI Dokümantasyonu](docs
 
 Entegrasyon şemaları ve sunucu araçları için [MCP Dokümantasyonu](docs/MCP.md) sayfasına başvurabilirsiniz.
 
+### 4. Gelişmiş Özellikler (Önbellek, Retry, CKAN Sorgu Oluşturucu, GeoJSON)
+
+#### In-Memory TTL Önbellek (Cache)
+
+Belediye sunucularına mükerrer istek gönderilmesini engellemek için TTL tabanlı dahili bellek önbelleği:
+
+```typescript
+import { IzmirAPI } from "izmir-open-data-js";
+
+// 5 dakika varsayılan TTL ile önbelleği aktifleştirme
+const api = new IzmirAPI({
+    cache: true,
+});
+
+// Veya özel TTL (milisaniye) ve azami kayıt adedi ile:
+const customApi = new IzmirAPI({
+    cache: {
+        defaultTtlMs: 60_000, // 1 dakika
+        maxItems: 200,
+    },
+});
+
+// İlk çağrı ağdan çeker, ikincisi bellekten anında döner
+const eczaneler1 = await api.eczaneler.getNobetciList();
+const eczaneler2 = await api.eczaneler.getNobetciList();
+
+// Gerektiğinde önbelleği temizleme
+api.clearCache();
+```
+
+#### İstek Yeniden Deneme (Retry Middleware)
+
+Geçici 5xx sunucu hataları ve ağ kesintilerinde rastgele sapmalı (jitter) üstel geri çekilme:
+
+```typescript
+const api = new IzmirAPI({
+    retry: {
+        retries: 3,         // Azami 3 deneme
+        baseDelayMs: 300,   // Başlangıç beklemesi (ms)
+        maxDelayMs: 3000,   // Tavan bekleme (ms)
+        jitter: true,       // Yük yığılmasını önleyen rastgele sapma
+    },
+});
+```
+
+#### CKAN Akıcı Sorgu Oluşturucu (Query Builder)
+
+CKAN Datastore üzerinde zincirleme filtreleme, metin araması, sıralama ve otomatik sayfalama:
+
+```typescript
+const query = api.ckan.query("d87de3c1-9bc0-4a8c-842a-90cd2a30d03a")
+    .where("ILCE", "KONAK")
+    .search("Alsancak")
+    .sort("TARIH", "desc")
+    .page(1, 20);
+
+// İlk sayfayı çekme
+const result = await query.execute();
+console.log(result.records);
+
+// Otomatik sayfalamayla tüm kayıtları çekme
+const allRecords = await query.fetchAll({ batchSize: 100, maxRecords: 500 });
+```
+
+#### GeoJSON Geometri Dönüştürücüsü (GeoJSON Normalizer)
+
+Farklı belediye veri formatlarını (CBS `BOYLAM`/`ENLEM`, Yazılım Şube `LokasyonX`/`LokasyonY`) standart RFC 7946 GeoJSON formatına dönüştürme:
+
+```typescript
+import { toGeoJSON, extractCoordinates } from "izmir-open-data-js";
+
+// Tekil nokta koordinatını [boylam, enlem] olarak alma
+const coords = extractCoordinates({ LokasyonX: "38.4192", LokasyonY: "27.1287" });
+// [27.1287, 38.4192]
+
+// CBS veya POI listesini standart GeoJSON FeatureCollection formatına dönüştürme
+const parklar = await api.cografi.getMeydanlarList();
+const geojson = toGeoJSON(parklar);
+
+console.log(geojson.type); // "FeatureCollection"
+console.log(geojson.features[0].geometry.coordinates); // [27.1428, 38.4237]
+```
+
 ---
 
 ## Uç Nokta ve Servis Modülleri

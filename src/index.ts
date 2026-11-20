@@ -1,4 +1,5 @@
-import { IzmirClient } from "./client.js";
+import { IzmirClient, IzmirClientOptions } from "./client.js";
+import { CacheProvider } from "./common/cache/memoryCache.js";
 import { eczaneler } from "./endpoints/eczaneler.js";
 import { muhtarliklar } from "./endpoints/muhtarliklar.js";
 import { wizmirnet } from "./endpoints/wizmirnet.js";
@@ -77,8 +78,8 @@ export class IzmirAPI {
     public readonly izum;
     public readonly turuncucember;
 
-    constructor(baseUrl?: string) {
-        this.client = new IzmirClient(baseUrl);
+    constructor(baseUrlOrOptions?: string | IzmirClientOptions) {
+        this.client = new IzmirClient(baseUrlOrOptions);
 
         this.eczaneler = eczaneler(this.client);
         this.muhtarliklar = muhtarliklar(this.client);
@@ -119,9 +120,27 @@ export class IzmirAPI {
         this.izum = izum(this.client);
         this.turuncucember = turuncucember(this.client);
     }
+
+    /**
+     * Etkin önbellek sağlayıcısını döndürür.
+     */
+    get cache(): CacheProvider | undefined {
+        return this.client.cache;
+    }
+
+    /**
+     * Önbelleği temizler (aktif bir cache sağlayıcı varsa).
+     */
+    clearCache(): void {
+        this.client.clearCache();
+    }
 }
 
-export { IzmirClient } from "./client.js";
+export { IzmirClient, IzmirClientOptions } from "./client.js";
+export * from "./common/cache/memoryCache.js";
+export * from "./common/retry/retryMiddleware.js";
+export * from "./common/utils/geojson.js";
+export * from "./endpoints/ckanQueryBuilder.js";
 export * from "./endpoints/ckan.js";
 export * from "./endpoints/tuvalet.js";
 export * from "./endpoints/itfaiye.js";

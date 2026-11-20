@@ -242,6 +242,7 @@
 ## CKAN & Açık Veri Portalı (`client.ckan`)
 | Metod Adı | Açıklama |
 |---|---|
+| `query(resourceId)` | Belirli bir Datastore kaynağı için akıcı (fluent) `CKANQueryBuilder` sorgu oluşturucu başlatır (`where`, `search`, `page`, `sort`, `execute`, `fetchAll`). |
 | `searchPackages(query, options)` | Portaldaki 260+ veri setini metin, etiket, organizasyon veya formata göre arar ve filtreler. |
 | `getPackage(idOrName)` | Belirli bir veri setinin tüm detay ve kaynak meta verilerini döndürür. |
 | `listPackages(options)` | Tüm veri setlerinin slug listesini döndürür. |
@@ -317,3 +318,14 @@
 | `getIsletmeler()` | Turuncu Çember hijyen ve gıda güvenliği sertifikalı tüm aktif işletmeleri listeler. |
 | `getIsletme(id)` | Belirli bir işletmenin sertifika detay bilgilerini getirir. |
 | `getSayilar()` | Turuncu Çember sertifika başvuru ve kabul/ret sayısal istatistiklerini getirir. |
+
+## Yardımcı Araçlar ve Normalleştiriciler
+
+| Fonksiyon / Sınıf | Modül | Açıklama |
+|---|---|---|
+| `MemoryCache` | `izmir-open-data-js` | TTL süreli ve azami eleman sınırlı dahili in-memory önbellek sağlayıcısı. |
+| `executeWithRetry(fn, config)` | `izmir-open-data-js` | Jitter destekli üstel geri çekilme (exponential backoff) retry mekanizması. |
+| `CKANQueryBuilder` | `izmir-open-data-js` | CKAN Datastore için zincirlenebilir akıcı arama ve sayfalama oluşturucusu. |
+| `toGeoJSON(data)` | `izmir-open-data-js` | CBS, İZBAN, ESHOT veya POI verilerini standart RFC 7946 GeoJSON FeatureCollection nesnesine dönüştürür. |
+| `toGeoJSONFeature(item)` | `izmir-open-data-js` | Tekil bir POI kaydını GeoJSON Feature nesnesine dönüştürür. |
+| `extractCoordinates(item)` | `izmir-open-data-js` | Farklı belediye koordinat formatlarından [boylam, enlem] WGS84 koordinat çifti ayıklar. |
