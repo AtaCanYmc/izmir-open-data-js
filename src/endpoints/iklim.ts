@@ -29,6 +29,15 @@ export interface HavaKalitesiIstasyonu {
 export function iklim(client: IzmirClient) {
     return {
         /**
+         * Günün en son alınan güncel hava kalitesi ölçüm değerlerini listeler.
+         *
+         * Kaynak: https://openapi.izmir.bel.tr/api/ibb/cevre/havadegerleri
+         */
+        getGununHavaKalitesi(): Promise<HavaKalitesiOlcum[]> {
+            return client.get<HavaKalitesiOlcum[]>("ibb/cevre/havadegerleri");
+        },
+
+        /**
          * Belirtilen tarihe göre hava kalitesi ölçüm değerlerini içeren web servisi.
          *
          * Kaynak: https://acikveri.bizizmir.com/dataset/hava-kalitesi-olcum-degerleri

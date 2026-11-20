@@ -1,14 +1,18 @@
 import { IzmirClient } from "../client.js";
 
 export interface Eczane {
+    EczaneId?: number;
     Adi: string;
     Telefon: string;
     Adres: string;
+    IlceId?: number;
     Bolge: string;
-    BolgeAciklama: string;
-    LokasyonX: string; // "38.425790" (Aslında Enlem/Latitude)
-    LokasyonY: string; // "27.196936" (Aslında Boylam/Longitude)
-    Tarih: string;
+    BolgeId?: number;
+    BolgeAciklama?: string;
+    LokasyonX: string; // Enlem (Latitude)
+    LokasyonY: string; // Boylam (Longitude)
+    Tarih?: string;
+    UzaklikMetre?: number;
 }
 
 export function eczaneler(client: IzmirClient) {
@@ -16,7 +20,7 @@ export function eczaneler(client: IzmirClient) {
         /**
          * Nöbetçi eczanelerin bilgilerini içeren web servisi.
          *
-         * Kaynak: https://acikveri.bizizmir.com/dataset/nobetci-eczaneler-ve-eczane-listesi
+         * Kaynak: https://openapi.izmir.bel.tr/api/ibb/nobetcieczaneler
          */
         getNobetciList() {
             return client.get<Eczane[]>("ibb/nobetcieczaneler");
@@ -25,7 +29,7 @@ export function eczaneler(client: IzmirClient) {
         /**
          * Eczanelerin bilgilerini içeren web servisi.
          *
-         * Kaynak: https://acikveri.bizizmir.com/dataset/nobetci-eczaneler-ve-eczane-listesi
+         * Kaynak: https://openapi.izmir.bel.tr/api/ibb/eczaneler
          */
         getList() {
             return client.get<Eczane[]>("ibb/eczaneler");

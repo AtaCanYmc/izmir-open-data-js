@@ -162,7 +162,7 @@ Kütüphane, İzmir Açık Veri Portalı üzerindeki servisleri modüler ad alan
 | **Mikro Hareketlilik** | `api.bisim`, `api.taksi` | BİSİM akıllı bisiklet istasyonları, bisiklet dolulukları ve taksi durakları. |
 | **Sağlık & Eczane** | `api.eczaneler`, `api.saglik` | Nöbetçi eczaneler, tüm eczaneler, hastaneler ve acil yardım istasyonları. |
 | **Su & Altyapı** | `api.izsu`, `api.otopark`, `api.afetler` | Baraj doluluk oranları, su üretimi, otopark dolulukları ve toplanma alanları. |
-| **Kent & Güvenlik** | `api.tuvalet`, `api.itfaiye`, `api.izum`, `api.trafik` | Akıllı tuvaletler, itfaiye acil müdahaleleri, İZUM arter hızları ve VMS yönlendirme panoları. |
+| **Kent & Hijyen** | `api.tuvalet`, `api.turuncucember`, `api.itfaiye`, `api.izum`, `api.trafik` | Akıllı tuvaletler, Turuncu Çember sertifikalı işletmeler, itfaiye acil müdahaleleri, İZUM hız verileri. |
 | **Kültür & Sosyal** | `api.kultur`, `api.etkinlikler`, `api.egitim` | Kütüphaneler, müzeler, sinemalar, okullar ve belediye etkinlik takvimi. |
 | **Kamu & Coğrafya** | `api.kamu`, `api.cografi`, `api.muhtarliklar` | Noterler, muhtarlıklar, PTT, göller, dağlar ve kıyı şeridi bilgileri. |
 | **Açık Veri CKAN** | `api.ckan`, `client.getCKAN()`, `client.getCKANDump()` | 260+ veri setinde arama (`packageSearch`), filtreleme, `searchDatastore` ve dump indirme. |

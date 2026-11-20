@@ -79,7 +79,8 @@
 ## Iklim (`client.iklim`)
 | Metod Adı | Açıklama |
 |---|---|
-| `getGunlukHavaKalitesiOlcumleri()` | Belirtilen tarihe göre hava kalitesi ölçüm değerlerini içeren web servisi. |
+| `getGununHavaKalitesi()` | Günün en son alınan güncel hava kalitesi ölçüm değerlerini listeler. |
+| `getGunlukHavaKalitesiOlcumleri(tarih)` | Belirtilen tarihe göre hava kalitesi ölçüm değerlerini içeren web servisi. |
 | `getHavaKalitesiIstasyonlari()` | Hava kalitesi ölçüm istasyonlarının konum bilgilerini içeren web servisi (CSV). |
 
 ## Izban (`client.izban`)
@@ -309,3 +310,10 @@
 | Metod Adı | Açıklama |
 |---|---|
 | `getList()` | Ücretsiz-kablosuz internet hizmet noktaları ve lokasyon bilgilerini içeren web servisi. |
+
+## Turuncu Çember (`client.turuncucember`)
+| Metod Adı | Açıklama |
+|---|---|
+| `getIsletmeler()` | Turuncu Çember hijyen ve gıda güvenliği sertifikalı tüm aktif işletmeleri listeler. |
+| `getIsletme(id)` | Belirli bir işletmenin sertifika detay bilgilerini getirir. |
+| `getSayilar()` | Turuncu Çember sertifika başvuru ve kabul/ret sayısal istatistiklerini getirir. |

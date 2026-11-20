@@ -221,4 +221,90 @@ describe("Yeni Modül Testleri", () => {
             expect(result[0].Adi).toBe("Alsancak Katlı Otoparkı");
         });
     });
+
+    describe("Turuncu Çember Modülü (api.turuncucember)", () => {
+        it("getIsletmeler sertifikalı işletmeleri listeler", async () => {
+            const mockIsletmeler = [
+                {
+                    Id: 101,
+                    TicariUnvan: "Deniz Restoran",
+                    TabelaAdi: "Deniz",
+                    FaaliyetAlani: "Restoran",
+                    FaaliyetId: 1,
+                    LokasyonX: "38.43",
+                    LokasyonY: "27.13",
+                    EklenmeTarihi: "2024-01-01",
+                },
+            ];
+
+            mockFetch.mockResolvedValueOnce({
+                ok: true,
+                json: async () => mockIsletmeler,
+            });
+
+            const result = await api.turuncucember.getIsletmeler();
+            expect(mockFetch).toHaveBeenCalledWith("https://openapi.izmir.bel.tr/api/ibb/turuncucember/isletmeler");
+            expect(result.length).toBe(1);
+            expect(result[0].TabelaAdi).toBe("Deniz");
+        });
+
+        it("getIsletme tekil işletme detayını getirir", async () => {
+            const mockIsletme = {
+                Id: 101,
+                TicariUnvan: "Deniz Restoran",
+                TabelaAdi: "Deniz",
+            };
+
+            mockFetch.mockResolvedValueOnce({
+                ok: true,
+                json: async () => mockIsletme,
+            });
+
+            const result = await api.turuncucember.getIsletme(101);
+            expect(mockFetch).toHaveBeenCalledWith("https://openapi.izmir.bel.tr/api/ibb/turuncucember/isletme/101");
+            expect(result.Id).toBe(101);
+        });
+
+        it("getSayilar başvuru istatistiklerini getirir", async () => {
+            const mockSayilar = {
+                BasvuruSayisi: 583,
+                IslemdeBekleyen: 2,
+                KabulEdilen: 483,
+                Reddedilen: 90,
+            };
+
+            mockFetch.mockResolvedValueOnce({
+                ok: true,
+                json: async () => mockSayilar,
+            });
+
+            const result = await api.turuncucember.getSayilar();
+            expect(mockFetch).toHaveBeenCalledWith("https://openapi.izmir.bel.tr/api/ibb/turuncucember/sayilar");
+            expect(result.KabulEdilen).toBe(483);
+        });
+    });
+
+    describe("İklim Modülü Güncellemesi", () => {
+        it("getGununHavaKalitesi en son ölçümleri getirir", async () => {
+            const mockHava = [
+                {
+                    BolgeId: 6,
+                    BolgeAdi: "CIGLI",
+                    GazId: 1,
+                    GazAdi: "PM10",
+                    OlcumDegeri: "16",
+                    OlcumTarihi: "2026-11-20T00:00:00",
+                },
+            ];
+
+            mockFetch.mockResolvedValueOnce({
+                ok: true,
+                json: async () => mockHava,
+            });
+
+            const result = await api.iklim.getGununHavaKalitesi();
+            expect(mockFetch).toHaveBeenCalledWith("https://openapi.izmir.bel.tr/api/ibb/cevre/havadegerleri");
+            expect(result[0].BolgeAdi).toBe("CIGLI");
+        });
+    });
 });

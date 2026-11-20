@@ -33,6 +33,7 @@ import { ckan } from "./endpoints/ckan.js";
 import { tuvalet } from "./endpoints/tuvalet.js";
 import { itfaiye } from "./endpoints/itfaiye.js";
 import { izum } from "./endpoints/izum.js";
+import { turuncucember } from "./endpoints/turuncucember.js";
 
 export class IzmirAPI {
     private readonly client: IzmirClient;
@@ -74,6 +75,7 @@ export class IzmirAPI {
     public readonly tuvalet;
     public readonly itfaiye;
     public readonly izum;
+    public readonly turuncucember;
 
     constructor(baseUrl?: string) {
         this.client = new IzmirClient(baseUrl);
@@ -115,6 +117,7 @@ export class IzmirAPI {
         this.tuvalet = tuvalet(this.client);
         this.itfaiye = itfaiye(this.client);
         this.izum = izum(this.client);
+        this.turuncucember = turuncucember(this.client);
     }
 }
 
@@ -123,3 +126,4 @@ export * from "./endpoints/ckan.js";
 export * from "./endpoints/tuvalet.js";
 export * from "./endpoints/itfaiye.js";
 export * from "./endpoints/izum.js";
+export * from "./endpoints/turuncucember.js";

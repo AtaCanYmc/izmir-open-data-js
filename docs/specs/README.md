@@ -14,6 +14,7 @@ Tüm şartnameler `izmir-open-data-js` SDK mimarisi ile uyumlu hale getirilmiş,
 | **Metro ve Tramvay Web Servis Dokümanı** | İzmir Metro A.Ş. | V.1.0 | Metro istasyonları, sefer sıklığı, tramvay hatları (1-8), tramvay durakları | [METRO_TRAMVAY.md](METRO_TRAMVAY.md) |
 | **İZSU Web Servis Dokümanı** | İZSU Genel Müdürlüğü | V.1.0 | Su arıza/kesinti, baraj durumları, su üretimi, su analizleri, vezne ve şubeler | [IZSU.md](IZSU.md) |
 | **CBS Web Servis Dokümanı** | İZBB CBS Şube Müdürlüğü | V.1.1 | 88 Kentsel katman (POI) ve Noktaya Yakın Otobüs Durakları servisi | [CBS.md](CBS.md) |
+| **Yazılım Şube Web Servis Dokümanı** | İZBB Yazılım Şube Müdürlüğü | V.1.0 | Turuncu Çember, Hal Fiyatları, Güncel Hava Kalitesi, Eczaneler, Kültür-Sanat | [YAZILIM_SUBE.md](YAZILIM_SUBE.md) |
 
 ---
 

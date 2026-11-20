@@ -162,7 +162,7 @@ The library organizes municipal services into distinct domain namespaces:
 | **Micro-mobility** | `api.bisim`, `api.taksi` | BİSİM bike stations, real-time bicycle counts, and taxi stands. |
 | **Healthcare** | `api.eczaneler`, `api.saglik` | On-duty pharmacies, all registered pharmacies, hospitals, and emergency stations. |
 | **Utilities and Civil** | `api.izsu`, `api.otopark`, `api.afetler` | Dam water levels, water production, parking occupancy, and disaster assembly zones. |
-| **City and Safety** | `api.tuvalet`, `api.itfaiye`, `api.izum`, `api.trafik` | Smart public restrooms, fire incident statistics, İZUM arterial traffic speeds, and VMS message panels. |
+| **City & Hygiene** | `api.tuvalet`, `api.turuncucember`, `api.itfaiye`, `api.izum`, `api.trafik` | Smart public restrooms, Orange Circle hygiene-certified businesses, fire incidents, and İZUM traffic speeds. |
 | **Culture and Education** | `api.kultur`, `api.etkinlikler`, `api.egitim` | Libraries, museums, theaters, public schools, and municipal event calendars. |
 | **Public Administration** | `api.kamu`, `api.cografi`, `api.muhtarliklar` | Notaries, neighborhood administration offices, post offices, lakes, and peaks. |
 | **Open Data CKAN** | `api.ckan`, `client.getCKAN()`, `client.getCKANDump()` | Search 260+ datasets (`searchPackages`), filter datastores (`searchDatastore`), and download dumps. |
