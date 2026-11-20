@@ -7,12 +7,13 @@
 İzmir Büyükşehir Belediyesi Açık Veri Portalı API servisleri için geliştirilmiş TypeScript ve JavaScript istemci kütüphanesi, terminal CLI aracı ve Model Context Protocol (MCP) sunucusu.
 
 [![CI](https://github.com/AtaCanYmc/izmir-open-data-js/actions/workflows/ci.yml/badge.svg)](https://github.com/AtaCanYmc/izmir-open-data-js/actions/workflows/ci.yml)
+[![Pages Deployment](https://github.com/AtaCanYmc/izmir-open-data-js/actions/workflows/pages.yml/badge.svg)](https://github.com/AtaCanYmc/izmir-open-data-js/actions/workflows/pages.yml)
 [![npm version](https://img.shields.io/npm/v/izmir-open-data-js.svg)](https://www.npmjs.com/package/izmir-open-data-js)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Node Version](https://img.shields.io/node/v/izmir-open-data-js.svg)](https://nodejs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
 
-[Türkçe](README.md) | [English](README.en.md)
+[Türkçe](README.md) | [English](README.en.md) | [Canlı Tanıtım Ekranı](https://atacanymc.github.io/izmir-open-data-js/)
 
 ---
 

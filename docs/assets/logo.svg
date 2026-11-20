@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradients -->
+    <radialGradient id="bgGlow" cx="50%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#0F284E" />
+      <stop offset="50%" stop-color="#081426" />
+      <stop offset="100%" stop-color="#030712" />
+    </radialGradient>
+    
+    <linearGradient id="cardBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.6" />
+      <stop offset="50%" stop-color="#1E40AF" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#0284C7" stop-opacity="0.4" />
+    </linearGradient>
+
+    <!-- Accent Gradients -->
+    <linearGradient id="cyanBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="50%" stop-color="#0EA5E9" />
+      <stop offset="100%" stop-color="#2563EB" />
+    </linearGradient>
+
+    <linearGradient id="aegeanTurquoise" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06B6D4" />
+      <stop offset="50%" stop-color="#0284C7" />
+      <stop offset="100%" stop-color="#38BDF8" />
+    </linearGradient>
+
+    <linearGradient id="goldGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D" />
+      <stop offset="100%" stop-color="#F59E0B" />
+    </linearGradient>
+
+    <!-- Drop Shadows and Filters -->
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <filter id="iconShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#0284C7" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- Squircle Base Canvas -->
+  <rect x="16" y="16" width="480" height="480" rx="108" fill="url(#bgGlow)" />
+  <rect x="16" y="16" width="480" height="480" rx="108" fill="none" stroke="url(#cardBorder)" stroke-width="2.5" />
+
+  <!-- Subtle Ambient Mesh / Grid Background -->
+  <g opacity="0.12" stroke="#38BDF8" stroke-width="1">
+    <circle cx="256" cy="256" r="190" fill="none" stroke-dasharray="4 8" />
+    <circle cx="256" cy="256" r="140" fill="none" stroke-dasharray="2 6" />
+    <line x1="256" y1="40" x2="256" y2="472" stroke-dasharray="4 8" />
+    <line x1="40" y1="256" x2="472" y2="256" stroke-dasharray="4 8" />
+  </g>
+
+  <!-- Main Symbol Group with Glow & Shadow -->
+  <g filter="url(#iconShadow)">
+    
+    <!-- Stylized Geometric Clock Tower (İzmir Saat Kulesi) Silhouette -->
+    <!-- Spire / Dome -->
+    <path d="M256 92 L266 128 L278 136 L278 152 L234 152 L234 136 L246 128 Z" fill="url(#cyanBlue)" />
+    <!-- Spire Beacon Node -->
+    <circle cx="256" cy="84" r="6" fill="#F8FAFC" filter="url(#softGlow)" />
+    <circle cx="256" cy="84" r="3" fill="#38BDF8" />
+
+    <!-- Upper Gallery / Clock Chamber -->
+    <rect x="220" y="152" width="72" height="12" rx="4" fill="url(#aegeanTurquoise)" opacity="0.9" />
+    <rect x="226" y="164" width="60" height="48" rx="6" fill="#0E2243" stroke="#38BDF8" stroke-width="2" />
+    
+    <!-- Glowing Clock Face / Core Data Node -->
+    <circle cx="256" cy="188" r="15" fill="#081426" stroke="url(#goldGlow)" stroke-width="2.5" />
+    <circle cx="256" cy="188" r="3.5" fill="#FCD34D" />
+    <line x1="256" y1="188" x2="256" y2="178" stroke="#FCD34D" stroke-width="2" stroke-linecap="round" />
+    <line x1="256" y1="188" x2="263" y2="188" stroke="#FCD34D" stroke-width="2" stroke-linecap="round" />
+
+    <!-- Mid Section / Architectural Columns -->
+    <rect x="214" y="212" width="84" height="10" rx="3" fill="url(#cyanBlue)" />
+    
+    <!-- Central Tower Column Body with Arch Cutout -->
+    <path d="M222 222 L290 222 L294 316 L218 316 Z" fill="#0D2447" stroke="#0284C7" stroke-width="2" />
+    <!-- Stylized Moorish Arch Window -->
+    <path d="M242 300 L242 258 C242 248 270 248 270 258 L270 300 Z" fill="url(#cyanBlue)" opacity="0.8" />
+
+    <!-- Lower Gallery Pedestal -->
+    <path d="M196 316 L316 316 L324 336 L188 336 Z" fill="url(#aegeanTurquoise)" />
+    <rect x="180" y="336" width="152" height="14" rx="4" fill="#0B1A33" stroke="#38BDF8" stroke-width="1.5" />
+
+    <!-- Corner Decorative Turrets / Miniature Domes -->
+    <path d="M188 286 L196 304 L196 316 L180 316 L180 304 Z" fill="url(#cyanBlue)" opacity="0.85" />
+    <circle cx="188" cy="282" r="3" fill="#38BDF8" />
+
+    <path d="M324 286 L332 304 L332 316 L316 316 L316 304 Z" fill="url(#cyanBlue)" opacity="0.85" />
+    <circle cx="324" cy="282" r="3" fill="#38BDF8" />
+
+    <!-- Plinth Base -->
+    <rect x="168" y="350" width="176" height="12" rx="3" fill="#133059" />
+  </g>
+
+  <!-- Open Data Wave Arrays (Aegean Sea + Network Packets) -->
+  <g opacity="0.95">
+    <!-- Wave 1 (Upper Sine Wave) -->
+    <path d="M112 382 C160 366 208 398 256 382 C304 366 352 398 400 382" 
+          fill="none" stroke="url(#cyanBlue)" stroke-width="4.5" stroke-linecap="round" />
+    
+    <!-- Wave 2 (Middle Sine Wave) -->
+    <path d="M96 406 C148 390 204 422 256 406 C308 390 364 422 416 406" 
+          fill="none" stroke="url(#aegeanTurquoise)" stroke-width="4" stroke-linecap="round" opacity="0.8" />
+    
+    <!-- Wave 3 (Lower Base Wave) -->
+    <path d="M130 428 C172 416 218 438 256 428 C294 418 340 440 382 428" 
+          fill="none" stroke="#2563EB" stroke-width="3" stroke-linecap="round" opacity="0.5" />
+
+    <!-- Floating Data Nodes / Particles along the waves -->
+    <circle cx="112" cy="382" r="4.5" fill="#38BDF8" filter="url(#softGlow)" />
+    <circle cx="256" cy="382" r="5" fill="#F8FAFC" />
+    <circle cx="400" cy="382" r="4.5" fill="#38BDF8" filter="url(#softGlow)" />
+
+    <circle cx="180" cy="414" r="3.5" fill="#06B6D4" />
+    <circle cx="332" cy="414" r="3.5" fill="#06B6D4" />
+  </g>
+
+  <!-- Floating API Brackets: < /> Tech Signifier -->
+  <g stroke="#38BDF8" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.75">
+    <path d="M136 216 L112 240 L136 264" />
+    <path d="M376 216 L400 240 L376 264" />
+  </g>
+</svg>
