@@ -60,6 +60,7 @@
     "test:coverage": "vitest run --coverage --exclude 'tests/integration/**'",
     "test:live": "LIVE_API_TESTS=1 vitest run tests/integration/",
     "test:all": "LIVE_API_TESTS=1 vitest run",
+    "docs:serve": "python3 -m http.server 8080 --directory docs",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {

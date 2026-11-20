@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-.PHONY: help install build lint lint-fix format test test-coverage test-live clean check
+.PHONY: help install build lint lint-fix format test test-coverage test-live clean check docs-serve serve
 
 help: ## Show this help message
 	@echo "Usage: make [target]"
@@ -33,6 +33,12 @@ test-live: ## Run live API integration tests against municipal endpoints
 	npm run test:live
 
 check: build lint test ## Run full build, lint, and unit test pipeline
+
+docs-serve: ## Serve the showcase and docs site locally on port 8080
+	@echo "Starting local showcase server at http://localhost:8080 ..."
+	python3 -m http.server 8080 --directory docs
+
+serve: docs-serve ## Alias for docs-serve
 
 clean: ## Remove build artifacts, coverage reports, and cache
 	rm -rf dist coverage .vitest
