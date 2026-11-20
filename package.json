@@ -55,9 +55,9 @@
     "lint": "eslint 'src/**/*.{ts,js}' 'tests/**/*.{ts,js}'",
     "lint:fix": "eslint 'src/**/*.{ts,js}' 'tests/**/*.{ts,js}' --fix",
     "format": "prettier --write 'src/**/*.{ts,js}' 'tests/**/*.{ts,js}'",
-    "test": "vitest run --exclude tests/integration/**",
-    "test:watch": "vitest --exclude tests/integration/**",
-    "test:coverage": "vitest run --coverage --exclude tests/integration/**",
+    "test": "vitest run --exclude 'tests/integration/**'",
+    "test:watch": "vitest --exclude 'tests/integration/**'",
+    "test:coverage": "vitest run --coverage --exclude 'tests/integration/**'",
     "test:live": "LIVE_API_TESTS=1 vitest run tests/integration/",
     "test:all": "LIVE_API_TESTS=1 vitest run",
     "prepublishOnly": "npm run build"
