@@ -23,7 +23,13 @@ coverage/
 
 # Operating System Metadata
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+**/.DS_Store
 Thumbs.db
+ehthumbs.db
 
 # Documentation build output
 docs/api/
