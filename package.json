@@ -17,7 +17,7 @@
     "ckan",
     "otopark"
   ],
-  "author": "Ata",
+  "author": "Ata Can Yaymacı <atacanymc@gmail.com>",
   "license": "Apache-2.0",
   "type": "module",
   "bin": {

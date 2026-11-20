@@ -24,6 +24,7 @@ TypeScript and JavaScript client SDK, terminal CLI utility, and Model Context Pr
   - [1. Programmatic Library Usage](#1-programmatic-library-usage)
   - [2. Terminal CLI Utility](#2-terminal-cli-utility)
   - [3. Model Context Protocol (MCP) Server](#3-model-context-protocol-mcp-server)
+  - [4. Advanced Features (Cache, Retry, CKAN Query Builder, GeoJSON)](#4-advanced-features-cache-retry-ckan-query-builder-geojson)
 - [Endpoint Modules](#endpoint-modules)
 - [Code Examples](#code-examples)
 - [Repository Structure](#repository-structure)
@@ -296,6 +297,7 @@ izmir-open-data-js/
 │   └── workflows/             # CI, linting, security, and release pipelines
 ├── docs/                      # CLI, MCP, and endpoint reference documents
 ├── examples/                  # Executable example scripts for each domain
+├── Formula/                   # Homebrew tap formula specifications
 ├── src/
 │   ├── cli/                   # izmir-cli terminal application source
 │   ├── common/                # Shared utilities and core type definitions

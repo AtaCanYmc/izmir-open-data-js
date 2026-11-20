@@ -24,6 +24,7 @@
   - [1. Programatik Kütüphane Kullanımı](#1-programatik-kütüphane-kullanımı)
   - [2. Terminal CLI Aracı](#2-terminal-cli-aracı)
   - [3. Model Context Protocol (MCP) Sunucusu](#3-model-context-protocol-mcp-sunucusu)
+  - [4. Gelişmiş Özellikler (Önbellek, Retry, CKAN Sorgu Oluşturucu, GeoJSON)](#4-gelişmiş-özellikler-önbellek-retry-ckan-sorgu-oluşturucu-geojson)
 - [Uç Nokta ve Servis Modülleri](#uç-nokta-ve-servis-modülleri)
 - [Kod Örnekleri](#kod-örnekleri)
 - [Proje Dizin Yapısı](#proje-dizin-yapısı)
@@ -296,6 +297,7 @@ izmir-open-data-js/
 │   └── workflows/             # CI, lint, güvenlik ve yayınlama iş akışları
 ├── docs/                      # CLI, MCP ve uç nokta dokümantasyonları
 ├── examples/                  # Her servis için çalıştırılabilir örnek betikler
+├── Formula/                   # Homebrew Tap formül tanımlamaları
 ├── src/
 │   ├── cli/                   # izmir-cli terminal aracı kaynak kodları
 │   ├── common/                # Tipler ve ortak yardımcı fonksiyonlar
